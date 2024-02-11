@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { DropdownMenu } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
 
-  const { auth } = useAuth();
+  const { auth, cerrarSesion } = useAuth();
   const { nombre } = auth;
   
   const firstLetter = nombre?.charAt(0).toUpperCase();
@@ -14,9 +13,9 @@ const Header = () => {
       <div className="container mx-auto flex justify-between">
         <div className="flex">
           <Link
-            to={ '/dashboard'}
+            to={ '/'}
           >
-            <img src="/public/padfra-logo.svg" alt="Padfra"  className="w-24"/>
+            <img src="/padfra-logo.svg" alt="Padfra"  className="w-24"/>
           </Link>
           <nav className="ml-10">
             <Link 
@@ -33,6 +32,11 @@ const Header = () => {
           <div>
             Notificaciones
           </div>
+          <a 
+            href="/"
+            className="ml-5"
+            onClick={cerrarSesion}
+          >Cerrar Sesión</a>
           <div className="ml-5" >
             <span className="block rounded-full bg-slate-700 w-8 h-8 text-center font-bold text-white">{firstLetter}</span>
           </div>

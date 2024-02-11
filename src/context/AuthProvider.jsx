@@ -11,15 +11,12 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const autenticarUsuario = async () => {
       const token = localStorage.getItem('neurospinetoken');
-      console.log('Desde AuthProvider, token:', token);
       
       if(!token) {
-        console.log('token no existe');
         setCargando(false);
         return;
       }
       
-      console.log('token existe');
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -37,19 +34,24 @@ const AuthProvider = ({ children }) => {
         
       }
 
-      console.log('llegó al final')
       setCargando(false);
     }
 
     autenticarUsuario();
   }, []);
   
+  const cerrarSesion = () => {
+    localStorage.removeItem('neurospinetoken');
+    setAuth({});
+  }
+  
   return (
     <AuthContext.Provider
       value={{
         auth,
         setAuth,
-        cargando
+        cargando,
+        cerrarSesion
       }}
     >
       {children}
