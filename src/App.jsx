@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layout/AuthLayout";
+import RutaProtegida from "./layout/RutaProtegida";
 import Login from "./pages/Login";
 import Registrar from "./pages/Registrar";
 import ConfirmarCuenta from "./pages/ConfirmarCuenta";
@@ -21,7 +22,9 @@ function App() {
             <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
             <Route path="olvide-password" element={<OlvidePassword/>}/>
             <Route path="nuevo-password/:token" element={<NuevoPassword/>}/>
-            <Route path="dashboard" element={<Dashboard/>}/>
+          </Route>
+          <Route path="/dashboard" element={<RutaProtegida />}>
+            <Route index element={<Dashboard />}/>
           </Route>
         </Routes>
       </AuthProvider>

@@ -2,11 +2,12 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import Alerta from "../components/Alerta";
 import clienteAxios from "../config/clienteAxios";
-import useAuth from "../hooks/useAuth"
+import useAuth from "../hooks/useAuth";
 
 const Login = () => {
-  const { setAuth } = useAuth();
 
+  const { setAuth } = useAuth();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alerta, setAlerta] = useState({});
@@ -28,10 +29,8 @@ const Login = () => {
 
       localStorage.setItem('neurospinetoken', data.token);
 
-      setAuth( data );
-      
-      navigate('/dashboard');
-
+      setAuth(data);
+      navigate("/dashboard");
     } catch (error) {
       console.log(error.response);
       setAlerta({
