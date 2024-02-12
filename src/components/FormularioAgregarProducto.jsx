@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Alerta from "./Alerta";
 import useProductos from "../hooks/useProductos";
 import useAuth from "../hooks/useAuth";
@@ -7,9 +8,10 @@ const FormularioAgregarProducto = () => {
 
   const { guardarProducto } = useProductos();
   const { auth } = useAuth();
+  const navigate = useNavigate();
 
   const [nombreMaterial, setNombreMaterial] = useState('');
-  const [tipoMaterial, setTipoMaterial] = useState('');
+  const [tipoMaterial, setTipoMaterial] = useState('cervical');
   const [materialApoyo, setMaterialApoyo] = useState(false);
   const [descripcionExtendida, setDescripcionExtendida] = useState('');
   const [existencias, setExistencias] = useState(0);
@@ -42,6 +44,22 @@ const FormularioAgregarProducto = () => {
       })
       return;
     }
+
+    if(cantidadMin >= existencias) {
+      setAlerta({
+        error: true,
+        msg: 'La cantidad mínima no puede ser mayor a las existencias'
+      })
+      return;
+    }
+
+    if(cantidadMax < existencias) {
+      setAlerta({
+        error: true,
+        msg: 'La cantidad máxima no puede ser menor a las existencias'
+      })
+      return;
+    }
     
     setAlerta({});
     guardarProducto({ 
@@ -58,13 +76,32 @@ const FormularioAgregarProducto = () => {
       precioEstandar,
       usuario: auth._id
     });
+
+    setNombreMaterial('');
+    setTipoMaterial('cervical');
+    setMaterialApoyo('false');
+    setDescripcionExtendida('');
+    setExistencias('');
+    setCantidadMin('');
+    setCantidadMax('');
+    setMedida('');
+    setAlg('');
+    setPrecioAngeles('');
+    setPrecioEstandar('');
+
+    setAlerta({
+      msg: 'El material se ha agregado correctamente'
+    });
+
+    setTimeout(() => {
+      navigate('/inventario');
+    }, 4000);
   }
   
   const { msg } = alerta;
   
   return (
     <>
-      {msg && <Alerta alerta={alerta} />}
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col mb-5">
           <label
@@ -232,6 +269,7 @@ const FormularioAgregarProducto = () => {
           className="bg-indigo-600 text-white w-full p-3 mt-3 cursor-pointer hover:bg-indigo-700 transition-all duration-200"
         />
       </form>
+      {msg && <Alerta alerta={alerta} />}
     </>
   )
 }

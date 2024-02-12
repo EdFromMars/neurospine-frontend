@@ -1,11 +1,33 @@
 import { createContext, useState, useEffect } from "react";
 import clienteAxios from "../config/clienteAxios";
-
+import useAuth from "../hooks/useAuth";
 const ProductosContext = createContext();
 
 export const ProductosProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
+  const { auth } = useAuth();
 
+  useEffect(() => {
+    const obtenerProductos = async () => {
+      try {
+        const token = localStorage.getItem('neurospinetoken');
+        if(!token) return;
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          }
+        }
+        const { data } = await clienteAxios.get('/productos', config);
+        setProductos(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    obtenerProductos();
+  }, [auth]);
+  
   const guardarProducto = async (producto) => {
 
     const token = localStorage.getItem('neurospinetoken');
@@ -20,9 +42,13 @@ export const ProductosProvider = ({ children }) => {
       
       const { data } = await clienteAxios.post('/productos', producto, config);
 
-      console.log(data);
+      setProductos([
+        ...productos,
+        data
+      ]);
+
     } catch (error) {
-      console.log(error.response.data.msg);
+      console.log(error);
     }
   };
     
