@@ -1,12 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layout/AuthLayout";
 import RutaProtegida from "./layout/RutaProtegida";
+import RutaProtegidaAlmacen from "./layout/RutaProtegidaAlmacen";
 import Login from "./pages/Login";
 import Registrar from "./pages/Registrar";
 import ConfirmarCuenta from "./pages/ConfirmarCuenta";
 import OlvidePassword from "./pages/OlvidePassword";
 import NuevoPassword from "./pages/NuevoPassword";
 import Dashboard from "./pages/Dashboard";
+import Inventario from "./pages/Inventario";
+import AgregarInventario from "./pages/AgregarInventario";
 
 import { AuthProvider } from "./context/AuthProvider";
 
@@ -25,6 +28,10 @@ function App() {
           </Route>
           <Route path="/dashboard" element={<RutaProtegida />}>
             <Route index element={<Dashboard />}/>
+          </Route>
+          <Route path="/inventario" element={<RutaProtegidaAlmacen />}>
+            <Route index element={<Inventario />}/>
+            <Route path="agregar-inventario" element={<AgregarInventario/>}/>
           </Route>
         </Routes>
       </AuthProvider>

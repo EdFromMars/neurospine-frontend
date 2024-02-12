@@ -44,6 +44,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem('neurospinetoken');
     setAuth({});
   }
+
   
   return (
     <AuthContext.Provider
@@ -51,7 +52,7 @@ const AuthProvider = ({ children }) => {
         auth,
         setAuth,
         cargando,
-        cerrarSesion
+        cerrarSesion,
       }}
     >
       {children}

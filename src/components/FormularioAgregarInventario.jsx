@@ -1,0 +1,218 @@
+import { useState } from "react";
+import Alerta from "./Alerta";
+
+const FormularioAgregarInventario = () => {
+
+  const [nombreMaterial, setNombreMaterial] = useState('');
+  const [tipoMaterial, setTipoMaterial] = useState('');
+  const [materialApoyo, setMaterialApoyo] = useState(false);
+  const [descripcionExtendida, setDescripcionExtendida] = useState('');
+  const [cantidad, setCantidad] = useState(0);
+  const [cantidadMin, setCantidadMin] = useState(0);
+  const [cantidadMax, setCantidadMax] = useState(0);
+  const [medida, setMedida] = useState('');
+  const [alg, setAlg] = useState('');
+  const [precioAngeles, setPrecioAngeles] = useState(0);
+  const [precioEstandar, setPrecioEstandar] = useState(0);
+  const [alerta, setAlerta] = useState({});
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (
+      nombreMaterial.trim() === '' ||
+      tipoMaterial.trim() === '' ||
+      descripcionExtendida.trim() === '' ||
+      cantidad <= 0 ||
+      cantidadMin <= 0 ||
+      cantidadMax <= 0 ||
+      medida.trim() === '' ||
+      alg.trim() === '' ||
+      precioAngeles <= 0 ||
+      precioEstandar <= 0
+    ) {
+      setAlerta({
+        error: true,
+        msg: 'Todos los campos son obligatorios'
+      })
+      return;
+    }
+  }
+  
+  const { msg } = alerta;
+  
+  return (
+    <>
+      {msg && <Alerta alerta={alerta} />}
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col mb-5">
+          <label
+            htmlFor="nombre-material"
+            className="text-gray-700 uppercase font-bold" 
+          >Nombre del Material</label >
+          <input
+            type="text"
+            id="nombre-material"
+            placeholder="Nombre del Material"
+            className="p-2 border-2 border-gray-300 rounded-lg"
+            value={nombreMaterial}
+            onChange={(e) => setNombreMaterial(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col mb-5">
+          <label
+            htmlFor="tipo-material"
+            className="text-gray-700 uppercase font-bold" 
+          >Tipo de Material</label >
+          <select 
+            name="tipo-material" 
+            className="p-2 border-2 border-gray-300 rounded-lg bg-white"
+            value={tipoMaterial}
+            onChange={(e) => setTipoMaterial(e.target.value)}
+          >
+            <option value="cervical">Cervical</option>
+            <option value="lumbar">Lumbar</option>
+          </select>
+        </div>
+        <div className="flex flex-row mb-5">
+          <label
+            htmlFor="material-apoyo"
+            className="text-gray-700 uppercase font-bold" 
+          >Es Material de apoyo</label >
+          <input
+            type="checkbox"
+            id="material-apoyo"
+            className="p-2 border-2 border-gray-300 rounded-lg"
+            value={materialApoyo}
+            onChange={(e) => setMaterialApoyo(e.target.checked)}
+          />
+        </div>
+        <div className="flex flex-col mb-5">
+          <label
+            htmlFor="descripcion-extendida"
+            className="text-gray-700 uppercase font-bold" 
+          >Descripción Extendida</label >
+          <textarea
+            id="descripcion-extendida"
+            placeholder="Descripción Extendida del Material"
+            className="p-2 border-2 border-gray-300 rounded-lg"
+            value={descripcionExtendida}
+            onChange={(e) => setDescripcionExtendida(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-row mb-5 gap-2">
+          <div className="flex flex-col grow mb-5">
+            <label
+              htmlFor="cantidad"
+              className="text-gray-700 uppercase font-bold" 
+            >Cantidad</label >
+            <input
+              type="number"
+              id="cantidad"
+              min={1}
+              placeholder="0"
+              className="p-2 border-2 border-gray-300 rounded-lg"
+              value={cantidad}
+              onChange={(e) => setCantidad(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col grow mb-5">
+            <label
+              htmlFor="cantidad-min"
+              className="text-gray-700 uppercase font-bold" 
+            >Cantidad Mínima</label >
+            <input
+              type="number"
+              id="cantidad-min"
+              min={1}
+              placeholder="0"
+              className="p-2 border-2 border-gray-300 rounded-lg"
+              value={cantidadMin}
+              onChange={(e) => setCantidadMin(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-col grow mb-5">
+            <label
+              htmlFor="cantidad-max"
+              className="text-gray-700 uppercase font-bold" 
+            >Cantidad Máxima</label >
+            <input
+              type="number"
+              id="cantidad-max"
+              min={1}
+              placeholder="0"
+              className="p-2 border-2 border-gray-300 rounded-lg"
+              value={cantidadMax}
+              onChange={(e) => setCantidadMax(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col mb-5">
+          <label
+            htmlFor="medida"
+            className="text-gray-700 uppercase font-bold" 
+          >Medida</label >
+          <input
+            type="text"
+            id="medida"
+            placeholder="Medida"
+            className="p-2 border-2 border-gray-300 rounded-lg"
+            value={medida}
+            onChange={(e) => setMedida(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col mb-5">
+          <label
+            htmlFor="alg"
+            className="text-gray-700 uppercase font-bold" 
+          >Alg</label >
+          <input
+            type="text"
+            id="alg"
+            placeholder="ALG"
+            className="p-2 border-2 border-gray-300 rounded-lg"
+            value={alg}
+            onChange={(e) => setAlg(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col mb-5">
+          <label
+            htmlFor="precio-angeles"
+            className="text-gray-700 uppercase font-bold" 
+          >Precio Grupo Ángeles</label >
+          <input
+            type="number"
+            id="precio-angeles"
+            min={1}
+            placeholder="0"
+            className="p-2 border-2 border-gray-300 rounded-lg"
+            value={precioAngeles}
+            onChange={(e) => setPrecioAngeles(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col mb-5">
+          <label
+            htmlFor="precio-estandar"
+            className="text-gray-700 uppercase font-bold" 
+          >Precio Estándar</label >
+          <input
+            type="number"
+            id="precio-estandar"
+            min={1}
+            placeholder="0"
+            className="p-2 border-2 border-gray-300 rounded-lg"
+            value={precioEstandar}
+            onChange={(e) => setPrecioEstandar(e.target.value)}
+          />
+        </div>
+        <input 
+          type="submit" 
+          value="Guardar Material"
+          className="bg-indigo-600 text-white w-full p-3 mt-3 cursor-pointer hover:bg-indigo-700 transition-all duration-200"
+        />
+      </form>
+    </>
+  )
+}
+
+export default FormularioAgregarInventario
