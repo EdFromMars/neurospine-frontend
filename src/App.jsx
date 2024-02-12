@@ -13,6 +13,7 @@ import AgregarProducto from "./pages/AgregarProducto";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { ProductosProvider } from "./context/ProductosProvider";
+import Producto from "./pages/Producto";
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
             <Route path="/inventario" element={<RutaProtegidaAlmacen />}>
               <Route index element={<Inventario />}/>
               <Route path="agregar-producto" element={<AgregarProducto/>}/>
+              <Route path="producto/:id" element={<Producto/>}/>
             </Route>
           </Routes>
         </ProductosProvider>

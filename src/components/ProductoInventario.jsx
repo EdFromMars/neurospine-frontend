@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Producto = ({ producto }) => {
+const ProductoInventario = ({ producto }) => {
   const { 
     _id,
     nombreMaterial,
@@ -17,8 +17,10 @@ const Producto = ({ producto }) => {
     usuario
   } = producto;
 
+  const status = existencias <= cantidadMin ? 'border-red-500' : existencias > ((cantidadMax*.2)+cantidadMin) ? 'border-yellow-500' : 'border-white';
+
   return (
-    <div className="mx-5 my-10 bg-white shadow-md px-5 py-10 rounded">
+    <div className={`mx-5 my-10 border-r-8 ${status} shadow-md px-5 py-10 rounded bg-white`}>
       <div className="flex flex-row justify-between">
         <div>
           <p className="font-bold uppercase text-gray-500">Nombre: {''}
@@ -35,11 +37,9 @@ const Producto = ({ producto }) => {
         <p className="font-bold uppercase text-gray-500 mr-2">Descripción</p>
         <span className="font-normal normal-case">{descripcionExtendida}</span>
       </div>
-      <Link to={`/editar-producto/${_id}`} className="bg-blue-500 text-white p-2 rounded-md">Editar</Link>
-      <Link to={`/producto/${_id}`} className="bg-blue-500 text-white p-2 rounded-md">Ver</Link>
-      <Link to={`/eliminar-producto/${_id}`} className="bg-red-500 text-white p-2 rounded-md">Eliminar</Link>
+      <Link to={`producto/${_id}`} className="bg-blue-500 text-white p-2 rounded-md">Ver</Link>
     </div>
   )
 }
 
-export default Producto
+export default ProductoInventario

@@ -1,5 +1,5 @@
 import useProductos from "../hooks/useProductos";
-import Producto from "./Producto";
+import ProductoInventario from "./ProductoInventario";
 
 const ListadoProductos = () => {
   const { productos } = useProductos();
@@ -11,7 +11,7 @@ const ListadoProductos = () => {
           <h2>Inventario de Material y Equipo</h2>
           <ul>
             {productos.map(producto => (
-              <Producto 
+              <ProductoInventario 
                 key={producto._id}
                 producto={producto}
               />

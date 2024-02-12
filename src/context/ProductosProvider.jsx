@@ -51,12 +51,30 @@ export const ProductosProvider = ({ children }) => {
       console.log(error);
     }
   };
+
+  const mostrarProducto = async (id) => {
+    try {
+      const token = localStorage.getItem('neurospinetoken');
+      if(!token) return;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      }
+      const { data } = await clienteAxios.get(`/productos/${id}`, config);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
     
   return (
     <ProductosContext.Provider 
       value={{
         productos,
-        guardarProducto
+        guardarProducto,
+        mostrarProducto
       }}
     >
       {children}
