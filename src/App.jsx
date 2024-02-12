@@ -9,31 +9,36 @@ import OlvidePassword from "./pages/OlvidePassword";
 import NuevoPassword from "./pages/NuevoPassword";
 import Dashboard from "./pages/Dashboard";
 import Inventario from "./pages/Inventario";
-import AgregarInventario from "./pages/AgregarInventario";
+import AgregarProducto from "./pages/AgregarProducto";
 
 import { AuthProvider } from "./context/AuthProvider";
+import { ProductosProvider } from "./context/ProductosProvider";
 
 function App() {
 
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/" element={<AuthLayout/>}>
-            <Route index element={<Login/>}/>
-            <Route path="registrar" element={<Registrar/>}/>
-            <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
-            <Route path="olvide-password" element={<OlvidePassword/>}/>
-            <Route path="nuevo-password/:token" element={<NuevoPassword/>}/>
-          </Route>
-          <Route path="/dashboard" element={<RutaProtegida />}>
-            <Route index element={<Dashboard />}/>
-          </Route>
-          <Route path="/inventario" element={<RutaProtegidaAlmacen />}>
-            <Route index element={<Inventario />}/>
-            <Route path="agregar-inventario" element={<AgregarInventario/>}/>
-          </Route>
-        </Routes>
+        <ProductosProvider>
+          <Routes>
+            <Route path="/" element={<AuthLayout/>}>
+              <Route index element={<Login/>}/>
+              <Route path="registrar" element={<Registrar/>}/>
+              <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
+              <Route path="olvide-password" element={<OlvidePassword/>}/>
+              <Route path="nuevo-password/:token" element={<NuevoPassword/>}/>
+            </Route>
+            
+            <Route path="/dashboard" element={<RutaProtegida />}>
+              <Route index element={<Dashboard />}/>
+            </Route>
+
+            <Route path="/inventario" element={<RutaProtegidaAlmacen />}>
+              <Route index element={<Inventario />}/>
+              <Route path="agregar-producto" element={<AgregarProducto/>}/>
+            </Route>
+          </Routes>
+        </ProductosProvider>
       </AuthProvider>
     </BrowserRouter>
   )

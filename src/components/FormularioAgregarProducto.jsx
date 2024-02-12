@@ -1,13 +1,18 @@
 import { useState } from "react";
 import Alerta from "./Alerta";
+import useProductos from "../hooks/useProductos";
+import useAuth from "../hooks/useAuth";
 
-const FormularioAgregarInventario = () => {
+const FormularioAgregarProducto = () => {
+
+  const { guardarProducto } = useProductos();
+  const { auth } = useAuth();
 
   const [nombreMaterial, setNombreMaterial] = useState('');
   const [tipoMaterial, setTipoMaterial] = useState('');
   const [materialApoyo, setMaterialApoyo] = useState(false);
   const [descripcionExtendida, setDescripcionExtendida] = useState('');
-  const [cantidad, setCantidad] = useState(0);
+  const [existencias, setExistencias] = useState(0);
   const [cantidadMin, setCantidadMin] = useState(0);
   const [cantidadMax, setCantidadMax] = useState(0);
   const [medida, setMedida] = useState('');
@@ -23,7 +28,7 @@ const FormularioAgregarInventario = () => {
       nombreMaterial.trim() === '' ||
       tipoMaterial.trim() === '' ||
       descripcionExtendida.trim() === '' ||
-      cantidad <= 0 ||
+      existencias <= 0 ||
       cantidadMin <= 0 ||
       cantidadMax <= 0 ||
       medida.trim() === '' ||
@@ -37,6 +42,22 @@ const FormularioAgregarInventario = () => {
       })
       return;
     }
+    
+    setAlerta({});
+    guardarProducto({ 
+      nombreMaterial,
+      tipoMaterial,
+      materialApoyo,
+      descripcionExtendida,
+      existencias,
+      cantidadMin,
+      cantidadMax,
+      medida,
+      alg,
+      precioAngeles,
+      precioEstandar,
+      usuario: auth._id
+    });
   }
   
   const { msg } = alerta;
@@ -103,17 +124,17 @@ const FormularioAgregarInventario = () => {
         <div className="flex flex-row mb-5 gap-2">
           <div className="flex flex-col grow mb-5">
             <label
-              htmlFor="cantidad"
+              htmlFor="existencias"
               className="text-gray-700 uppercase font-bold" 
-            >Cantidad</label >
+            >Existencias</label >
             <input
               type="number"
-              id="cantidad"
+              id="existencias"
               min={1}
               placeholder="0"
               className="p-2 border-2 border-gray-300 rounded-lg"
-              value={cantidad}
-              onChange={(e) => setCantidad(e.target.value)}
+              value={existencias}
+              onChange={(e) => setExistencias(e.target.value)}
             />
           </div>
           <div className="flex flex-col grow mb-5">
@@ -215,4 +236,4 @@ const FormularioAgregarInventario = () => {
   )
 }
 
-export default FormularioAgregarInventario
+export default FormularioAgregarProducto

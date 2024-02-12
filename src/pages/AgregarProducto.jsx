@@ -1,6 +1,6 @@
-import FormularioAgregarInventario from "../components/FormularioAgregarInventario"
+import FormularioAgregarProducto from "../components/FormularioAgregarProducto"
 
-const AgregarInventario = () => {
+const AgregarProducto = () => {
   return (
     <>
       <div className="flex flex-col md:flex-row gap-12">
@@ -10,11 +10,11 @@ const AgregarInventario = () => {
           </h1>
         </div>
         <div className="w-1/2">
-          <FormularioAgregarInventario />
+          <FormularioAgregarProducto />
         </div>
       </div>
     </>
   )
 }
 
-export default AgregarInventario
+export default AgregarProducto
