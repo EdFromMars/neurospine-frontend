@@ -1,4 +1,4 @@
-import FormularioAgregarProducto from "../components/FormularioAgregarProducto"
+import FormularioAgregarProducto from "../../components/FormularioAgregarProducto"
 
 const AgregarProducto = () => {
   return (

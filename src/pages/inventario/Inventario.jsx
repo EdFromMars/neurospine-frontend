@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import useProductos from "../hooks/useProductos"
-import ListadoProductos from "../components/ListadoProductos"
+import useProductos from "../../hooks/useProductos"
+import ListadoProductos from "../../components/ListadoProductos"
 
 const Inventario = () => {
 

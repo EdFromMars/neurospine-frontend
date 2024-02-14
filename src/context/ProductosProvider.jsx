@@ -1,11 +1,12 @@
 import { createContext, useState, useEffect } from "react";
 import clienteAxios from "../config/clienteAxios";
 import useAuth from "../hooks/useAuth";
+
 const ProductosContext = createContext();
 
 export const ProductosProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
-  const { auth } = useAuth();
+  const { auth , guardarBitacora } = useAuth();
 
   useEffect(() => {
     const obtenerProductos = async () => {
@@ -30,6 +31,8 @@ export const ProductosProvider = ({ children }) => {
   
   const guardarProducto = async (producto) => {
 
+    const { nombreMaterial, existencias } = producto;
+
     const token = localStorage.getItem('neurospinetoken');
     const config = {
       headers: {
@@ -42,10 +45,23 @@ export const ProductosProvider = ({ children }) => {
       
       const { data } = await clienteAxios.post('/productos', producto, config);
 
-      setProductos([
-        ...productos,
-        data
-      ]);
+      const descripcion = {
+        'Nombre del Material': producto.nombreMaterial,
+        'Tipo de Material': producto.tipoMaterial,
+        'Material de Apoyo': producto.materialApoyo,
+        'Descripción Extendida': producto.descripcionExtendida,
+        'Existencias': producto.existencias,
+        'Cantidad Mínima': producto.cantidadMinima,
+        'Cantidad Máxima': producto.cantidadMaxima,
+        'Medida': producto.medida,
+        'Clave ALG': producto.alg,
+        'Precio Grupo Ángeles': producto.precioAngeles,
+        'Precio Estándar': producto.precioEstandar
+      }
+      
+      guardarBitacora( `Se agregó ${nombreMaterial} con un total de ${existencias} piezas en Almacén`, descripcion );
+
+      obtenerProductos();
 
     } catch (error) {
       console.log(error);

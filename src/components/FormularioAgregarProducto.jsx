@@ -7,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 const FormularioAgregarProducto = () => {
 
   const { guardarProducto } = useProductos();
-  const { auth } = useAuth();
+  const { auth, guardarBitacora } = useAuth();
   const navigate = useNavigate();
 
   const [nombreMaterial, setNombreMaterial] = useState('');
@@ -62,7 +62,8 @@ const FormularioAgregarProducto = () => {
     }
     
     setAlerta({});
-    guardarProducto({ 
+
+    const producto = { 
       nombreMaterial,
       tipoMaterial,
       materialApoyo,
@@ -75,7 +76,9 @@ const FormularioAgregarProducto = () => {
       precioAngeles,
       precioEstandar,
       usuario: auth._id
-    });
+    }
+    
+    guardarProducto( producto );
 
     setNombreMaterial('');
     setTipoMaterial('cervical');
@@ -171,7 +174,7 @@ const FormularioAgregarProducto = () => {
               placeholder="0"
               className="p-2 border-2 border-gray-300 rounded-lg"
               value={existencias}
-              onChange={(e) => setExistencias(e.target.value)}
+              onChange={(e) => setExistencias(+e.target.value)}
             />
           </div>
           <div className="flex flex-col grow mb-5">
@@ -186,7 +189,7 @@ const FormularioAgregarProducto = () => {
               placeholder="0"
               className="p-2 border-2 border-gray-300 rounded-lg"
               value={cantidadMin}
-              onChange={(e) => setCantidadMin(e.target.value)}
+              onChange={(e) => setCantidadMin(+e.target.value)}
             />
           </div>
           <div className="flex flex-col grow mb-5">
@@ -201,7 +204,7 @@ const FormularioAgregarProducto = () => {
               placeholder="0"
               className="p-2 border-2 border-gray-300 rounded-lg"
               value={cantidadMax}
-              onChange={(e) => setCantidadMax(e.target.value)}
+              onChange={(e) => setCantidadMax(+e.target.value)}
             />
           </div>
         </div>
@@ -245,7 +248,7 @@ const FormularioAgregarProducto = () => {
             placeholder="0"
             className="p-2 border-2 border-gray-300 rounded-lg"
             value={precioAngeles}
-            onChange={(e) => setPrecioAngeles(e.target.value)}
+            onChange={(e) => setPrecioAngeles(+e.target.value)}
           />
         </div>
         <div className="flex flex-col mb-5">
@@ -260,7 +263,7 @@ const FormularioAgregarProducto = () => {
             placeholder="0"
             className="p-2 border-2 border-gray-300 rounded-lg"
             value={precioEstandar}
-            onChange={(e) => setPrecioEstandar(e.target.value)}
+            onChange={(e) => setPrecioEstandar(+e.target.value)}
           />
         </div>
         <input 

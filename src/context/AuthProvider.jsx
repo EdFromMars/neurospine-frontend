@@ -8,20 +8,20 @@ const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
   const [cargando, setCargando] = useState(true);
   
+  const token = localStorage.getItem('neurospinetoken');
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  }
+
   useEffect(() => {
     const autenticarUsuario = async () => {
-      const token = localStorage.getItem('neurospinetoken');
       
       if(!token) {
         setCargando(false);
         return;
-      }
-      
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
       }
 
       try {
@@ -39,6 +39,21 @@ const AuthProvider = ({ children }) => {
 
     autenticarUsuario();
   }, []);
+
+  const guardarBitacora = async (descripcion, acciones) => {
+        
+    const bitacora = {
+      usuario: auth._id,
+      descripcion,
+      'acciones': JSON.stringify(acciones)
+    }
+  
+    try {
+      const { data } = await clienteAxios.post('/bitacora', bitacora, config);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
   const cerrarSesion = () => {
     localStorage.removeItem('neurospinetoken');
@@ -52,6 +67,7 @@ const AuthProvider = ({ children }) => {
         auth,
         setAuth,
         cargando,
+        guardarBitacora,
         cerrarSesion,
       }}
     >
