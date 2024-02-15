@@ -4,17 +4,10 @@ const ProductoInventario = ({ producto }) => {
   const { 
     _id,
     nombreMaterial,
-    tipoMaterial, 
-    materialApoyo, 
     descripcionExtendida, 
     existencias, 
     cantidadMin, 
     cantidadMax, 
-    medida, 
-    alg, 
-    precioAngeles, 
-    precioEstandar,
-    usuario
   } = producto;
 
   const status = existencias <= cantidadMin ? 'border-red-500' : existencias > ((cantidadMax*.2)+cantidadMin) ? 'border-yellow-500' : 'border-white';

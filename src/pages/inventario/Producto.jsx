@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import useProductos from '../../hooks/useProductos'
 import useAuth from '../../hooks/useAuth';
 import { formatearDinero } from '../../helpers';
+import AgregarExistencias from '../../components/AgregarExistencias';
 
 const Producto = () => {
-  const [producto, setProducto] = useState({});
-  const [nuevasExistencias, setNuevasExistencias] = useState(0);
-  const [existenciasFinales, setExistenciasFinales] = useState(0);
+
   const [agregarExistencias, setAgregarExistencias] = useState('hidden');
-  
+
+  const [producto, setProducto] = useState({});  
   const { mostrarProducto } = useProductos();
   const { auth } = useAuth();
 
@@ -21,12 +21,7 @@ const Producto = () => {
       setProducto(data);
     }
     obtenerProducto();
-
-    const actualizarTotal = () => {
-      setExistenciasFinales(parseInt(existencias) + parseInt(nuevasExistencias) || existencias)
-    }
-    actualizarTotal();
-  },[nuevasExistencias]);
+  },[]);
   
   const { 
     nombreMaterial,
@@ -74,41 +69,12 @@ const Producto = () => {
         onClick={() => setAgregarExistencias('block')}
       >Agregar Existencias</button>
       </div>
-      <div className={agregarExistencias}>
-        <div className='flex flex-row'>
-          <div>
-            <p>Existencias actuales</p>
-            <span className="font-normal normal-case">{existencias}</span>
-          </div>
-          <div>
-            <p>Cantidad a Agregar</p>
-            <input 
-              type="number" 
-              className="border p-2"
-              min={1}
-              max={cantidadMax - existencias || 0}
-              value={nuevasExistencias}
-              onChange={(e) => setNuevasExistencias(+e.target.value)}
-            />
-          </div>
-          <div>
-            <p>Existencias finales</p>
-            <span className="font-normal normal-case">{existenciasFinales}</span>
-          </div>
-        </div>
-        <div className='flex gap-4'>
-          <button 
-            type='button'
-            className="bg-red-500 text-white p-2 rounded-md"
-            onClick={() => setAgregarExistencias('hidden')}
-          >Cancelar</button>
-          <button 
-            type='button'
-            className="bg-blue-500 text-white p-2 rounded-md"
-            onClick={() => console.log('Guardar existencias')}
-          >Guardar Cambios</button>
-        </div>
-      </div>
+      <AgregarExistencias
+        existencias={existencias}
+        cantidadMax={cantidadMax}
+        agregarExistencias={agregarExistencias}
+        producto={producto}
+      />
       <div className="flex flex-row">
         <p className="font-bold uppercase text-gray-500 mr-2">Cantidad Mínima</p>
         <span className="font-normal normal-case">{cantidadMin}</span>
