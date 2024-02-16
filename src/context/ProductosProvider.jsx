@@ -93,6 +93,19 @@ export const ProductosProvider = ({ children }) => {
       console.log(error);
     }
   }
+
+  const actualizarProducto = async (producto, productoActualizado) => {
+    try {
+      if(!token) return;
+      const { data } = await clienteAxios.put(`/productos/${producto._id}`, producto, config);
+      obtenerProductos();
+
+      guardarBitacora( `Se actualizaron las propiedades de ${producto.nombreMaterial}. Consulta los cambios en la bitácora`, {producto, productoActualizado});
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
     
   return (
     <ProductosContext.Provider 
@@ -100,7 +113,8 @@ export const ProductosProvider = ({ children }) => {
         productos,
         guardarProducto,
         mostrarProducto,
-        actualizarCantidad
+        actualizarCantidad,
+        actualizarProducto
       }}
     >
       {children}

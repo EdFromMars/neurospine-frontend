@@ -1,15 +1,12 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Alerta from "./Alerta";
-import useProductos from "../hooks/useProductos";
-import useAuth from "../hooks/useAuth";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Alerta from "../../components/Alerta";
+import useProductos from "../../hooks/useProductos";
+import useAuth from "../../hooks/useAuth";
 
-const FormularioAgregarProducto = () => {
-
-  const { guardarProducto } = useProductos();
-  const { auth } = useAuth();
-  const navigate = useNavigate();
-
+const EditarProducto = () => {
+  
+  const [producto, setProducto] = useState({});
   const [nombreMaterial, setNombreMaterial] = useState('');
   const [tipoMaterial, setTipoMaterial] = useState('cervical');
   const [materialApoyo, setMaterialApoyo] = useState(false);
@@ -23,6 +20,32 @@ const FormularioAgregarProducto = () => {
   const [precioEstandar, setPrecioEstandar] = useState(0);
   const [alerta, setAlerta] = useState({});
 
+  const { auth, guardarBitacora } = useAuth();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { actualizarProducto, mostrarProducto } = useProductos();
+
+  useEffect(() => {
+    const obtenerProducto = async () => {
+      const data = await mostrarProducto(id);
+      setProducto(data);
+
+      setNombreMaterial(data.nombreMaterial);
+      setTipoMaterial(data.tipoMaterial);
+      setMaterialApoyo(data.materialApoyo);
+      setDescripcionExtendida(data.descripcionExtendida);
+      setExistencias(data.existencias);
+      setCantidadMin(data.cantidadMin);
+      setCantidadMax(data.cantidadMax);
+      setMedida(data.medida);
+      setAlg(data.alg);
+      setPrecioAngeles(data.precioAngeles);
+      setPrecioEstandar(data.precioEstandar);
+    }
+    
+    obtenerProducto();
+  },[]);
+    
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -47,7 +70,7 @@ const FormularioAgregarProducto = () => {
 
     if(cantidadMin >= existencias) {
       setAlerta({
-        error: true,
+        error: true, 
         msg: 'La cantidad mínima no puede ser mayor a las existencias'
       })
       return;
@@ -61,7 +84,7 @@ const FormularioAgregarProducto = () => {
       return;
     }
     
-    const producto = { 
+    const productoActualizado = { 
       nombreMaterial,
       tipoMaterial,
       materialApoyo,
@@ -73,11 +96,12 @@ const FormularioAgregarProducto = () => {
       alg,
       precioAngeles,
       precioEstandar,
+      _id: id,
       usuario: auth._id
     }
-    
-    guardarProducto( producto );
 
+    actualizarProducto(producto, productoActualizado);
+    
     setAlerta({
       msg: 'El material se ha agregado correctamente'
     });
@@ -102,7 +126,7 @@ const FormularioAgregarProducto = () => {
             id="nombre-material"
             placeholder="Nombre del Material"
             className="p-2 border-2 border-gray-300 rounded-lg"
-            value={nombreMaterial}
+            value={ nombreMaterial }
             onChange={(e) => setNombreMaterial(e.target.value)}
           />
         </div>
@@ -263,4 +287,4 @@ const FormularioAgregarProducto = () => {
   )
 }
 
-export default FormularioAgregarProducto
+export default EditarProducto

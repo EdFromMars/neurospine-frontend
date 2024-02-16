@@ -15,6 +15,7 @@ import NuevoPassword from "./pages/usuario/NuevoPassword";
 import Inventario from "./pages/inventario/Inventario";
 import Producto from "./pages/inventario/Producto";
 import AgregarProducto from "./pages/inventario/AgregarProducto";
+import EditarProducto from "./pages/inventario/EditarProducto";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { ProductosProvider } from "./context/ProductosProvider";
@@ -42,6 +43,7 @@ function App() {
               <Route index element={<Inventario />}/>
               <Route path="agregar-producto" element={<AgregarProducto/>}/>
               <Route path="producto/:id" element={<Producto/>}/>
+              <Route path="editar-producto/:id" element={<EditarProducto/>}/>
             </Route>
           </Routes>
         </ProductosProvider>
