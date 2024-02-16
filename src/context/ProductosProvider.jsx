@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+
 import clienteAxios from "../config/clienteAxios";
 import useAuth from "../hooks/useAuth";
 
@@ -101,9 +102,27 @@ export const ProductosProvider = ({ children }) => {
       obtenerProductos();
 
       guardarBitacora( `Se actualizaron las propiedades de ${producto.nombreMaterial}. Consulta los cambios en la bitácora`, {producto, productoActualizado});
-
+      
     } catch (error) {
       console.log(error);
+    }
+  }
+  
+  const eliminarProducto = async (id, producto) => {
+    console.log(producto);
+
+    const confirmar = confirm(`¿Estás seguro que deseas eliminar ${producto.nombreMaterial} del inventario?`);
+    
+    if(confirmar) { 
+      try {
+        await clienteAxios.delete(`/productos/${id}`, config);
+        obtenerProductos();
+        
+        guardarBitacora( `Se ha eliminado ${producto.nombreMaterial} del inventario.`, producto);
+        
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
     
@@ -114,7 +133,8 @@ export const ProductosProvider = ({ children }) => {
         guardarProducto,
         mostrarProducto,
         actualizarCantidad,
-        actualizarProducto
+        actualizarProducto,
+        eliminarProducto
       }}
     >
       {children}

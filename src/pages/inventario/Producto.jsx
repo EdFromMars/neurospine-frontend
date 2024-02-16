@@ -8,12 +8,12 @@ import AgregarExistencias from '../../components/AgregarExistencias';
 const Producto = () => {
 
   const [agregarExistencias, setAgregarExistencias] = useState('hidden');
-
   const [producto, setProducto] = useState({});  
-  const { mostrarProducto } = useProductos();
-  const { auth } = useAuth();
 
+  const { mostrarProducto, eliminarProducto } = useProductos();
+  const { auth } = useAuth();
   const { id } = useParams();
+  const navigate = useNavigate();
   
   useEffect(() => {
     const obtenerProducto = async () => {
@@ -37,7 +37,6 @@ const Producto = () => {
     precioEstandar,
     usuario
   } = producto;
-
 
   return (
     <div className={`mx-5 my-10 border-r-8 shadow-md px-5 py-10 rounded bg-white`}>
@@ -100,7 +99,16 @@ const Producto = () => {
         <span className="font-normal normal-case">{formatearDinero(precioEstandar)}</span>
       </div>
       <div className="flex gap-4">
-        {auth.puesto === 'ejecutivo' && (<Link to={`/inventario/eliminar-producto/${id}`} className="bg-red-500 text-white p-2 rounded-md">Eliminar Producto</Link>)}
+        {auth.puesto === 'ejecutivo' && ( 
+          <button 
+            type='button'
+            className="bg-red-500 text-white p-2 rounded-md"
+            onClick={() => { 
+              eliminarProducto(id, producto)
+              navigate('/inventario')
+            }}
+          >
+          Eliminar Producto</button>)}
         <Link to={`/inventario/editar-producto/${id}`} className="bg-blue-500 text-white p-2 rounded-md">Editar Propiedades</Link>
       </div>
     </div>
