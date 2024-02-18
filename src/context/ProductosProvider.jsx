@@ -20,8 +20,17 @@ export const ProductosProvider = ({ children }) => {
   const obtenerProductos = async () => {
     try {
       if(!token) return;
-      const { data } = await clienteAxios.get('/productos', config);
-      setProductos(data);
+
+      if(auth.puesto === 'ejecutivo') {
+        const { data } = await clienteAxios.get('/productos', config);
+        setProductos(data);
+      } else if (auth.puesto === 'almacen'){
+        const { data } = await clienteAxios.get('/productos', config);
+        const data2 = data.filter( producto => producto.locacion === auth.locacion );
+        setProductos(data2);
+      } else {
+        return;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -123,6 +132,8 @@ export const ProductosProvider = ({ children }) => {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      return;
     }
   }
     

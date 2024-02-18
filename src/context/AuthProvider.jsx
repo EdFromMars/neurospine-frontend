@@ -6,6 +6,7 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
 
   const [auth, setAuth] = useState({});
+  const [locacion, setLocacion] = useState('');
   const [cargando, setCargando] = useState(true);
   
   const token = localStorage.getItem('neurospinetoken');
@@ -27,16 +28,16 @@ const AuthProvider = ({ children }) => {
       try {
         const { data } = await clienteAxios('/usuarios/perfil', config);
         setAuth(data);
-
+        
       } catch (error) {
         console.log(error);
         setAuth({});
         
       }
-
+      
       setCargando(false);
     }
-
+    
     autenticarUsuario();
   }, []);
 
@@ -66,6 +67,8 @@ const AuthProvider = ({ children }) => {
       value={{
         auth,
         setAuth,
+        locacion,
+        setLocacion,
         cargando,
         guardarBitacora,
         cerrarSesion,

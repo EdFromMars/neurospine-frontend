@@ -73,7 +73,8 @@ const FormularioAgregarProducto = () => {
       alg,
       precioAngeles,
       precioEstandar,
-      usuario: auth._id
+      usuario: auth._id,
+      locacion: auth.locacion
     }
     
     guardarProducto( producto );

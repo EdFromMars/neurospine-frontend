@@ -11,6 +11,7 @@ import Registrar from "./pages/usuario/Registrar";
 import ConfirmarCuenta from "./pages/usuario/ConfirmarCuenta";
 import OlvidePassword from "./pages/usuario/OlvidePassword";
 import NuevoPassword from "./pages/usuario/NuevoPassword";
+import Perfil from "./pages/usuario/Perfil";
 
 import Inventario from "./pages/inventario/Inventario";
 import Producto from "./pages/inventario/Producto";
@@ -33,6 +34,7 @@ function App() {
               <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
               <Route path="olvide-password" element={<OlvidePassword/>}/>
               <Route path="nuevo-password/:token" element={<NuevoPassword/>}/>
+              <Route path="perfil/:token" element={<Perfil/>}/>
             </Route>
             
             <Route path="/dashboard" element={<RutaProtegida />}>

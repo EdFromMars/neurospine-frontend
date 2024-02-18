@@ -4,8 +4,6 @@ import useProductos from "../../hooks/useProductos"
 import ListadoProductos from "../../components/ListadoProductos"
 
 const Inventario = () => {
-
-  const { productos } = useProductos();
   
   return (
     <div className="flex flex-col md:flex-row gap-12">

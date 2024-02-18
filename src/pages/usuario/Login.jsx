@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import Alerta from "../../components/Alerta";
 import clienteAxios from "../../config/clienteAxios";
@@ -13,6 +13,12 @@ const Login = () => {
   const [alerta, setAlerta] = useState({});
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(localStorage.getItem('neurospinetoken')){
+      navigate('/dashboard');
+    }
+  },[]);
   
   const handleSubmit = async (e) => {
     e.preventDefault();

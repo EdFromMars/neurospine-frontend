@@ -8,6 +8,7 @@ const Registrar = () => {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [telefono, setTelefono] = useState('');
+  const [locacion, setLocacion] = useState('');
   const [password, setPassword] = useState('');
   const [repetirPassword, setRepetirPassword] = useState('');
   const [alerta, setAlerta] = useState({});
@@ -15,14 +16,12 @@ const Registrar = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if([nombre, email, telefono, password, repetirPassword].includes('')) {
+    if([nombre, email, telefono, locacion, password, repetirPassword].includes('')) {
       return setAlerta({
         error: true,
         msg: 'Todos los campos son obligatorios'
       });
     }
-
-    console.log(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email));
     
     if(password !== repetirPassword) {
       return setAlerta({
@@ -47,7 +46,8 @@ const Registrar = () => {
         nombre,
         email,
         telefono,
-        password
+        password,
+        locacion,
       });
 
       setAlerta({
@@ -99,6 +99,16 @@ const Registrar = () => {
               value={telefono}
               onChange={(e) => setTelefono(e.target.value)}
             />
+          </div>
+          <div className="my-5">
+            <select 
+              className="border w-full p-3 mt-3"
+              value={locacion} 
+              onChange={(e) => setLocacion(e.target.value)}>
+              <option value="">Selecciona tu locación</option>
+              <option value="CDMX">CDMX</option>
+              <option value="Monterrey">Monterrey</option>
+            </select>
           </div>
           <div className="my-5">
             <input 
