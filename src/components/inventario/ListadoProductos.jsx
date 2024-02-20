@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import useProductos from "../hooks/useProductos";
+import useProductos from "../../hooks/useProductos";
 import ProductoInventario from "./ProductoInventario";
-import useAuth from "../hooks/useAuth";
+import useAuth from "../../hooks/useAuth";
 
 const ListadoProductos = () => {
   

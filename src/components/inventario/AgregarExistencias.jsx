@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import useProductos from "../hooks/useProductos";
+import useProductos from "../../hooks/useProductos";
 
-import Alerta from "./Alerta";
+import Alerta from "../Alerta";
 
 const AgregarExistencias = ( {existencias, cantidadMax, agregarExistencias, producto} ) => {
 

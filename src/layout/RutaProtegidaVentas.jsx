@@ -1,15 +1,16 @@
+import { useState } from "react";
 import { Outlet, Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const RutaProtegidaAlmacen = () => {
-
+const RutaProtegidaVentas = () => {
   const { auth, cargando } = useAuth();
 
   if(cargando) return 'Cargando...';
    
-  if(auth.puesto === 'almacen' || auth.puesto === 'ejecutivo'){
+  if(auth.puesto === 'vendedor' || auth.puesto === 'ejecutivo'){
     return (
       <>
           <Header />
@@ -26,4 +27,4 @@ const RutaProtegidaAlmacen = () => {
   }
 }
 
-export default RutaProtegidaAlmacen
+export default RutaProtegidaVentas

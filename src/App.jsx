@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthLayout from "./layout/AuthLayout";
 import RutaProtegida from "./layout/RutaProtegida";
 import RutaProtegidaAlmacen from "./layout/RutaProtegidaAlmacen";
+import RutaProtegidaVentas from "./layout/RutaProtegidaVentas";
 
 import Dashboard from "./pages/Dashboard";
 
@@ -17,6 +18,8 @@ import Inventario from "./pages/inventario/Inventario";
 import Producto from "./pages/inventario/Producto";
 import AgregarProducto from "./pages/inventario/AgregarProducto";
 import EditarProducto from "./pages/inventario/EditarProducto";
+
+import AgregarPedido from "./pages/ventas/AgregarPedido";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { ProductosProvider } from "./context/ProductosProvider";
@@ -46,6 +49,10 @@ function App() {
               <Route path="agregar-producto" element={<AgregarProducto/>}/>
               <Route path="producto/:id" element={<Producto/>}/>
               <Route path="editar-producto/:id" element={<EditarProducto/>}/>
+            </Route>
+
+            <Route path="/agregar-pedido" element={<RutaProtegidaVentas />} >
+              <Route index element={<AgregarPedido />}/>
             </Route>
           </Routes>
         </ProductosProvider>

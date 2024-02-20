@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+
 import useProductos from '../../hooks/useProductos'
 import useAuth from '../../hooks/useAuth';
+
 import { formatearDinero } from '../../helpers';
-import AgregarExistencias from '../../components/AgregarExistencias';
+import AgregarExistencias from '../../components/inventario/AgregarExistencias';
 
 const Producto = () => {
 

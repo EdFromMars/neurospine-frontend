@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Alerta from "./Alerta";
-import useProductos from "../hooks/useProductos";
-import useAuth from "../hooks/useAuth";
+import Alerta from "../Alerta";
+import useProductos from "../../hooks/useProductos";
+import useAuth from "../../hooks/useAuth";
 
 const FormularioAgregarProducto = () => {
 
