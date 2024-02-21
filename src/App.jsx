@@ -5,7 +5,7 @@ import RutaProtegida from "./layout/RutaProtegida";
 import RutaProtegidaAlmacen from "./layout/RutaProtegidaAlmacen";
 import RutaProtegidaVentas from "./layout/RutaProtegidaVentas";
 
-import Dashboard from "./pages/Dashboard";
+import Inicio from "./pages/Inicio";
 
 import Login from "./pages/usuario/Login";
 import Registrar from "./pages/usuario/Registrar";
@@ -40,18 +40,18 @@ function App() {
               <Route path="perfil/:token" element={<Perfil/>}/>
             </Route>
             
-            <Route path="/dashboard" element={<RutaProtegida />}>
-              <Route index element={<Dashboard />}/>
+            <Route path="/inicio" element={<RutaProtegida />}>
+              <Route index element={<Inicio />}/>
             </Route>
 
-            <Route path="/inventario" element={<RutaProtegidaAlmacen />}>
+            <Route path="/inventario" element={<RutaProtegida />}>
               <Route index element={<Inventario />}/>
               <Route path="agregar-producto" element={<AgregarProducto/>}/>
               <Route path="producto/:id" element={<Producto/>}/>
               <Route path="editar-producto/:id" element={<EditarProducto/>}/>
             </Route>
 
-            <Route path="/agregar-pedido" element={<RutaProtegidaVentas />} >
+            <Route path="/programacion" element={<RutaProtegidaVentas />} >
               <Route index element={<AgregarPedido />}/>
             </Route>
           </Routes>

@@ -1,8 +1,10 @@
-import { Cog6ToothIcon } from '@heroicons/react/24/outline'
+import { Link } from 'react-router-dom';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
-import { classNames } from '../helpers'
+import { classNames, currentNavItem } from '../helpers';
 
-const Sidebar = ({ navigation, teams }) => {
+const Sidebar = ({ navigation, teams, pathname }) => {
+
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -20,10 +22,10 @@ const Sidebar = ({ navigation, teams }) => {
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => (
                   <li key={item.name}>
-                    <a
-                      href={item.href}
+                    <Link
+                      to={item.href}
                       className={classNames(
-                        item.current
+                        currentNavItem(item, pathname)
                           ? 'bg-gray-50 text-indigo-600'
                           : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
                         'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
@@ -31,19 +33,19 @@ const Sidebar = ({ navigation, teams }) => {
                     >
                       <item.icon
                         className={classNames(
-                          item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+                          currentNavItem(item, pathname) ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
                           'h-6 w-6 shrink-0'
                         )}
                         aria-hidden="true"
                       />
                       {item.name}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
             </li>
             <li>
-              <div className="text-xs font-semibold leading-6 text-gray-400">Desktop Your teams</div>
+              <div className="text-xs font-semibold leading-6 text-gray-400">Locaciones</div>
               <ul role="list" className="-mx-2 mt-2 space-y-1">
                 {teams.map((team) => (
                   <li key={team.name}>
@@ -77,11 +79,11 @@ const Sidebar = ({ navigation, teams }) => {
                 href="#"
                 className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-indigo-600"
               >
-                <Cog6ToothIcon
+                <InformationCircleIcon 
                   className="h-6 w-6 shrink-0 text-gray-400 group-hover:text-indigo-600"
                   aria-hidden="true"
                 />
-                Settings
+                Acerca de
               </a>
             </li>
           </ul>

@@ -38,7 +38,7 @@ const Login = () => {
       localStorage.setItem('neurospinetoken', data.token);
 
       setAuth(data);
-      navigate("/dashboard");
+      navigate("/inicio");
     } catch (error) {
       console.log(error.response);
       setAlerta({

@@ -21,9 +21,14 @@ const classNames = ( ...classes ) => {
   return classes.filter(Boolean).join(' ')
 }
 
+const currentNavItem = (item, pathname) => {
+  return item.href === '/' + pathname.split('/')[1];
+}
+
 export {
   formatearDinero,
   formatoNombre,
   nombreIniciales,
-  classNames
+  classNames,
+  currentNavItem
 }

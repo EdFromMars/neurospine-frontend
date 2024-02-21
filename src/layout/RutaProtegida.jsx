@@ -1,7 +1,7 @@
-import { Outlet, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+
+import PrincipalDashboard from "../components/dashboards/PrincipalDashboard";
 
 const RutaProtegida = () => {
 
@@ -13,7 +13,7 @@ const RutaProtegida = () => {
     <>
       { auth?._id ? (
         <main>
-          <Outlet />
+          <PrincipalDashboard />
         </main>
       ) : <Navigate to='/' /> }
     </>

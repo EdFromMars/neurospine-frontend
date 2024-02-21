@@ -13,7 +13,7 @@ const RutaProtegidaAlmacen = () => {
     return (
       <>
           <Header />
-              <main className="container mx-auto mt-10">
+              <main>
                 <Outlet />
               </main>
           <Footer />
