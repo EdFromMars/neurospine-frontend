@@ -8,12 +8,14 @@ const formatearDinero = ( valor ) => {
 }
 
 const formatoNombre = ( nombre ) => {
-  const nombreDisplay = nombre.split(' ')[0] + ' ' + nombre.split(' ')[1];
+  const partes = nombre.split(' ');
+  const nombreDisplay = partes[0] + ' ' + (partes[1] ? partes[1] : '');
   return nombreDisplay;
 };
 
 const nombreIniciales = ( nombre ) => {
-  const nombreDisplay = nombre.split(' ')[0].charAt(0) + nombre.split(' ')[1].charAt(0);
+  const partes = nombre.split(' ');
+  const nombreDisplay = partes[0].charAt(0) + (partes[1] ? partes[1].charAt(0) : partes[0].charAt(1));
   return nombreDisplay;
 };
 

@@ -7,7 +7,8 @@ const ProductosContext = createContext();
 
 export const ProductosProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
-  const { auth , guardarBitacora } = useAuth();
+  const [locaciones, setLocaciones] = useState([]);
+  const { auth , guardarBitacora, ejecutivo, almacen } = useAuth();
 
   const token = localStorage.getItem('neurospinetoken');
   const config = {
@@ -21,10 +22,10 @@ export const ProductosProvider = ({ children }) => {
     try {
       if(!token) return;
 
-      if(auth.puesto === 'ejecutivo') {
+      if(ejecutivo) {
         const { data } = await clienteAxios.get('/productos', config);
         setProductos(data);
-      } else if (auth.puesto === 'almacen'){
+      } else if (almacen){
         const { data } = await clienteAxios.get('/productos', config);
         const data2 = data.filter( producto => producto.locacion === auth.locacion );
         setProductos(data2);
@@ -35,10 +36,18 @@ export const ProductosProvider = ({ children }) => {
       console.log(error);
     }
   }
+
+  const obtenerLocaciones = async () => {
+    try {
+      const { data } = await clienteAxios.get('/locaciones', config);
+      setLocaciones(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
   useEffect(() => {
     obtenerProductos();
-
   }, [auth]);
 
   const descripcionProduct = ( producto ) => {
@@ -118,22 +127,15 @@ export const ProductosProvider = ({ children }) => {
   }
   
   const eliminarProducto = async (id, producto) => {
-    console.log(producto);
-
-    const confirmar = confirm(`¿Estás seguro que deseas eliminar ${producto.nombreMaterial} del inventario?`);
     
-    if(confirmar) { 
-      try {
-        await clienteAxios.delete(`/productos/${id}`, config);
-        obtenerProductos();
-        
-        guardarBitacora( `Se ha eliminado ${producto.nombreMaterial} del inventario.`, producto);
-        
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      return;
+    try {
+      await clienteAxios.delete(`/productos/${id}`, config);
+      await guardarBitacora( `Se ha eliminado ${producto.nombreMaterial} del inventario.`, producto);
+      
+      obtenerProductos();
+      
+    } catch (error) {
+      console.log(error);
     }
   }
     
@@ -145,7 +147,9 @@ export const ProductosProvider = ({ children }) => {
         mostrarProducto,
         actualizarCantidad,
         actualizarProducto,
-        eliminarProducto
+        eliminarProducto,
+        obtenerLocaciones,
+        locaciones
       }}
     >
       {children}

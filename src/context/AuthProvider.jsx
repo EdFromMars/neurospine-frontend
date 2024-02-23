@@ -8,12 +8,31 @@ const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({});
   const [locacion, setLocacion] = useState('');
   const [cargando, setCargando] = useState(true);
+  const [ejecutivo, setEjecutivo] = useState(false);
+  const [almacen, setAlmacen] = useState(false);
+  const [vendedor, setVendedor] = useState(false);
+  const [administrador, setAdministrador] = useState(false);
   
   const token = localStorage.getItem('neurospinetoken');
   const config = {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
+    }
+  }
+
+  const puestos = {
+    ejecutivo: function() {
+      setEjecutivo(true)
+    },
+    almacen: function() {
+      setAlmacen(true)
+    },
+    vendedor: function() {
+      setVendedor(true)
+    },
+    administrador: function() {
+      setAdministrador(true)
     }
   }
 
@@ -28,7 +47,7 @@ const AuthProvider = ({ children }) => {
       try {
         const { data } = await clienteAxios('/usuarios/perfil', config);
         setAuth(data);
-        
+        puestos[data.puesto]();
       } catch (error) {
         console.log(error);
         setAuth({});
@@ -59,6 +78,10 @@ const AuthProvider = ({ children }) => {
   const cerrarSesion = () => {
     localStorage.removeItem('neurospinetoken');
     setAuth({});
+    setEjecutivo(false);
+    setAlmacen(false);
+    setVendedor(false);
+    setAdministrador(false);
   }
 
   
@@ -67,6 +90,11 @@ const AuthProvider = ({ children }) => {
       value={{
         auth,
         setAuth,
+        puestos,
+        ejecutivo,
+        almacen,
+        vendedor,
+        administrador,
         locacion,
         setLocacion,
         cargando,

@@ -5,11 +5,11 @@ import Footer from "../components/Footer";
 
 const RutaProtegidaAlmacen = () => {
 
-  const { auth, cargando } = useAuth();
+  const { auth, cargando, ejecutivo, almacen } = useAuth();
 
   if(cargando) return 'Cargando...';
    
-  if(auth.puesto === 'almacen' || auth.puesto === 'ejecutivo'){
+  if( almacen || ejecutivo ){
     return (
       <>
           <Header />

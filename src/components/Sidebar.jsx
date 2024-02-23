@@ -18,7 +18,7 @@ const Sidebar = ({ navigation, teams, pathname }) => {
         </div>
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <li>
+            <li key="main-nav">
               <ul role="list" className="-mx-2 space-y-1">
                 {navigation.map((item) => (
                   <li key={item.name}>
@@ -44,7 +44,7 @@ const Sidebar = ({ navigation, teams, pathname }) => {
                 ))}
               </ul>
             </li>
-            <li>
+            <li key="locaciones">
               <div className="text-xs font-semibold leading-6 text-gray-400">Locaciones</div>
               <ul role="list" className="-mx-2 mt-2 space-y-1">
                 {teams.map((team) => (

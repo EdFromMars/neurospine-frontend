@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import useAuth from '../../hooks/useAuth';
+import useProductos from '../../hooks/useProductos';
+
 import { Outlet, useLocation } from 'react-router-dom';
 import { 
   HomeIcon,
@@ -12,6 +15,8 @@ import Header from '../Header';
 import Sidebar from '../Sidebar';
 import MobileSidebar from '../MobileSidebar';
 
+
+
 const navigation = [
   { name: 'Inicio', href: '/inicio', icon: HomeIcon, current: false },
   { name: 'Inventario', href: '/inventario', icon: ListBulletIcon, current: false },
@@ -20,26 +25,37 @@ const navigation = [
   { name: 'Reportes', href: '/reportes', icon: ChartPieIcon, current: false },
 ]
 
-const teams = [
-  { id: 1, name: 'CDMX', href: '#', initial: 'C', current: false },
-  { id: 2, name: 'Monterrey', href: '#', initial: 'M', current: false },
-]
-
-
-
 const PrincipalDashboard = () => {
+  
+  const { ejecutivo } = useAuth();
+  const { obtenerLocaciones, locaciones } = useProductos();
   const [pathname, setPathname] = useState('');
   
-  const history = useLocation();
+  const teams = locaciones.map(locacion => {
+    return {
+      id: locacion._id,
+      name: locacion.nombre,
+      href: '#',
+      initial: locacion.nombre.charAt(0),
+      current: false
+    }
+  });
 
+  const history = useLocation();
+  
   useEffect(() => {
     setPathname(history.pathname);
+
+    if(ejecutivo) {
+      obtenerLocaciones();
+    }
+    
   },[history]);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
   return (
-    <>
+    <>    
       <div>
         <MobileSidebar 
           setSidebarOpen={setSidebarOpen}

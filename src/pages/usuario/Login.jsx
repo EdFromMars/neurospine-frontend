@@ -8,7 +8,7 @@ import InputEmail from "../../components/ui/InputEmail";
 
 const Login = () => {
 
-  const { setAuth } = useAuth();
+  const { setAuth, puestos } = useAuth();
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -18,7 +18,7 @@ const Login = () => {
 
   useEffect(() => {
     if(localStorage.getItem('neurospinetoken')){
-      navigate('/dashboard');
+      navigate('/inicio');
     }
   },[]);
   
@@ -38,6 +38,7 @@ const Login = () => {
       localStorage.setItem('neurospinetoken', data.token);
 
       setAuth(data);
+      puestos[data.puesto]();
       navigate("/inicio");
     } catch (error) {
       console.log(error.response);
