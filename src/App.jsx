@@ -46,9 +46,9 @@ function App() {
 
             <Route path="/inventario" element={<RutaProtegida />}>
               <Route index element={<Inventario />}/>
-              <Route path="agregar-producto" element={<AgregarProducto/>}/>
+              <Route path="agregar-material" element={<AgregarProducto/>}/>
               <Route path="producto/:id" element={<Producto/>}/>
-              <Route path="editar-producto/:id" element={<EditarProducto/>}/>
+              <Route path="editar-material/:id" element={<EditarProducto/>}/>
             </Route>
 
             <Route path="/programacion" element={<RutaProtegidaVentas />} >

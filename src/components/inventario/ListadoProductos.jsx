@@ -30,10 +30,10 @@ const ListadoProductos = () => {
         </div>
         <div className="mt-4 flex md:ml-4 md:mt-0">
         <Link
-          to="agregar-producto"
+          to="agregar-material"
           className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
-          Agregar Producto
+          Agregar Material
           <PlusCircleIcon  className="-mr-0.5 h-5 w-5" aria-hidden="true" />
         </Link>
         </div>
@@ -46,7 +46,7 @@ const ListadoProductos = () => {
       
         {ejecutivo && (
           <>
-            <div key="2" className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+            <div className="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
               <div className="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
                 <div className="ml-4 mt-4">
                   <h3 className="text-base font-semibold leading-6 text-gray-900">{locacion}</h3>
@@ -65,7 +65,7 @@ const ListadoProductos = () => {
                   {locaciones.map( locacionOption => {
                     return (
                       <option 
-                      key={locacionOption.id}
+                      key={locacionOption._id}
                       value={locacionOption.nombre}>
                         {locacionOption.nombre}
                       </option>
@@ -87,7 +87,7 @@ const ListadoProductos = () => {
             ))}
           </ul>
         ) : (
-          <div key="1" className="px-4 py-5 sm:px-6 text-sm text-gray-500">
+          <div className="px-4 py-5 sm:px-6 text-sm text-gray-500">
             <p>Aún no se ha agregado ningún producto al almacén</p>
           </div>
         )}

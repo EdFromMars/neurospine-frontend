@@ -67,11 +67,11 @@ export const ProductosProvider = ({ children }) => {
   }
   
   const guardarProducto = async (producto) => {
-    
     const { nombreMaterial, existencias } = producto;
     
     try {
       if(!token) return;
+
       const { data } = await clienteAxios.post('/productos', producto, config);
 
       const descripcion = descripcionProduct(data);
