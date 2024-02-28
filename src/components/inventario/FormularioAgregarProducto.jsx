@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import Alerta from "../Alerta";
 import useProductos from "../../hooks/useProductos";
 import useAuth from "../../hooks/useAuth";
+import ToggleButton from "../ui/ToggleButton";
+import ComboBoxSimple from "../ui/ComboBoxSimple";
 
 const FormularioAgregarProducto = ( productoEditar ) => {
 
@@ -18,12 +20,15 @@ const FormularioAgregarProducto = ( productoEditar ) => {
     alg: '',
     precioAngeles: 0,
     precioEstandar: 0,
+    materialPrincipal: '',
   });
-  
-  const { guardarProducto, actualizarProducto } = useProductos();
-  const { auth, locacion, setLocacion } = useAuth();
-  const navigate = useNavigate();
 
+  const [materialComplementario, setMaterialComplementario] = useState(false);
+  
+  const { productos, guardarProducto, actualizarProducto } = useProductos();
+  const { auth, locacion, setLocacion, ejecutivo } = useAuth();
+  const navigate = useNavigate();
+  
   const modoEdicion = productoEditar.producto?.nombreMaterial ? true : false;
 
   useEffect(() => {
@@ -76,25 +81,26 @@ const FormularioAgregarProducto = ( productoEditar ) => {
       usuario: auth._id
     };
         
-    modoEdicion ? actualizarProducto( productoGuardar ) : guardarProducto( productoGuardar );
+    modoEdicion ? actualizarProducto( productoEditar.producto, productoGuardar ) : guardarProducto( productoGuardar );
 
     setAlerta({
       msg: 'El material se ha agregado correctamente'
     });
 
-    setTimeout(() => {
-      navigate('/inventario');
-    }, 3000);
+    // setTimeout(() => {
+    //   navigate('/inventario');
+    // }, 3000);
   }
   
   const { msg } = alerta;
   
   return (
     <>
-      <div className="overflow-hidden bg-white shadow sm:rounded-lg px-4 py-5 sm:px-6">
+      <div className="bg-white shadow sm:rounded-lg px-4 py-5 sm:px-6">
         <form onSubmit={handleSubmit}>
           <div className="space-y-12">
             <div className="border-b border-gray-900/10 pb-12">
+              <h2 className="text-base font-semibold leading-7 text-gray-900">Datos del material</h2>
               <p className="mt-1 text-sm leading-6 text-gray-600">
                 {modoEdicion ? 'Edita los campos que necesites actualizar.' : 'Completa el formulario para agregar un nuevo material al inventario.'}
               </p>
@@ -111,7 +117,7 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                         name="nombre-material"
                         id="nombre-material"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        placeholder="Nombre del Producto"
+                        placeholder="Nombre del Material"
                         value={producto.nombreMaterial || ''}
                         onChange={e => setProducto({ ...producto, nombreMaterial: e.target.value })}
                       />
@@ -138,23 +144,13 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                 </div>
 
                 <fieldset className="col-span-full">
-                  <div className="relative flex gap-x-3">
-                    <div className="flex h-6 items-center">
-                      <input
-                        id="material-apoyo"
-                        name="material-apoyo"
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                        value={producto.materialApoyo || ''}
-                        onChange={e => setProducto({ ...producto, materialApoyo: e.target.checked })}
-                      />
-                    </div>
-                    <div className="text-sm leading-6">
-                      <label htmlFor="material-apoyo" className="font-medium text-gray-900">
-                        Es material de apoyo
-                      </label>
-                      <p className="text-gray-500">Selecciona esta opción si el material será registrado como material de apoyo.</p>
-                    </div>
+                  <div className="relative flex">
+                    <ToggleButton 
+                      enabled={producto.materialApoyo || false} 
+                      setEnabled={e => setProducto({ ...producto, materialApoyo: e })}
+                      title={"Es material de apoyo"}
+                      copy={"Selecciona esta opción si el material será registrado como material de apoyo."}
+                    />
                   </div>
                 </fieldset>
 
@@ -265,41 +261,73 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                   </div>
                 </div>
 
-                <div className="sm:col-span-3">
-                  <label htmlFor="precio-angeles" className="block text-sm font-medium leading-6 text-gray-900">
-                    Precio Grupo Ángeles
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="number"
-                      name="precio-angeles"
-                      id="precio-angeles"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      placeholder="0.00"
-                      aria-describedby="price-currency"
-                      value={producto.precioAngeles || 0}
-                      onChange={e => setProducto({ ...producto, precioAngeles: e.target.value })}
-                    />
-                  </div>
-                </div>
+                {ejecutivo && (
+                  <>
+                    <div className="sm:col-span-3">
+                      <label htmlFor="precio-angeles" className="block text-sm font-medium leading-6 text-gray-900">
+                        Precio Grupo Ángeles
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="number"
+                          name="precio-angeles"
+                          id="precio-angeles"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          placeholder="0.00"
+                          aria-describedby="price-currency"
+                          value={producto.precioAngeles || 0}
+                          onChange={e => setProducto({ ...producto, precioAngeles: e.target.value })}
+                          />
+                      </div>
+                    </div>
 
-                <div className="sm:col-span-3">
-                  <label htmlFor="precio-estandar" className="block text-sm font-medium leading-6 text-gray-900">
-                    Precio Estándar
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="number"
-                      name="precio-estandar"
-                      id="precio-estandar"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      placeholder="0.00"
-                      aria-describedby="price-currency"
-                      value={producto.precioEstandar || 0}
-                      onChange={e => setProducto({ ...producto, precioEstandar: e.target.value })}
+                    <div className="sm:col-span-3">
+                      <label htmlFor="precio-estandar" className="block text-sm font-medium leading-6 text-gray-900">
+                        Precio Estándar
+                      </label>
+                      <div className="mt-2">
+                        <input
+                          type="number"
+                          name="precio-estandar"
+                          id="precio-estandar"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          placeholder="0.00"
+                          aria-describedby="price-currency"
+                          value={producto.precioEstandar || 0}
+                          onChange={e => setProducto({ ...producto, precioEstandar: e.target.value })}
+                          />
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className="border-b border-gray-900/10 pb-12">
+              <h2 className="text-base font-semibold leading-7 text-gray-900">Material Complementario</h2>
+              <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                <fieldset className="col-span-full">
+                  <div className="relative flex">
+                    <ToggleButton 
+                      enabled={materialComplementario || false} 
+                      setEnabled={e => {
+                        setMaterialComplementario(e)
+                        setProducto({...producto, materialPrincipal: ''})
+                      }}
+                      copy={"Selecciona esta opción para volverlo un material complementario"}
                     />
                   </div>
-                </div>
+                </fieldset>
+ 
+                {materialComplementario && <div className="col-span-full">
+                  <div className="mt-2">
+                    <ComboBoxSimple
+                      productos={productos}
+                      titulo={"Material Principal"}
+                      producto={producto}
+                      setProducto={setProducto}
+                    />
+                  </div>
+                </div>}
               </div>
             </div>
           </div>

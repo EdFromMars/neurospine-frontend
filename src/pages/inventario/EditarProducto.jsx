@@ -16,18 +16,20 @@ const EditarProducto = () => {
       const data = await mostrarProducto(id);
 
       setProducto({
-        alg: data.alg,
-        cantidadMax: data.cantidadMax,
-        cantidadMin: data.cantidadMin,
-        descripcionExtendida: data.descripcionExtendida,
-        existencias: data.existencias,
-        materialApoyo: data.materialApoyo,
-        medida: data.medida,
-        nombreMaterial: data.nombreMaterial,
-        precioAngeles: data.precioAngeles,
-        precioEstandar: data.precioEstandar,
-        tipoMaterial: data.tipoMaterial,
-        locacion: data.locacion
+        alg: data.alg || '',
+        cantidadMax: data.cantidadMax || '',
+        cantidadMin: data.cantidadMin || '',
+        descripcionExtendida: data.descripcionExtendida || '',
+        existencias: data.existencias || '',
+        materialApoyo: data.materialApoyo || false,
+        medida: data.medida || '',
+        nombreMaterial: data.nombreMaterial || '',
+        precioAngeles: data.precioAngeles || '',
+        precioEstandar: data.precioEstandar || '',
+        tipoMaterial: data.tipoMaterial || '',
+        locacion: data.locacion,
+        materialPrincipal: data.materialPrincipal,
+        _id: data._id
       });
     }
     

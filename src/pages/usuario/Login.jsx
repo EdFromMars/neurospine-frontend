@@ -59,7 +59,7 @@ const Login = () => {
             <div>
               <img
                 className="h-10 w-auto"
-                src="public/padfra-logo.svg"
+                src="/padfra-logo.svg"
                 alt="PADFRA"
               />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">

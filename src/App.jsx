@@ -19,6 +19,7 @@ import Producto from "./pages/inventario/Producto";
 import AgregarProducto from "./pages/inventario/AgregarProducto";
 import EditarProducto from "./pages/inventario/EditarProducto";
 
+import Programaciones from "./pages/ventas/Programaciones";
 import AgregarPedido from "./pages/ventas/AgregarPedido";
 
 import { AuthProvider } from "./context/AuthProvider";
@@ -51,8 +52,8 @@ function App() {
               <Route path="editar-material/:id" element={<EditarProducto/>}/>
             </Route>
 
-            <Route path="/programacion" element={<RutaProtegidaVentas />} >
-              <Route index element={<AgregarPedido />}/>
+            <Route path="/programacion" element={<RutaProtegida />} >
+              <Route index element={<Programaciones />}/>
             </Route>
           </Routes>
         </ProductosProvider>

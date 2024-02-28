@@ -12,7 +12,7 @@ const Sidebar = ({ navigation, teams, pathname }) => {
         <div className="flex h-16 shrink-0 items-center">
           <img
             className="h-8 w-auto"
-            src="/public/padfra-logo.svg"
+            src="/padfra-logo.svg"
             alt="PADFRA"
           />
         </div>

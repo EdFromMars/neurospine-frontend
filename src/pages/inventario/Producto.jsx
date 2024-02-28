@@ -40,6 +40,7 @@ const Producto = () => {
     alg,
     precioAngeles,
     precioEstandar,
+    materialPrincipal,
     usuario
   } = producto;
 
@@ -112,12 +113,14 @@ const Producto = () => {
               <dt className="text-sm font-medium text-gray-900">Clave ALG</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{alg}</dd>
             </div>
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-900">Clave ALG</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{alg}</dd>
-            </div>
+            {materialPrincipal && (
+              <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-900">Material Principal</dt>
+                <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{materialPrincipal}</dd>
+              </div>
+            )}
 
-            {ejecutivo && (
+            {ejecutivo ? (
               <>
                 <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                   <dt className="text-sm font-medium text-gray-900">Precio Grupo Ángeles</dt>
@@ -146,8 +149,18 @@ const Producto = () => {
                   </Link>
                 </div>
               </>
+            ): (
+              <>
+                <div className="px-4 py-6 gap-4 grid grid-flow-col justify-end">
+                  <Link
+                    to={`/inventario/editar-material/${id}`}
+                    className="ml-3 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Editar Material
+                  </Link>
+                </div>
+              </>
             )}
-
           </dl>
         </div>
       </div>

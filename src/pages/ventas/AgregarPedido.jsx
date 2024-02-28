@@ -3,8 +3,12 @@ import FormularioAgregarPedido from "../../components/ventas/FormularioAgregarPe
 const AgregarPedido = () => {
   return (
     <>
-      <div>AgregarPedido</div>
-      <FormularioAgregarPedido />
+      <div className="flex flex-col md:flex-row gap-12">
+        <div className="w-full">
+          <div>AgregarPedido</div>
+          <FormularioAgregarPedido />
+        </div>
+      </div>
     </>
   )
 }

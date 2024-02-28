@@ -8,7 +8,7 @@ const ProductosContext = createContext();
 export const ProductosProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
   const [locaciones, setLocaciones] = useState([]);
-  const { auth , guardarBitacora, ejecutivo, almacen } = useAuth();
+  const { auth , guardarBitacora, ejecutivo, almacen, locacion } = useAuth();
 
   const token = localStorage.getItem('neurospinetoken');
   const config = {
@@ -24,11 +24,12 @@ export const ProductosProvider = ({ children }) => {
 
       if(ejecutivo) {
         const { data } = await clienteAxios.get('/productos', config);
-        setProductos(data);
+        const materialPorLocacion = data.filter( producto => producto.locacion === locacion );
+        setProductos(materialPorLocacion);
       } else if (almacen){
         const { data } = await clienteAxios.get('/productos', config);
-        const data2 = data.filter( producto => producto.locacion === auth.locacion );
-        setProductos(data2);
+        const materialPorLocacion = data.filter( producto => producto.locacion === auth.locacion );
+        setProductos(materialPorLocacion);
       } else {
         return;
       }
@@ -48,7 +49,7 @@ export const ProductosProvider = ({ children }) => {
   
   useEffect(() => {
     obtenerProductos();
-  }, [auth]);
+  }, [auth, locacion]);
 
   const descripcionProduct = ( producto ) => {
     return {
@@ -67,8 +68,9 @@ export const ProductosProvider = ({ children }) => {
   }
   
   const guardarProducto = async (producto) => {
-    const { nombreMaterial, existencias } = producto;
+    const { nombreMaterial, existencias, materialPrincipal } = producto;
     
+    console.log(materialPrincipal)
     try {
       if(!token) return;
 
@@ -116,7 +118,7 @@ export const ProductosProvider = ({ children }) => {
   const actualizarProducto = async (producto, productoActualizado) => {
     try {
       if(!token) return;
-      const { data } = await clienteAxios.put(`/productos/${producto._id}`, producto, config);
+      const { data } = await clienteAxios.put(`/productos/${producto._id}`, productoActualizado, config);
       obtenerProductos();
 
       guardarBitacora( `Se actualizaron las propiedades de ${producto.nombreMaterial}. Consulta los cambios en la bitácora`, {producto, productoActualizado});
