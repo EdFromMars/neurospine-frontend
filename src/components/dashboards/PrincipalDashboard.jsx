@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import useProductos from '../../hooks/useProductos';
+import useZonas from '../../hooks/useZonas';
 
 import { Outlet, useLocation } from 'react-router-dom';
 import { 
@@ -8,7 +9,8 @@ import {
   ListBulletIcon,
   CalendarIcon,
   ChartPieIcon,
-  IdentificationIcon 
+  IdentificationIcon,
+  UserGroupIcon
 } from '@heroicons/react/24/outline';
 
 import Header from '../Header';
@@ -21,25 +23,29 @@ const navigation = [
   { name: 'Inicio', href: '/inicio', icon: HomeIcon, current: false },
   { name: 'Inventario', href: '/inventario', icon: ListBulletIcon, current: false },
   { name: 'Programación', href: '/programacion', icon: IdentificationIcon, current: false },
-  { name: 'Calendario de Equipo', href: '/calendario', icon: CalendarIcon, current: false },
+  // { name: 'Calendario de Equipo', href: '/calendario', icon: CalendarIcon, current: false },
+  { name: 'Miembros de Equipo', href: '/equipo', icon: UserGroupIcon, current: false },
   { name: 'Reportes', href: '/reportes', icon: ChartPieIcon, current: false },
 ]
 
 const PrincipalDashboard = () => {
   
-  const { ejecutivo } = useAuth();
+  const { auth, ejecutivo, locacion, setLocacion } = useAuth();
   const { obtenerLocaciones, locaciones } = useProductos();
+  const { zonas } = useZonas();
   const [pathname, setPathname] = useState('');
   
-  const teams = locaciones.map(locacion => {
+  const almacenes = locaciones.map(locacion => {
     return {
       id: locacion._id,
-      name: locacion.nombre,
+      nombre: locacion.nombre,
       href: '#',
       initial: locacion.nombre.charAt(0),
       current: false
     }
   });
+
+  const zonasLocacion = zonas.filter(zona => zona.locacion === locacion);
 
   const history = useLocation();
   
@@ -49,8 +55,11 @@ const PrincipalDashboard = () => {
     if(ejecutivo) {
       obtenerLocaciones();
     }
-    
-  },[history]);
+
+    if(locacion === ''){
+      setLocacion(auth.locacion);
+    }
+  },[history, auth]);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   
@@ -61,13 +70,15 @@ const PrincipalDashboard = () => {
           setSidebarOpen={setSidebarOpen}
           sidebarOpen={sidebarOpen}
           navigation={navigation}
-          teams={teams}
+          almacenes={almacenes}
+          zonas = {zonasLocacion}
           pathname={pathname}
         />
 
         <Sidebar 
           navigation={navigation}
-          teams={teams}
+          almacenes={almacenes}
+          zonas = {zonasLocacion}
           pathname={pathname}
         />
 

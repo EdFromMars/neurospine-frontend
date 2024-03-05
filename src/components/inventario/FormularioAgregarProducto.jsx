@@ -39,7 +39,7 @@ const FormularioAgregarProducto = ( productoEditar ) => {
   }, [productoEditar]);
 
   const [alerta, setAlerta] = useState({});
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -87,9 +87,9 @@ const FormularioAgregarProducto = ( productoEditar ) => {
       msg: 'El material se ha agregado correctamente'
     });
 
-    // setTimeout(() => {
-    //   navigate('/inventario');
-    // }, 3000);
+    setTimeout(() => {
+      navigate('/inventario');
+    }, 3000);
   }
   
   const { msg } = alerta;

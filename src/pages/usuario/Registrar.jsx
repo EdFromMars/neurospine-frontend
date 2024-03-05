@@ -101,16 +101,6 @@ const Registrar = () => {
             />
           </div>
           <div className="my-5">
-            <select 
-              className="border w-full p-3 mt-3"
-              value={locacion} 
-              onChange={(e) => setLocacion(e.target.value)}>
-              <option value="">Selecciona tu locación</option>
-              <option value="CDMX">CDMX</option>
-              <option value="Monterrey">Monterrey</option>
-            </select>
-          </div>
-          <div className="my-5">
             <input 
               type="password" 
               placeholder="Password"

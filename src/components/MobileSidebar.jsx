@@ -5,7 +5,8 @@ import { XMarkIcon, InformationCircleIcon } from '@heroicons/react/24/outline';
 
 import { classNames, currentNavItem } from '../helpers';
 
-const MobileSidebar = ({sidebarOpen, setSidebarOpen, navigation, teams, pathname}) => {
+const MobileSidebar = ({sidebarOpen, setSidebarOpen, navigation, almacenes, pathname}) => {
+  
   return (
     <Transition.Root show={sidebarOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -86,10 +87,10 @@ const MobileSidebar = ({sidebarOpen, setSidebarOpen, navigation, teams, pathname
                       </ul>
                     </li>
                     <li key="locaciones">
-                      <div className="text-xs font-semibold leading-6 text-gray-400">Locaciones</div>
+                      <div className="text-xs font-semibold leading-6 text-gray-400">Almacenes</div>
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
-                        {teams.map((team) => (
-                          <li key={team.name}>
+                        {almacenes.map((team) => (
+                          <li key={team.id}>
                             <a
                               href={team.href}
                               className={classNames(

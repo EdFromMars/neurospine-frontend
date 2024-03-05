@@ -1,5 +1,5 @@
 
-const FormularioAgregarPedido = () => {
+const FormularioAgregarPorgramacion = () => {
   return (
     <>
       <form action="">
@@ -199,4 +199,4 @@ const FormularioAgregarPedido = () => {
   )
 }
 
-export default FormularioAgregarPedido
+export default FormularioAgregarPorgramacion

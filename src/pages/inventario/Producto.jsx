@@ -16,7 +16,7 @@ const Producto = () => {
   const [open, setOpen] = useState(false);
 
   const { mostrarProducto, eliminarProducto } = useProductos();
-  const { auth, ejecutivo } = useAuth();
+  const { ejecutivo } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   

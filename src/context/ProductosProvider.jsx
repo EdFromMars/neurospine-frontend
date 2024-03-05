@@ -26,7 +26,7 @@ export const ProductosProvider = ({ children }) => {
         const { data } = await clienteAxios.get('/productos', config);
         const materialPorLocacion = data.filter( producto => producto.locacion === locacion );
         setProductos(materialPorLocacion);
-      } else if (almacen){
+      } else if (almacen) {
         const { data } = await clienteAxios.get('/productos', config);
         const materialPorLocacion = data.filter( producto => producto.locacion === auth.locacion );
         setProductos(materialPorLocacion);

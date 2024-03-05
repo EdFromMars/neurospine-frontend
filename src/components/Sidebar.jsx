@@ -1,9 +1,13 @@
 import { Link } from 'react-router-dom';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { 
+  InformationCircleIcon,
+  PlusCircleIcon 
+} from '@heroicons/react/24/outline';
+import SelectSimple from './ui/SelectSimple';
 
-import { classNames, currentNavItem } from '../helpers';
+import { classNames, currentNavItem, nombreIniciales } from '../helpers';
 
-const Sidebar = ({ navigation, teams, pathname }) => {
+const Sidebar = ({ navigation, almacenes, zonas, pathname }) => {
 
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
@@ -44,15 +48,41 @@ const Sidebar = ({ navigation, teams, pathname }) => {
                 ))}
               </ul>
             </li>
-            <li key="locaciones">
-              <div className="text-xs font-semibold leading-6 text-gray-400">Locaciones</div>
+            <li key="almacenes">
+              <div className="text-xs font-semibold leading-6 text-gray-400">Almacén</div>
+              <SelectSimple 
+                title="Almacén"
+                almacenes={almacenes}
+              />
+            </li>
+            <li key="zonas">
+              <Link to={'/zonas'} className="text-xs font-semibold leading-6 text-gray-400">Zonas</Link>
               <ul role="list" className="-mx-2 mt-2 space-y-1">
-                {teams.map((team) => (
-                  <li key={team.name}>
-                    <a
-                      href={team.href}
+                {!zonas.length ?
+                  <li key="agregar-zona">
+                    <Link
+                      to={'/zonas/agregar'}
+                      className={classNames('text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                        'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                      )}
+                    >
+                      <span
+                        className={classNames('text-gray-400 group-hover:text-indigo-600',
+                          'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[0.625rem] font-medium bg-white'
+                        )}
+                      >
+                        <PlusCircleIcon />
+                      </span>
+                      <span className="truncate">Agregar Zona</span>
+                    </Link>
+                  </li>
+                :
+                zonas.map((zona) => (
+                  <li key={zona.nombreZona}>
+                    <Link
+                      to={`/zonas/${zona._id}`}
                       className={classNames(
-                        team.current
+                        zona.current
                           ? 'bg-gray-50 text-indigo-600'
                           : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
                         'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
@@ -60,16 +90,16 @@ const Sidebar = ({ navigation, teams, pathname }) => {
                     >
                       <span
                         className={classNames(
-                          team.current
+                          zona.current
                             ? 'text-indigo-600 border-indigo-600'
                             : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
                           'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white'
                         )}
                       >
-                        {team.initial}
+                        {nombreIniciales(zona.nombreZona)}
                       </span>
-                      <span className="truncate">{team.name}</span>
-                    </a>
+                      <span className="truncate">{zona.nombreZona}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>
