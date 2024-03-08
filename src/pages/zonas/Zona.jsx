@@ -69,27 +69,22 @@ const Zona = () => {
           <h3 className="text-base font-semibold leading-7 text-gray-900 capitalize">{nombreZona}</h3>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Información de hospitales asignados a esta zona</p>
         </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-12">
-        <div className="w-full">
-          {hospitalesZona.length === 0 ? (
-            <div className="flex items-center justify-center h-96">
-              <p className="text-lg font-semibold text-gray-500">No hay hospitales asignados a esta zona</p>
-            </div>
-          ) : (
-            <div className="divide-y divide-gray-200 bg-white shadow sm:rounded-xl">
-              <ul>
-                {hospitalesZona.map(hospital => (
-                  <HospitalCard
-                    key={hospital._id}
-                    hospital={hospital}
-                  />
-                ))}
-              </ul>
-            </div>
-          
-          )}
-        </div>
+        {hospitalesZona.length === 0 ? (
+          <div className="flex items-center justify-center h-96">
+            <p className="text-lg font-semibold text-gray-500">No hay hospitales asignados a esta zona</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-gray-200 bg-white shadow sm:rounded-xl">
+            <ul>
+              {hospitalesZona.map(hospital => (
+                <HospitalCard
+                  key={hospital._id}
+                  hospital={hospital}
+                />
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </>
   )

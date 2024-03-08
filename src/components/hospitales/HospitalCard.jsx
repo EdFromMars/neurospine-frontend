@@ -6,8 +6,7 @@ const HospitalCard = ({hospital}) => {
 
   console.log(hospital);
   const { _id, nombreHospital } = hospital;
-  
-  // const locacionNombre = locaciones.filter(locacionOption => locacionOption._id === locacion)[0].nombre;
+
   
   return (
     <li className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
@@ -21,12 +20,9 @@ const HospitalCard = ({hospital}) => {
           </p>
         </div>
       </div>
-      {/* <div className="flex shrink-0 items-center gap-x-4">
-        <div className="flex flex-col items-end">
-          <p className="text-sm leading-6 text-gray-900">Locacion: {'locacionNombre'}</p>
-        </div>
+      <div className="flex shrink-0 items-center gap-x-4">
         <ChevronRightIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
-      </div> */}
+      </div>
     </li>
   )
 }
