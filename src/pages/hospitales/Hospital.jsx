@@ -1,7 +1,10 @@
+import { useParams } from "react-router-dom"
 
 const Hospital = () => {
+  const { id } = useParams();
+  
   return (
-    <div>Hospital</div>
+    <div>Hospital {id}</div>
   )
 }
 

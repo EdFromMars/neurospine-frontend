@@ -6,9 +6,9 @@ import useAuth from "../hooks/useAuth";
 const ZonasContext = createContext();
 
 export const ZonasProvider = ({ children }) => {
-  const { auth, guardarBitacora, ejecutivo, almacen, locacion } = useAuth();
+  const { auth, guardarBitacora, locacion } = useAuth();
   const [zonas, setZonas] = useState([]);
-
+  
   const token = localStorage.getItem("neurospinetoken");
   const config = {
     headers: {
@@ -17,18 +17,22 @@ export const ZonasProvider = ({ children }) => {
     },
   };
 
+  
   const obtenerZonas = async () => {
+    if(!auth) {
+      console.log('No hay token');
+      return;
+    }
     try {
-      if (!token) return;
-
       const { data } = await clienteAxios.get("/zonas", config);
       setZonas(data);
     } catch (error) {
       console.log(error);
     }
   };
-
+  
   const obtenerZona = async (id) => {
+    if(!auth) return;
     try {
       const { data } = await clienteAxios.get(`/zonas/${id}`, config);
       return data;

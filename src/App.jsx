@@ -2,8 +2,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import AuthLayout from "./layout/AuthLayout";
 import RutaProtegida from "./layout/RutaProtegida";
-import RutaProtegidaAlmacen from "./layout/RutaProtegidaAlmacen";
-import RutaProtegidaVentas from "./layout/RutaProtegidaVentas";
 
 import Inicio from "./pages/Inicio";
 
@@ -27,6 +25,7 @@ import AgregarZona from "./pages/zonas/AgregarZona";
 import Zona from "./pages/zonas/Zona";
 
 import AgregarHospital from "./pages/hospitales/AgregarHospital";
+import Hospital from "./pages/hospitales/Hospital";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { ProductosProvider } from "./context/ProductosProvider";
@@ -39,9 +38,9 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <ZonasProvider>
-          <HospitalesProvider>
-            <ProductosProvider>
+        <HospitalesProvider>
+          <ProductosProvider>
+            <ZonasProvider>
               <Routes>
                 <Route path="/" element={<AuthLayout/>}>
                   <Route index element={<Login/>}/>
@@ -74,10 +73,18 @@ function App() {
                   <Route path="/zonas/:id" element={<Zona/>}/>
                   <Route path="/zonas/agregar-hospital/:id" element={<AgregarHospital/>}/>
                 </Route>
+
+                <Route path="/hospital" element={<RutaProtegida />} >
+                  <Route index element={<Zonas />}/>
+                  <Route path="/hospital/:id" element={<Hospital/>}/>
+                </Route>
+                
+                <Route path="*" element={<h1>Not Found</h1>} />
+
               </Routes>
-            </ProductosProvider>
-          </HospitalesProvider>
-        </ZonasProvider>
+            </ZonasProvider>
+          </ProductosProvider>
+        </HospitalesProvider>
       </AuthProvider>
     </BrowserRouter>
   )

@@ -13,7 +13,7 @@ const HospitalCard = ({hospital}) => {
       <div className="flex min-w-0 gap-x-4">
         <div className="min-w-0 flex-auto">
           <p className="text-sm font-semibold leading-6 text-gray-900 capitalize">
-            <Link to={`/hospitales/${_id}`}>
+            <Link to={`/hospital/${_id}`}>
                 <span className="absolute inset-x-0 -top-px bottom-0" />
                 {nombreHospital}
             </Link>

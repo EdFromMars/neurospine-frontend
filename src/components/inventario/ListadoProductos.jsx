@@ -9,10 +9,11 @@ import useAuth from "../../hooks/useAuth";
 
 const ListadoProductos = () => {
   
-  const { productos, locaciones } = useProductos();
+  const { productos, locaciones, obtenerLocaciones } = useProductos();
   const { auth, locacion, setLocacion, ejecutivo } = useAuth();
   
   useEffect(() => {
+    obtenerLocaciones();
     if(locacion === ''){
       setLocacion(auth.locacion);
     }
