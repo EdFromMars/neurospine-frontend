@@ -43,50 +43,69 @@ function App() {
       <AuthProvider>
         <HospitalesProvider>
           <ProductosProvider>
-            <ZonasProvider>
-                <Routes>
-                  <Route path="/" element={<AuthLayout/>}>
-                    <Route index element={<Login/>}/>
-                    <Route path="registrar" element={<Registrar/>}/>
-                    <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
-                    <Route path="olvide-password" element={<OlvidePassword/>}/>
-                    <Route path="nuevo-password/:token" element={<NuevoPassword/>}/>
-                    <Route path="perfil/:token" element={<Perfil/>}/>
-                  </Route>
-                  
-                  <Route path="/inicio" element={<RutaProtegida />}>
-                    <Route index element={<Inicio />}/>
-                  </Route>
+            <Routes>
+              <Route path="/" element={<AuthLayout/>}>
+                <Route index element={<Login/>}/>
+                <Route path="registrar" element={<Registrar/>}/>
+                <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
+                <Route path="olvide-password" element={<OlvidePassword/>}/>
+                <Route path="nuevo-password/:token" element={<NuevoPassword/>}/>
+                <Route path="perfil/:token" element={<Perfil/>}/>
+              </Route>
+              
+              <Route path="/inicio" element={
+                <ZonasProvider>
+                  <RutaProtegida />
+                </ZonasProvider>}
+              >
+                <Route index element={<Inicio />}/>
+              </Route>
 
-                  <Route path="/inventario" element={<RutaProtegida />}>
-                    <Route index element={<Inventario />}/>
-                    <Route path="agregar-material" element={<AgregarProducto/>}/>
-                    <Route path="producto/:id" element={<Producto/>}/>
-                    <Route path="editar-material/:id" element={<EditarProducto/>}/>
-                  </Route>
+              <Route path="/inventario" element={
+                <ZonasProvider>
+                  <RutaProtegida />
+                </ZonasProvider>}
+              >
+                <Route index element={<Inventario />}/>
+                <Route path="agregar-material" element={<AgregarProducto/>}/>
+                <Route path="producto/:id" element={<Producto/>}/>
+                <Route path="editar-material/:id" element={<EditarProducto/>}/>
+              </Route>
 
-                  <Route path="/programacion" element={<RutaProtegida />} >
-                    <Route index element={<Programaciones />}/>
-                    <Route path="agregar-programacion" element={<AgregarProgramacion/>}/>
-                  </Route>
+              <Route path="/programacion" element={
+                <ZonasProvider>
+                  <RutaProtegida />
+                </ZonasProvider>} 
+              >
+                <Route index element={<Programaciones />}/>
+                <Route path="agregar-programacion" element={<AgregarProgramacion/>}/>
+              </Route>
 
-                  <Route path="/zonas" element={<RutaProtegida />} >
-                    <Route index element={<Zonas />}/>
-                    <Route path="/zonas/agregar" element={<AgregarZona/>}/>
-                    <Route path="/zonas/:id" element={<Zona/>}/>
-                    <Route path="/zonas/agregar-hospital/:id" element={<AgregarHospital/>}/>
-                  </Route>
+              <Route path="/zonas" element={
+                <ZonasProvider>
+                  <RutaProtegida />
+                </ZonasProvider>} 
+              >
+                <Route index element={<Zonas />}/>
+                <Route path="/zonas/agregar" element={<AgregarZona/>}/>
+                <Route path="/zonas/:id" element={<Zona/>}/>
+                <Route path="/zonas/agregar-hospital/:id" element={<AgregarHospital/>}/>
+              </Route>
 
-                  <Route path="/hospital" element={<DoctoresProvider><RutaProtegida /></DoctoresProvider>} >
-                    <Route index element={<Zonas />}/>
-                    <Route path="/hospital/:id" element={<Hospital/>}/>
-                    <Route path="/hospital/:id/agregar-doctor" element={<AgregarDoctor/>}/>
-                  </Route>
-                  
-                  <Route path="*" element={<h1>Not Found</h1>} />
-
-                </Routes>
-            </ZonasProvider>
+              <Route path="/hospital" element={
+                <ZonasProvider>
+                  <DoctoresProvider>
+                    <RutaProtegida />
+                  </DoctoresProvider>
+                </ZonasProvider>
+              }>
+                <Route index element={<Zonas />}/>
+                <Route path="/hospital/:id" element={<Hospital/>}/>
+                <Route path="/hospital/:id/agregar-doctor" element={<AgregarDoctor/>}/>
+              </Route>
+              
+              <Route path="*" element={<h1>Not Found</h1>} />
+            </Routes>
           </ProductosProvider>
         </HospitalesProvider>
       </AuthProvider>

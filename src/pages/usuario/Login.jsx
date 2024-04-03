@@ -16,11 +16,11 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if(localStorage.getItem('neurospinetoken')){
-      navigate('/inicio');
-    }
-  },[]);
+  // useEffect(() => {
+  //   if(localStorage.getItem('neurospinetoken')){
+  //     navigate('/inicio');
+  //   }
+  // },[]);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
