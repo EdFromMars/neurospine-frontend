@@ -4,7 +4,6 @@ import { ChevronRightIcon } from '@heroicons/react/20/solid'
 
 const HospitalCard = ({hospital}) => {
 
-  console.log(hospital);
   const { _id, nombreHospital } = hospital;
 
   

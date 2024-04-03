@@ -1,7 +1,5 @@
 import { useState, useEffect, Fragment } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Popover, Transition } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
 
 import useProductos from '../../hooks/useProductos'
 import useAuth from '../../hooks/useAuth';

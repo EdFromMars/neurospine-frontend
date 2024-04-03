@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 import { 
   InformationCircleIcon,
   PlusCircleIcon 
@@ -8,6 +9,12 @@ import SelectSimple from './ui/SelectSimple';
 import { classNames, currentNavItem, nombreIniciales } from '../helpers';
 
 const Sidebar = ({ navigation, almacenes, zonas, pathname }) => {
+  const { auth, setLocacion, locacion } = useAuth();
+  
+  const selectOptions = almacenes.map( almacenesOption => ({
+    id : almacenesOption.id, 
+    nombre : almacenesOption.nombre
+  }))
 
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
@@ -51,8 +58,9 @@ const Sidebar = ({ navigation, almacenes, zonas, pathname }) => {
             <li key="almacenes">
               <div className="text-xs font-semibold leading-6 text-gray-400">Almacén</div>
               <SelectSimple 
-                title="Almacén"
-                almacenes={almacenes}
+                selectOptions={selectOptions}
+                value={locacion || auth.locacion}
+                onChange={(e) => setLocacion(e.target.value)}
               />
             </li>
             <li key="zonas">

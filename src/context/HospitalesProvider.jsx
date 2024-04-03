@@ -1,7 +1,6 @@
 import { createContext, useState } from "react";
 
 import clienteAxios from "../config/clienteAxios";
-import useAuth from "../hooks/useAuth";
 
 const HospitalesContext = createContext();
 
