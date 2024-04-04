@@ -14,6 +14,7 @@ const SelectSimple = ({selectOptions, value, onChange}) => {
             <option 
               key={option.id}
               value={option.id}
+              hidden={option.id === '' ? true : false}
             >
               {option.display}
             </option>
