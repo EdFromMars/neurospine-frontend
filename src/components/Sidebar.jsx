@@ -13,7 +13,7 @@ const Sidebar = ({ navigation, almacenes, zonas, pathname }) => {
   
   const selectOptions = almacenes.map( almacenesOption => ({
     id : almacenesOption.id, 
-    nombre : almacenesOption.nombre
+    display : almacenesOption.nombre
   }))
 
   return (

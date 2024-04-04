@@ -15,7 +15,7 @@ const SelectSimple = ({selectOptions, value, onChange}) => {
               key={option.id}
               value={option.id}
             >
-              {option.nombre}
+              {option.display}
             </option>
           )
         })}

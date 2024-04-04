@@ -1,25 +1,25 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DateTimePicker from "../ui/DateTimePicker";
+import DoctorHorarios from "./DoctorHorarios";
 
 const FormularioAgregarDoctores = ({hospital}) => {
   const navigate = useNavigate();
-
-  const [dias, setDias] = useState(1);
   
   const [doctor, setDoctor] = useState({
     nombreDoctor: '',
     zona: hospital.zona || '',
     hospital: hospital._id || '',
     consultorio: '',
-    horario: [
-      {
-        dia: 0,
-        entrada: '',
-        salida: ''
-      }
-    ]
+    horario: []
   });
+  const [doctorHorarios, setDoctorHorarios] = useState([
+    {
+      dia: 0,
+      entrada: '',
+      salida: ''
+    }
+  ]);
   
   useEffect(() => {
     if(hospital._id) {
@@ -37,29 +37,9 @@ const FormularioAgregarDoctores = ({hospital}) => {
     e.preventDefault();
     console.log('Formulario enviado');
   }
-
-  const diasFormulario = () => {
-    const inputFields = [];
-    for(let i = 0; i < dias; i++) {
-      console.log(doctor.horario[i]);
-      inputFields.push(<DateTimePicker 
-        stateValue={doctor.horario[i] ? doctor.horario[i].dia : ''}
-        setStateValue={e => setDoctor({ ...doctor, horario: { 
-          ...doctor.horario, 
-          [i]: { 
-            ...doctor.horario[i], 
-            dia: +e.target.value 
-          }
-        }})}
-      />);
-    }
-
-    return inputFields;
-  }
   
   return (
     <>
-      <div className="bg-white shadow sm:rounded-lg px-4 py-5 sm:px-6">
         <form onSubmit={handleSubmit}>
           <div className="space-y-12">
             <div className="border-b border-gray-900/10 pb-12">
@@ -113,13 +93,19 @@ const FormularioAgregarDoctores = ({hospital}) => {
                 Agrega los horarios en los que es posible localizarlo en su consultorio.
               </p>
 
-              {diasFormulario()}
+              <DoctorHorarios 
+                doctorHorarios={doctorHorarios} 
+                setDoctorHorarios={setDoctorHorarios}
+              />
 
               <div className="flex border-t border-gray-100 pt-6">
                 <button 
                   type="button" 
                   className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-                  onClick={() => setDias(dias + 1)}
+                  onClick={() => setDoctorHorarios([
+                    ...Object.values(doctorHorarios || {}), 
+                    { dia: 0, entrada: '', salida: '' }
+                  ])}
                 >
                   <span aria-hidden="true">+</span> Agregar otro horario
                 </button>
@@ -143,7 +129,6 @@ const FormularioAgregarDoctores = ({hospital}) => {
           </div>
         </form>
         {/* {msg && <Alerta alerta={alerta} />} */}
-      </div>
     </>
   )
 }
