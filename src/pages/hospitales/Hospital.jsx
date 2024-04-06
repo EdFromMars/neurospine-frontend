@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom"
 import useHospitales from "../../hooks/useHospitales";
 import useDoctores from "../../hooks/useDoctores";
+import ContactCard from "../../components/ui/ContactCard";
 import AlertaPopup from "../../components/ui/AlertaPopup";
 import { PlusCircleIcon } from '@heroicons/react/20/solid';
 
-
 const Hospital = () => {
   const { obtenerHospital } = useHospitales();
-  const { obtenerDoctores, doctores, setDoctores } = useDoctores();
+  const { obtenerDoctoresHospital, doctores } = useDoctores();
 
   const { id } = useParams();
   const [hospital, setHospital] = useState({});
@@ -22,16 +22,14 @@ const Hospital = () => {
     }
 
     const mostrarDoctores = async () => {
-      const data = await obtenerDoctores();
-      setDoctores(data);
+      const data = await obtenerDoctoresHospital(id);
     }
-
+    
     mostrarHospital();
     mostrarDoctores();
   }, [id]);
-
+  
   const { nombreHospital, _id } = hospital;
-  console.log(doctores);
 
   return (
     <>
@@ -61,28 +59,47 @@ const Hospital = () => {
         </Link>
         </div>
       </div>
-      <div className="overflow-hidden bg-white shadow sm:rounded-lg">
+      <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-8">
         <div className="px-4 py-6 sm:px-6">
           <h3 className="text-base font-semibold leading-7 text-gray-900 capitalize">{nombreHospital}</h3>
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Información de doctores asignados a este hospital</p>
         </div>
         {/* {hospitalesZona.length === 0 ? (
           <div className="flex items-center justify-center h-96">
-            <p className="text-lg font-semibold text-gray-500">No hay hospitales asignados a esta zona</p>
+          <p className="text-lg font-semibold text-gray-500">No hay hospitales asignados a esta zona</p>
           </div>
-        ) : (
-          <div className="divide-y divide-gray-200 bg-white shadow sm:rounded-xl">
+          ) : (
+            <div className="divide-y divide-gray-200 bg-white shadow sm:rounded-xl">
             <ul>
-              {hospitalesZona.map(hospital => (
-                <HospitalCard
-                  key={hospital._id}
-                  hospital={hospital}
-                />
+            {hospitalesZona.map(hospital => (
+              <HospitalCard
+              key={hospital._id}
+              hospital={hospital}
+              />
               ))}
-            </ul>
-          </div>
-        )} */}
+              </ul>
+              </div>
+            )} */}
       </div>
+      {doctores.length === 0 ? (
+        <div className="flex items-center justify-center h-96">
+          <p className="text-lg font-semibold text-gray-500">No hay doctores asignados a este hospital</p>
+        </div>
+        ) : (
+          <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {doctores.map(doctor => (
+              <ContactCard 
+                key={doctor._id}
+                id={doctor._id}
+                nombre={doctor.nombreDoctor}
+                email={doctor.email}
+                telefono={doctor.telefono}
+                horario={doctor.horario}
+              />
+            ))}
+          </ul>
+        )
+      }
     </>
   )
 }

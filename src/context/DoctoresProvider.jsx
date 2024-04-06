@@ -16,14 +16,27 @@ export const DoctoresProvider = ({ children }) => {
     },
   };
 
-  const obtenerDoctores = async (id) => {
+  const obtenerDoctores = async () => {
     console.log('Obteniendo doctores');
     try {
       if (!token) return;
-
       const { data } = await clienteAxios.get("/doctores", config);
       setDoctores(data);
       console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const obtenerDoctoresHospital = async (id) => {    
+    try {
+      const { data } = await clienteAxios.get("/doctores", {
+        ...config,
+        params: {
+          hospital: id
+        }
+      });
+      setDoctores(data);
     } catch (error) {
       console.log(error);
     }
@@ -62,6 +75,7 @@ export const DoctoresProvider = ({ children }) => {
       doctores, 
       setDoctores,
       obtenerDoctores,
+      obtenerDoctoresHospital,
       obtenerDoctor,
       crearDoctor,
       eliminarDoctor
