@@ -28,6 +28,7 @@ import AgregarHospital from "./pages/hospitales/AgregarHospital";
 import Hospital from "./pages/hospitales/Hospital";
 
 import AgregarDoctor from "./pages/doctores/AgregarDoctor";
+import Doctor from "./pages/doctores/Doctor";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { ProductosProvider } from "./context/ProductosProvider";
@@ -102,6 +103,7 @@ function App() {
                 <Route index element={<Zonas />}/>
                 <Route path="/hospital/:id" element={<Hospital/>}/>
                 <Route path="/hospital/:id/agregar-doctor" element={<AgregarDoctor/>}/>
+                <Route path="/hospital/:hospital/doctor/:id" element={<Doctor/>}/>
               </Route>
               
               <Route path="*" element={<h1>Not Found</h1>} />

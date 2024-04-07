@@ -1,7 +1,7 @@
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
 
-export default function ContactCard({nombre, email, telefono, id, horario}) {
+export default function ContactCard({nombre, email, telefono, id, horario, hospital}) {
   
   let horarioDoctor = [];
   if(horario){
@@ -42,7 +42,7 @@ export default function ContactCard({nombre, email, telefono, id, horario}) {
         <div className="flex w-full items-center justify-between space-x-6 p-6">
           <div className="flex-1 truncate">
             <Link 
-              to={`/doctor/${id}`}
+              to={`/hospital/${hospital}/doctor/${id}`}
               className="flex items-center space-x-3"
             >
               <h3 className="font-semibold leading-7 text-gray-900 sm:truncate  sm:tracking-tight hover:text-indigo-600">{nombre}</h3>

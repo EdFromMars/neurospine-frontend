@@ -9,19 +9,29 @@ import useZonas from "../../hooks/useZonas";
 
 const ListadoZonas = () => {
   
-  const [titulo, setTitulo] = useState('');
   const { auth, locacion, setLocacion, ejecutivo } = useAuth();
-  const { locaciones } = useProductos();
-  const { obtenerZonas, zonas, setZonas } = useZonas();
+  const { locaciones, obtenerLocaciones } = useProductos();
+  const { zonas, obtenerZonas } = useZonas();
   
   useEffect(() => {
+    if(zonas.length === 0){
+      obtenerZonas();
+    }
+    if(locaciones.length === 0){
+      obtenerLocaciones();
+    }
     if(locacion === ''){
       setLocacion(auth.locacion);
     }
-  }, []);
+  }, [zonas, locaciones, locacion]);
 
+  console.log(locaciones);
+  
   const zonasAlmacen = zonas.filter(zona => zona.locacion === locacion);
-  const nombreLocacion = (locaciones.filter(locacionOption => locacionOption._id === locacion))[0].nombre;
+  console.log(zonasAlmacen);
+  const locacionFiltrada = locaciones.filter(locacionOption => locacionOption._id === locacion)[0];
+  const nombreLocacion = locacionFiltrada ? locacionFiltrada.nombre : '';
+
 
   return (
     <>

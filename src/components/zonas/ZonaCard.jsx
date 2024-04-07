@@ -6,7 +6,9 @@ const ZonaCard = ({zona, locaciones}) => {
 
   const { _id, nombreZona, locacion } = zona;
   
-  const locacionNombre = locaciones.filter(locacionOption => locacionOption._id === locacion)[0].nombre;
+  if(locaciones.length === 0) return null;
+  
+  const locacionNombre = locaciones.filter(locacionOption => locacionOption._id === locacion)[0].nombre || '';
   
   return (
     <li className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
