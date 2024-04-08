@@ -6,10 +6,10 @@ import {
 } from '@heroicons/react/24/outline';
 import SelectSimple from './ui/SelectSimple';
 
-import { classNames, currentNavItem, nombreIniciales } from '../helpers';
+import { classNames, currentNavItem, displayIniciales } from '../helpers';
 
 const Sidebar = ({ navigation, almacenes, zonas, pathname }) => {
-  const { auth, setLocacion, locacion } = useAuth();
+  const { auth, setLocacion, locacion, ejecutivo } = useAuth();
   
   const selectOptions = almacenes.map( almacenesOption => ({
     id : almacenesOption.id, 
@@ -55,63 +55,67 @@ const Sidebar = ({ navigation, almacenes, zonas, pathname }) => {
                 ))}
               </ul>
             </li>
-            <li key="almacenes">
-              <div className="text-xs font-semibold leading-6 text-gray-400">Almacén</div>
-              <SelectSimple 
-                selectOptions={selectOptions}
-                value={locacion || auth.locacion}
-                onChange={(e) => setLocacion(e.target.value)}
-              />
-            </li>
-            <li key="zonas">
-              <Link to={'/zonas'} className="text-xs font-semibold leading-6 text-gray-400">Zonas</Link>
-              <ul role="list" className="-mx-2 mt-2 space-y-1">
-                {!zonas.length ?
-                  <li key="agregar-zona">
-                    <Link
-                      to={'/zonas/agregar'}
-                      className={classNames('text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                        'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-                      )}
-                    >
-                      <span
-                        className={classNames('text-gray-400 group-hover:text-indigo-600',
-                          'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[0.625rem] font-medium bg-white'
-                        )}
-                      >
-                        <PlusCircleIcon />
-                      </span>
-                      <span className="truncate">Agregar Zona</span>
-                    </Link>
-                  </li>
-                :
-                zonas.map((zona) => (
-                  <li key={zona.nombreZona}>
-                    <Link
-                      to={`/zonas/${zona._id}`}
-                      className={classNames(
-                        zona.current
-                          ? 'bg-gray-50 text-indigo-600'
-                          : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                        'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-                      )}
-                    >
-                      <span
-                        className={classNames(
-                          zona.current
-                            ? 'text-indigo-600 border-indigo-600'
-                            : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
-                          'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white'
-                        )}
-                      >
-                        {nombreIniciales(zona.nombreZona)}
-                      </span>
-                      <span className="truncate">{zona.nombreZona}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </li>
+            { ejecutivo && (
+              <>
+                <li key="almacenes">
+                  <div className="text-xs font-semibold leading-6 text-gray-400">Almacén</div>
+                  <SelectSimple 
+                    selectOptions={selectOptions}
+                    value={locacion || auth.locacion}
+                    onChange={(e) => setLocacion(e.target.value)}
+                  />
+                </li>
+                <li key="zonas">
+                  <Link to={'/zonas'} className="text-xs font-semibold leading-6 text-gray-400">Zonas</Link>
+                  <ul role="list" className="-mx-2 mt-2 space-y-1">
+                    {!zonas.length ?
+                      <li key="agregar-zona">
+                        <Link
+                          to={'/zonas/agregar'}
+                          className={classNames('text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                          )}
+                        >
+                          <span
+                            className={classNames('text-gray-400 group-hover:text-indigo-600',
+                              'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-[0.625rem] font-medium bg-white'
+                            )}
+                          >
+                            <PlusCircleIcon />
+                          </span>
+                          <span className="truncate">Agregar Zona</span>
+                        </Link>
+                      </li>
+                    :
+                    zonas.map((zona) => (
+                      <li key={zona.nombreZona}>
+                        <Link
+                          to={`/zonas/${zona._id}`}
+                          className={classNames(
+                            zona.current
+                              ? 'bg-gray-50 text-indigo-600'
+                              : 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                          )}
+                        >
+                          <span
+                            className={classNames(
+                              zona.current
+                                ? 'text-indigo-600 border-indigo-600'
+                                : 'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
+                              'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white'
+                            )}
+                          >
+                            {displayIniciales(zona.nombreZona)}
+                          </span>
+                          <span className="truncate">{zona.nombreZona}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              </>
+            )}
             <li className="mt-auto">
               <a
                 href="#"

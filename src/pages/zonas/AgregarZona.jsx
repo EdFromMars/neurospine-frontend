@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-import { PlusCircleIcon  } from "@heroicons/react/20/solid";
 import AgregarZonaFormulario from "../../components/zonas/AgregarZonaFormulario";
 
 const AgregarZona = () => {

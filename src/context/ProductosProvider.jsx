@@ -8,7 +8,7 @@ const ProductosContext = createContext();
 export const ProductosProvider = ({ children }) => {
   const [productos, setProductos] = useState([]);
   const [locaciones, setLocaciones] = useState([]);
-  const { auth , guardarBitacora, ejecutivo, almacen, locacion } = useAuth();
+  const { auth , guardarBitacora, ejecutivo, almacen, vendedor, locacion } = useAuth();
 
   const token = localStorage.getItem('neurospinetoken');
   const config = {
@@ -18,17 +18,17 @@ export const ProductosProvider = ({ children }) => {
     }
   }
   
-  const obtenerProductos = async () => {
+  const obtenerProductos = async (id) => {
     try {
       if(!token) return;
 
-      if(ejecutivo) {
-        const { data } = await clienteAxios.get('/productos', config);
+      if(ejecutivo || vendedor || almacen) {
+        const { data } = await clienteAxios.get('/productos', {
+          ...config,
+          params: {
+            locacion: id
+          }});
         const materialPorLocacion = data.filter( producto => producto.locacion === locacion );
-        setProductos(materialPorLocacion);
-      } else if (almacen) {
-        const { data } = await clienteAxios.get('/productos', config);
-        const materialPorLocacion = data.filter( producto => producto.locacion === auth.locacion );
         setProductos(materialPorLocacion);
       } else {
         return;
@@ -145,6 +145,7 @@ export const ProductosProvider = ({ children }) => {
     <ProductosContext.Provider 
       value={{
         productos,
+        obtenerProductos,
         guardarProducto,
         mostrarProducto,
         actualizarCantidad,
