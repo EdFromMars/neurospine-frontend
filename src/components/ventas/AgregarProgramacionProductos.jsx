@@ -1,6 +1,20 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
+import ComboBoxRepeater from '../ui/ComboBoxRepeater'
 
 const AgregarProgramacionProductos = ({visibility, productos, productosProgramacion, setProductosProgramacion}) => {
+  const [productosLength, setProductosLength] = useState(0);
+  const comboBoxProductos = productos.map((item) => {
+    const {nombreMaterial: nombre, _id: id} = item;
+    return {nombre, id};
+  });
+
+  useEffect(() => {
+    setProductosLength(productosProgramacion ? productosProgramacion.length : 0);
+  }, [productosProgramacion]);
+
+  console.log(productosLength)
+  console.log(productosProgramacion)
+
   return (
     <div className={`space-y-12 datos-programacion ${visibility.datos}`}>
       <div className="border-b border-gray-900/10 pb-12">
@@ -11,14 +25,32 @@ const AgregarProgramacionProductos = ({visibility, productos, productosProgramac
 
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <div className="sm:col-span-3">
-            <label htmlFor="tipo-programacion" className="block text-sm font-medium leading-6 text-gray-900">
-              Tipo de Programación
-            </label>
             <div className="mt-2">
-              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                
-              </div>
+              {productosLength > 0 && (Array.isArray(productosProgramacion) ? productosProgramacion : []).map((producto, index) => (
+                <div key={index}>
+                  <ComboBoxRepeater 
+                    elementos={comboBoxProductos}
+                    titulo={""}
+                    state={productosProgramacion}
+                    setState={setProductosProgramacion}
+                    posicion={index}
+                    propiedad={"producto"}
+                  />
+                </div>
+              ))}
             </div>
+            <div className="flex border-t border-gray-100 pt-6">
+                <button 
+                  type="button" 
+                  className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                  onClick={() => setProductosProgramacion([
+                    ...(productosProgramacion || []), 
+                    { catidad: 0, precio: 0, producto: '' }
+                  ])}
+                >
+                  <span aria-hidden="true">+</span> Agregar otro producto
+                </button>
+              </div>
           </div>
         </div>
       </div>

@@ -14,7 +14,6 @@ const ListadoProductos = () => {
   
   useEffect(() => {
     if(locaciones.length === 0 || locaciones === ''){
-      console.log('Obteniendo locaciones');
       obtenerLocaciones();
     };
 

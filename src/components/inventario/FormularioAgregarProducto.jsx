@@ -39,6 +39,11 @@ const FormularioAgregarProducto = ( productoEditar ) => {
   }, [productoEditar]);
 
   const [alerta, setAlerta] = useState({});
+
+  const comboBoxElements = productos.map((item) => {
+    const {nombreMaterial: nombre, _id: id} = item;
+    return {nombre, id};
+  });
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -321,10 +326,11 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                 {materialComplementario && <div className="col-span-full">
                   <div className="mt-2">
                     <ComboBoxSimple
-                      productos={productos}
+                      elementos={comboBoxElements}
                       titulo={"Material Principal"}
-                      producto={producto}
-                      setProducto={setProducto}
+                      state={producto}
+                      setState={setProducto}
+                      propiedad={"materialPrincipal"}
                     />
                   </div>
                 </div>}

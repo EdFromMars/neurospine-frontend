@@ -10,12 +10,8 @@ const FormularioAgregarProgramacion = () => {
   const { locacion } = useAuth();
   const navigate = useNavigate();
 
-  console.log(productos);
-  console.log(locacion);
-
   useEffect(() => {
     if(productos.length === 0) {
-      console.log('Obteniendo productos');
       obtenerProductos(locacion);
     }
   }, [locacion]);
@@ -43,7 +39,13 @@ const FormularioAgregarProgramacion = () => {
     observaciones: ''
   });
 
-  const [productosProgramacion, setProductosProgramacion] = useState([]);
+  const [productosProgramacion, setProductosProgramacion] = useState([
+    {
+      producto: '',
+      cantidad: 0,
+      precio: 0
+    }
+  ] || []);
 
   const validarDatos = () => {
     const { 
@@ -87,7 +89,6 @@ const FormularioAgregarProgramacion = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(programacion);
   }
 
   return (

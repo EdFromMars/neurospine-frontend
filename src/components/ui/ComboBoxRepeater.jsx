@@ -6,7 +6,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function ComboBoxSimple({ elementos, state, setState, titulo, propiedad }) {
+export default function ComboBoxSimple({ elementos, state, setState, titulo, posicion, propiedad }) {
  
   const [comboBoxValue, setComboBoxValue] = useState('');
   const [query, setQuery] = useState('');
@@ -22,7 +22,12 @@ export default function ComboBoxSimple({ elementos, state, setState, titulo, pro
     if(comboBoxValue !== '') {
       const elementoSeleccionado = elementos.find((item) => item.nombre === comboBoxValue);
       if(elementoSeleccionado){
-        setState({...state, [propiedad]: elementoSeleccionado.id});
+        let newState = [...state];
+        newState[posicion] = {
+          ...newState[posicion],
+          [propiedad] : elementoSeleccionado.id
+        };
+        setState(newState);
       }
     }
   }, [comboBoxValue]);
