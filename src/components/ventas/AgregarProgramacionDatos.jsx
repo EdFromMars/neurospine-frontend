@@ -94,7 +94,7 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion, visibility })
       <div className="border-b border-gray-900/10 pb-12">
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">                
         <div className="sm:col-span-3">
-            <label htmlFor="tipo-programacion" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="estado" className="block text-sm font-medium leading-6 text-gray-900">
               Estado
             </label>
             <div className="mt-2">
@@ -102,6 +102,7 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion, visibility })
                 selectOptions={estados}
                 value={programacion.estado || ''} 
                 onChange={e => setProgramacion({ ...programacion, estado: e.target.value })}
+                target={'estado'}
               />
             </div>
           </div>

@@ -125,6 +125,49 @@ const estados = [
   { id: "32", display: "Zacatecas"}
 ]
 
+const medidas = [
+  { id: "5mm", display: "5mm"},
+  { id: "10mm", display: "10mm"},
+  { id: "15mm", display: "15mm"},
+  { id: "20mm", display: "20mm"},
+  { id: "25mm", display: "25mm"},
+  { id: "30mm", display: "30mm"},
+  { id: "35mm", display: "35mm"},
+  { id: "40mm", display: "40mm"},
+  { id: "45mm", display: "45mm"},
+  { id: "50mm", display: "50mm"},
+  { id: "55mm", display: "55mm"},
+  { id: "60mm", display: "60mm"},
+  { id: "65mm", display: "65mm"},
+  { id: "70mm", display: "70mm"},
+  { id: "75mm", display: "75mm"},
+  { id: "80mm", display: "80mm"},
+  { id: "85mm", display: "85mm"},
+  { id: "90mm", display: "90mm"},
+  { id: "95mm", display: "95mm"},
+  { id: "100mm", display: "100mm"},
+  { id: "105mm", display: "105mm"},
+  { id: "110mm", display: "110mm"},
+  { id: "115mm", display: "115mm"},
+  { id: "120mm", display: "120mm"},
+  { id: "125mm", display: "125mm"},
+  { id: "130mm", display: "130mm"},
+  { id: "135mm", display: "135mm"},
+  { id: "140mm", display: "140mm"},
+  { id: "145mm", display: "145mm"},
+  { id: "150mm", display: "150mm"},
+  { id: "155mm", display: "155mm"},
+  { id: "160mm", display: "160mm"},
+  { id: "165mm", display: "165mm"},
+  { id: "170mm", display: "170mm"},
+  { id: "175mm", display: "175mm"},
+  { id: "180mm", display: "180mm"},
+  { id: "185mm", display: "185mm"},
+  { id: "190mm", display: "190mm"},
+  { id: "195mm", display: "195mm"},
+  { id: "200mm", display: "200mm"},
+]
+
 export {
   formatearDinero,
   formatodisplay,
@@ -133,5 +176,6 @@ export {
   currentNavItem,
   diaSemana,
   horas, 
-  estados
+  estados,
+  medidas
 }

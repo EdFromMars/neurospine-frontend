@@ -5,6 +5,8 @@ import useProductos from "../../hooks/useProductos";
 import useAuth from "../../hooks/useAuth";
 import ToggleButton from "../ui/ToggleButton";
 import ComboBoxSimple from "../ui/ComboBoxSimple";
+import SelectSimple from "../ui/SelectSimple";
+import { medidas } from "../../helpers";
 
 const FormularioAgregarProducto = ( productoEditar ) => {
 
@@ -24,6 +26,7 @@ const FormularioAgregarProducto = ( productoEditar ) => {
   });
 
   const [materialComplementario, setMaterialComplementario] = useState(false);
+  const [comboBoxNombreValue, setComboBoxNombreValue] = useState('');
   
   const { productos, guardarProducto, actualizarProducto } = useProductos();
   const { auth, locacion, setLocacion, ejecutivo } = useAuth();
@@ -41,9 +44,15 @@ const FormularioAgregarProducto = ( productoEditar ) => {
   const [alerta, setAlerta] = useState({});
 
   const comboBoxElements = productos.map((item) => {
+    const {nombreMaterial: nombre, nombreMaterial: id} = item;
+    return {nombre, id};
+  });
+
+  const comboBoxElementsPrincipal = productos.map((item) => {
     const {nombreMaterial: nombre, _id: id} = item;
     return {nombre, id};
   });
+
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -116,21 +125,39 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                     Nombre del Material
                   </label>
                   <div className="mt-2">
-                    <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-                      <input
-                        type="text"
-                        name="nombre-material"
-                        id="nombre-material"
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                        placeholder="Nombre del Material"
-                        value={producto.nombreMaterial || ''}
-                        onChange={e => setProducto({ ...producto, nombreMaterial: e.target.value })}
-                      />
-                    </div>
+                    <ComboBoxSimple 
+                      elementos={comboBoxElements}
+                      titulo={""}
+                      state={producto}
+                      setState={setProducto}
+                      propiedad={"nombreMaterial"}
+                    />
+                    <input
+                      type="text"
+                      name="alg"
+                      id="alg"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      value={producto.nombreMaterial || ''}
+                      onChange={e => setProducto({ ...producto, nombreMaterial: e.target.value })}
+                    />
                   </div>
                 </div>
 
-                <div className="sm:col-span-3">
+                <div className="sm:col-span-1">
+                  <label htmlFor="medida" className="block text-sm font-medium leading-6 text-gray-900">
+                    Medida
+                  </label>
+                  <div className="mt-2">
+                    <SelectSimple
+                      selectOptions={medidas}
+                      value={producto.medida || ''}
+                      onChange={(e) => setProducto({ ...producto, medida: e.target.value })}
+                      target={'medida'}
+                    />
+                  </div>
+                </div>
+
+                <div className="sm:col-span-2">
                   <label htmlFor="tipo-material" className="block text-sm font-medium leading-6 text-gray-900">
                     Tipo de Material
                   </label>
@@ -235,22 +262,6 @@ const FormularioAgregarProducto = ( productoEditar ) => {
             <div className="border-b border-gray-900/10 pb-12">
               <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">                
                 <div className="sm:col-span-3">
-                  <label htmlFor="medida" className="block text-sm font-medium leading-6 text-gray-900">
-                    Medida
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      name="medida"
-                      id="medida"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      value={producto.medida || ''}
-                      onChange={e => setProducto({ ...producto, medida: e.target.value })}
-                    />
-                  </div>
-                </div>
-
-                <div className="sm:col-span-3">
                   <label htmlFor="alg" className="block text-sm font-medium leading-6 text-gray-900">
                     Clave ALG
                   </label>
@@ -326,7 +337,7 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                 {materialComplementario && <div className="col-span-full">
                   <div className="mt-2">
                     <ComboBoxSimple
-                      elementos={comboBoxElements}
+                      elementos={comboBoxElementsPrincipal}
                       titulo={"Material Principal"}
                       state={producto}
                       setState={setProducto}

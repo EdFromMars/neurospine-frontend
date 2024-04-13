@@ -24,7 +24,7 @@ const DateTimePicker = ({mostrarBotonEliminar, eliminarHorario, stateValue, setS
   return (
     <div className="horario pt-6 pb-6 grid grid-cols-1 gap-x-6 gap-y-8 border-b sm:grid-cols-6">
       <div className="sm:col-span-2">
-        <label htmlFor="nombre-doctor" className="block text-sm font-medium leading-6 text-gray-900">
+        <label htmlFor="dia" className="block text-sm font-medium leading-6 text-gray-900">
           Día
         </label>
         <div className="mt-2">
@@ -32,11 +32,12 @@ const DateTimePicker = ({mostrarBotonEliminar, eliminarHorario, stateValue, setS
             selectOptions={diaSemana}
             value={inputState.dia} 
             onChange={cambioDia}
+            target={'dia'}
           />
         </div>
       </div>
       <div className="sm:col-span-1">
-        <label htmlFor="zona" className="block text-sm font-medium leading-6 text-gray-900">
+        <label htmlFor="entrada" className="block text-sm font-medium leading-6 text-gray-900">
           Entrada
         </label>
         <div className="mt-2">
@@ -44,11 +45,12 @@ const DateTimePicker = ({mostrarBotonEliminar, eliminarHorario, stateValue, setS
             selectOptions={horas}
             value={inputState.entrada} 
             onChange={cambioEntrada}
+            target={'entrada'}
           />
         </div>
       </div>
       <div className="sm:col-span-1">
-        <label htmlFor="zona" className="block text-sm font-medium leading-6 text-gray-900">
+        <label htmlFor="salida" className="block text-sm font-medium leading-6 text-gray-900">
           Salida
         </label>
         <div className="mt-2">
@@ -56,6 +58,7 @@ const DateTimePicker = ({mostrarBotonEliminar, eliminarHorario, stateValue, setS
               selectOptions={horas}
               value={inputState.salida} 
               onChange={cambioSalida}
+              target={'salida'}
             />
         </div>
       </div>

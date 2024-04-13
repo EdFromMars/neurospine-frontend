@@ -63,6 +63,7 @@ const Sidebar = ({ navigation, almacenes, zonas, pathname }) => {
                     selectOptions={selectOptions}
                     value={locacion || auth.locacion}
                     onChange={(e) => setLocacion(e.target.value)}
+                    target={'almacen'}
                   />
                 </li>
                 <li key="zonas">
