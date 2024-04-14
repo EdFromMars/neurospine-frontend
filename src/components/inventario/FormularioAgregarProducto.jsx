@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Alerta from "../Alerta";
 import useProductos from "../../hooks/useProductos";
 import useAuth from "../../hooks/useAuth";
+import AutoCompleteInput from "../ui/AutoCompleteInput";
 import ToggleButton from "../ui/ToggleButton";
 import ComboBoxSimple from "../ui/ComboBoxSimple";
 import SelectSimple from "../ui/SelectSimple";
@@ -44,9 +45,9 @@ const FormularioAgregarProducto = ( productoEditar ) => {
   const [alerta, setAlerta] = useState({});
 
   const comboBoxElements = productos.map((item) => {
-    const {nombreMaterial: nombre, nombreMaterial: id} = item;
-    return {nombre, id};
-  });
+    const {nombreMaterial: label, nombreMaterial: year} = item;
+    return {label, year};
+  })
 
   const comboBoxElementsPrincipal = productos.map((item) => {
     const {nombreMaterial: nombre, _id: id} = item;
@@ -125,20 +126,11 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                     Nombre del Material
                   </label>
                   <div className="mt-2">
-                    <ComboBoxSimple 
+                    <AutoCompleteInput 
                       elementos={comboBoxElements}
-                      titulo={""}
                       state={producto}
                       setState={setProducto}
                       propiedad={"nombreMaterial"}
-                    />
-                    <input
-                      type="text"
-                      name="alg"
-                      id="alg"
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      value={producto.nombreMaterial || ''}
-                      onChange={e => setProducto({ ...producto, nombreMaterial: e.target.value })}
                     />
                   </div>
                 </div>

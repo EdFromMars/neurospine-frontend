@@ -20,7 +20,7 @@ export default function ComboBoxSimple({ elementos, state, setState, titulo, pro
       ? elementos 
       : elementos.filter((item) => {
           return item.nombre.toLowerCase().includes(query.toLowerCase())
-        });
+        })
 
   useEffect(() => {
     if(query !== '') {
@@ -45,7 +45,6 @@ export default function ComboBoxSimple({ elementos, state, setState, titulo, pro
             setStates(event)
           }}
           displayValue={(item) => (item)}
-          
         />
         <Combobox.Button className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
           <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
