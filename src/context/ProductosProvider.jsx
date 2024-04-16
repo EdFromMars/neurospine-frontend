@@ -70,7 +70,6 @@ export const ProductosProvider = ({ children }) => {
   const guardarProducto = async (producto) => {
     const { nombreMaterial, existencias, materialPrincipal } = producto;
     
-    console.log(materialPrincipal)
     try {
       if(!token) return;
 

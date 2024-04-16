@@ -4,18 +4,31 @@ import { formatearDinero } from '../../helpers';
 import { XCircleIcon } from "@heroicons/react/24/outline";
 
 const AgregarProgramacionProductos = ({visibility, productos, productosProgramacion, setProductosProgramacion}) => {
-  const [productosLength, setProductosLength] = useState(0);
-  const comboBoxProductos = productos.map((item) => {
-    const {nombreMaterial: nombre, _id: id} = item;
-    return {nombre, id};
-  });
+  const [comboBoxElements, setComboBoxElements] = useState([]);
 
+  
   useEffect(() => {
-    setProductosLength(productosProgramacion ? productosProgramacion.length : 0);
-  }, [productosProgramacion]);
-
-  console.log(productosProgramacion)
-
+    const productosConMenorExistencia = productos.reduce((map, producto) => {
+      const {nombreMaterial: nombre, _id: id, existencias: existencias} = producto;
+      
+      if (!map[nombre] || existencias < map[nombre].existencias) {
+        map[nombre] = {nombre, id, existencias};
+      }
+      
+      return map;
+    }, {});
+    
+    let comboBoxProducts = Object.values(productosConMenorExistencia);
+    
+    // Filtrar los productos que ya están en productosProgramacion
+    comboBoxProducts = comboBoxProducts.filter(producto => {
+      return !productosProgramacion.some(productoProgramacion => productoProgramacion.producto === producto.id);
+    });
+    
+    setComboBoxElements(comboBoxProducts);
+    
+  }, [productos, productosProgramacion]);
+  
   const valoresProducto = ( id, propiedad ) => {
     const producto = productos.find((item) => item._id === id);    
     return producto ? producto[propiedad] : '';
@@ -43,6 +56,12 @@ const AgregarProgramacionProductos = ({visibility, productos, productosProgramac
     setProductosProgramacion(newProductosProgramacion);
   }
 
+  const materialSugerido = (producto) => {
+    console.log(producto);
+    console.log(comboBoxElements);
+    // console.log(comboBoxElements.filter((item) => item.id === producto))
+  }
+
   return (
     <div className={`space-y-12 datos-programacion ${visibility.datos}`}>
       <div className="border-b border-gray-900/10 pb-12">
@@ -64,50 +83,55 @@ const AgregarProgramacionProductos = ({visibility, productos, productosProgramac
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {productosLength > 0 && (Array.isArray(productosProgramacion) ? productosProgramacion : []).map((producto, index) => (
-                  <tr key={index} className='group'>
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                      <ComboBoxRepeater 
-                        elementos={comboBoxProductos}
-                        titulo={""}
-                        state={productosProgramacion}
-                        setState={setProductosProgramacion}
-                        posicion={index}
-                        propiedad={"producto"}
+                {productosProgramacion.length > 0 && (Array.isArray(productosProgramacion) ? productosProgramacion : []).map((producto, index) => (
+                  <>
+                    <tr key={index} className='group'>
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                        <ComboBoxRepeater 
+                          elementos={comboBoxElements}
+                          titulo={""}
+                          state={productosProgramacion}
+                          setState={setProductosProgramacion}
+                          posicion={index}
+                          propiedad={"producto"}
+                          />
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{valoresProducto(productosProgramacion[index].producto, "existencias") || 0}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{formatearDinero(mostrarPrecio(productosProgramacion[index].producto))}</td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        <input
+                          type='number'
+                          value={productosProgramacion[index].cantidad}
+                          min={0}
+                          max={valoresProducto(productosProgramacion[index].producto, "existencias") || 0}
+                          onChange={(e) => {
+                            /* Aquí se actualiza la cantidad */
+                            let newProductosProgramacion = [...productosProgramacion];
+                            newProductosProgramacion[index].cantidad = e.target.value;
+                            setProductosProgramacion(newProductosProgramacion);
+                          }}
+                          className="w-20 px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{valoresProducto(productosProgramacion[index].producto, "existencias") || 0}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{formatearDinero(mostrarPrecio(productosProgramacion[index].producto))}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <input
-                        type='number'
-                        value={productosProgramacion[index].cantidad}
-                        min={0}
-                        max={valoresProducto(productosProgramacion[index].producto, "existencias") || 0}
-                        onChange={(e) => {
-                          /* Aquí se actualiza la cantidad */
-                          let newProductosProgramacion = [...productosProgramacion];
-                          newProductosProgramacion[index].cantidad = e.target.value;
-                          setProductosProgramacion(newProductosProgramacion);
-                        }}
-                        className="w-20 px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                      />
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {calcularMonto(index)}
-                    </td>
-                    <td className="relative py-4 pl-3 text-right text-sm font-semibold">
-                      <button
-                        type="button"
-                        className="opacity-0 group-hover:opacity-100 text-indigo-600 hover:text-indigo-900 flex content-center gap-2"
-                        onClick={() => {
-                          eliminarProducto(index);
-                        }}
-                      >
-                        <XCircleIcon className="text-gray-400 group-hover:text-indigo-600 h-8 w-8 shrink-0" />
-                      </button>
-                    </td>
-                  </tr>
+                      </td>
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                        {calcularMonto(index)}
+                      </td>
+                      <td className="relative py-4 pl-3 text-right text-sm font-semibold">
+                        <button
+                          type="button"
+                          className="opacity-0 group-hover:opacity-100 text-indigo-600 hover:text-indigo-900 flex content-center gap-2"
+                          onClick={() => {
+                            eliminarProducto(index);
+                          }}
+                        >
+                          <XCircleIcon className="text-gray-400 group-hover:text-indigo-600 h-8 w-8 shrink-0" />
+                        </button>
+                      </td>
+                    </tr>
+                    <p>
+                      {materialSugerido(valoresProducto(productosProgramacion[index].producto, "materialPrincipal"))}
+                    </p>
+                  </>
                 ))}
               </tbody>
             </table>

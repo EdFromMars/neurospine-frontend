@@ -46,7 +46,7 @@ const EditarProducto = () => {
         </div>
       </div>
       <FormularioAgregarProducto
-        producto={ producto }
+        productoEditar={ producto }
       />
     </>
   )

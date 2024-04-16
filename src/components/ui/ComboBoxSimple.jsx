@@ -22,6 +22,7 @@ export default function ComboBoxSimple({ elementos, state, setState, titulo, pro
           return item.nombre.toLowerCase().includes(query.toLowerCase())
         })
 
+        
   useEffect(() => {
     if(query !== '') {
       const elementoSeleccionado = elementos.find((item) => item.nombre === comboBoxValue);

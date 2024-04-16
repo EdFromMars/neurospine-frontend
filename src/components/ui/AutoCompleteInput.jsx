@@ -3,15 +3,14 @@ import AutocompleteOption from '@mui/joy/AutocompleteOption';
 import ListItemDecorator from '@mui/joy/ListItemDecorator';
 const filter = createFilterOptions();
 
-export default function BasicAutocomplete({elementos, state, setState, propiedad}) {
+export default function BasicAutocomplete({elementos, initialValue, state, setState, propiedad}) {
   
   return (
     <Autocomplete
-      placeholder=""
+      placeholder={initialValue? initialValue : ''}
       options={elementos}
       sx={{ width: '100%', bg: 'white' }}
       onChange={(event, newValue) => {
-        console.log(newValue);
         if (newValue && newValue.inputValue) {
           setState({
             ...state,

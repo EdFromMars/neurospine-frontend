@@ -7,9 +7,9 @@ import AutoCompleteInput from "../ui/AutoCompleteInput";
 import ToggleButton from "../ui/ToggleButton";
 import ComboBoxSimple from "../ui/ComboBoxSimple";
 import SelectSimple from "../ui/SelectSimple";
-import { medidas } from "../../helpers";
+import { medidas, formatearDinero } from "../../helpers";
 
-const FormularioAgregarProducto = ( productoEditar ) => {
+const FormularioAgregarProducto = ({ productoEditar }) => {
 
   const [producto, setProducto] = useState({
     nombreMaterial: '',
@@ -27,27 +27,31 @@ const FormularioAgregarProducto = ( productoEditar ) => {
   });
 
   const [materialComplementario, setMaterialComplementario] = useState(false);
-  const [comboBoxNombreValue, setComboBoxNombreValue] = useState('');
   
   const { productos, guardarProducto, actualizarProducto } = useProductos();
   const { auth, locacion, setLocacion, ejecutivo } = useAuth();
   const navigate = useNavigate();
   
-  const modoEdicion = productoEditar.producto?.nombreMaterial ? true : false;
+  const modoEdicion = productoEditar?.nombreMaterial ? true : false;
 
   useEffect(() => {
     if(modoEdicion) {
-      setProducto(productoEditar.producto);
-      setLocacion(productoEditar.producto.locacion);
+      setProducto(productoEditar);
+      setLocacion(productoEditar.locacion);
     }
   }, [productoEditar]);
 
   const [alerta, setAlerta] = useState({});
 
-  const comboBoxElements = productos.map((item) => {
+  const comboBoxElements = productos.reduce((unique, item) => {
     const {nombreMaterial: label, nombreMaterial: year} = item;
-    return {label, year};
-  })
+    
+    if (!unique.some(obj => obj.label === label && obj.year === year)) {
+      unique.push({label, year});
+    }
+    
+    return unique;
+  }, []);
 
   const comboBoxElementsPrincipal = productos.map((item) => {
     const {nombreMaterial: nombre, _id: id} = item;
@@ -92,12 +96,13 @@ const FormularioAgregarProducto = ( productoEditar ) => {
 
     const productoGuardar = {
       ...producto, 
-      locacion: modoEdicion ? (productoEditar.producto.locacion) : (locacion || auth.locacion), 
+      locacion: modoEdicion ? (productoEditar.locacion) : (locacion || auth.locacion), 
       usuario: auth._id
     };
-        
-    modoEdicion ? actualizarProducto( productoEditar.producto, productoGuardar ) : guardarProducto( productoGuardar );
 
+    
+    modoEdicion ? actualizarProducto( productoEditar, productoGuardar ) : guardarProducto( productoGuardar );
+    
     setAlerta({
       msg: 'El material se ha agregado correctamente'
     });
@@ -128,6 +133,7 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                   <div className="mt-2">
                     <AutoCompleteInput 
                       elementos={comboBoxElements}
+                      initialValue={producto.nombreMaterial}
                       state={producto}
                       setState={setProducto}
                       propiedad={"nombreMaterial"}
@@ -284,7 +290,7 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                           placeholder="0.00"
                           aria-describedby="price-currency"
                           value={producto.precioAngeles || 0}
-                          onChange={e => setProducto({ ...producto, precioAngeles: e.target.value })}
+                          onChange={e => setProducto({ ...producto, precioAngeles: +e.target.value })}
                           />
                       </div>
                     </div>
@@ -302,7 +308,7 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                           placeholder="0.00"
                           aria-describedby="price-currency"
                           value={producto.precioEstandar || 0}
-                          onChange={e => setProducto({ ...producto, precioEstandar: e.target.value })}
+                          onChange={e => setProducto({ ...producto, precioEstandar: +e.target.value })}
                           />
                       </div>
                     </div>
@@ -319,7 +325,6 @@ const FormularioAgregarProducto = ( productoEditar ) => {
                       enabled={materialComplementario || false} 
                       setEnabled={e => {
                         setMaterialComplementario(e)
-                        setProducto({...producto, materialPrincipal: ''})
                       }}
                       copy={"Selecciona esta opción para volverlo un material complementario"}
                     />

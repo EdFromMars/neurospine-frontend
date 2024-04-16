@@ -126,6 +126,7 @@ const estados = [
 ]
 
 const medidas = [
+  { id: "", display: "Selecciona una medida"},
   { id: "5mm", display: "5mm"},
   { id: "10mm", display: "10mm"},
   { id: "15mm", display: "15mm"},

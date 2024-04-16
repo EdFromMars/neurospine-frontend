@@ -43,7 +43,8 @@ const FormularioAgregarProgramacion = () => {
     {
       producto: '',
       cantidad: 0,
-      precio: 0
+      precio: 0,
+      materialPrincipal: ''
     }
   ] || []);
 

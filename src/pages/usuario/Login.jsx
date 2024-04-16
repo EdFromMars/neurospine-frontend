@@ -4,8 +4,6 @@ import Alerta from "../../components/Alerta";
 import clienteAxios from "../../config/clienteAxios";
 import useAuth from "../../hooks/useAuth";
 
-import InputEmail from "../../components/ui/InputEmail";
-
 const Login = () => {
 
   const { setAuth, puestos } = useAuth();
