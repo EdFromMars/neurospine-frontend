@@ -1,33 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import ComboBoxRepeater from '../ui/ComboBoxRepeater';
 import { formatearDinero } from '../../helpers';
 import { XCircleIcon } from "@heroicons/react/24/outline";
 
-const AgregarProgramacionProductos = ({visibility, productos, productosProgramacion, setProductosProgramacion}) => {
+const AgregarProgramacionProductos = ({enabledProductos, productos, productosProgramacion, setProductosProgramacion, programacion}) => {
   const [comboBoxElements, setComboBoxElements] = useState([]);
-
+  const tipoMaterial = programacion.tipoMaterial;
   
   useEffect(() => {
-    const productosConMenorExistencia = productos.reduce((map, producto) => {
-      const {nombreMaterial: nombre, _id: id, existencias: existencias} = producto;
+    const productosTipoMaterial = productos.filter(producto => producto.tipoMaterial === tipoMaterial);
+    
+    const productosConMenorExistencia = productosTipoMaterial.reduce((map, producto) => {
+      const {nombreMaterial: nombre, _id: id, existencias, materialPrincipal } = producto;
       
-      if (!map[nombre] || existencias < map[nombre].existencias) {
-        map[nombre] = {nombre, id, existencias};
+      if (!map[nombre]) {
+        map[nombre] = {nombre, id, existencias, materialPrincipal, multiple: false};
+      }else if (map[nombre] && existencias < map[nombre].existencias){
+        map[nombre] = {nombre, id, existencias, materialPrincipal, multiple: true};
       }
-      
       return map;
     }, {});
     
     let comboBoxProducts = Object.values(productosConMenorExistencia);
+    console.log('comboBoxProducts', comboBoxProducts);
     
     // Filtrar los productos que ya están en productosProgramacion
     comboBoxProducts = comboBoxProducts.filter(producto => {
-      return !productosProgramacion.some(productoProgramacion => productoProgramacion.producto === producto.id);
+      return !productosProgramacion.some(productoProgramacion => {
+        return productoProgramacion.producto === producto.id;
+      });
     });
+
     
     setComboBoxElements(comboBoxProducts);
     
-  }, [productos, productosProgramacion]);
+  }, [productos, productosProgramacion, tipoMaterial]);
   
   const valoresProducto = ( id, propiedad ) => {
     const producto = productos.find((item) => item._id === id);    
@@ -36,11 +43,26 @@ const AgregarProgramacionProductos = ({visibility, productos, productosProgramac
 
   const mostrarPrecio = (id) => {
     if(!id) return '';
+    let precio = '';
+    const tipoProgramacion = programacion.tipoProgramacion;
+    const tipoVenta = programacion.tipoVenta;
     const producto = productos.find((item) => item._id === id);
-    const precio = producto.precioEstandar;
+
+    /*Validar tipo de programación y tipo de venta para mostrar el precio correcto*/
+    if(tipoProgramacion === 'demostracion' || tipoVenta === 'directa'){
+      precio = producto.precioEstandar;
+    } else if(tipoVenta === 'angeles'){
+      console.log('precioAngeles', producto.precioAngeles);
+      precio = producto.precioAngeles;
+    } else {
+      precio = '';
+    }
+    
     const newProductosProgramacion = [...productosProgramacion];
+    
     /* Aquí se actualiza el precio */
     newProductosProgramacion.find((item) => item.producto === id).precio = precio;
+    
     /* Aquí se regresa el precio para mostrar en pantalla */
     return precio;
   }
@@ -56,15 +78,22 @@ const AgregarProgramacionProductos = ({visibility, productos, productosProgramac
     setProductosProgramacion(newProductosProgramacion);
   }
 
-  const materialSugerido = (producto) => {
-    console.log(producto);
-    console.log(comboBoxElements);
-    // console.log(comboBoxElements.filter((item) => item.id === producto))
-  }
+  /*Recibimos Id, buscamos entre los productos aquellos que lo tengan como material principal y devolvemos el material en el state*/
+  // const materialSugerido = (producto) => {
+  //   const materialComplementario = comboBoxElements.find((item) => item.materialPrincipal === producto);
+  //   if(materialComplementario){
+  //     console.log(materialComplementario);
+  //     const productoSugerido = productos.find((item) => item._id === materialComplementario.id);
+  //     const {nombreMaterial: nombre, _id: id, existencias: existencias} = productoSugerido;
+  //     const nuevaProgramacion = [...productosProgramacion];
+  //     nuevaProgramacion.push({nombre, id, existencias})
+  //     setProductosProgramacion(nuevaProgramacion);
+  //   }
+  // }
 
   return (
-    <div className={`space-y-12 datos-programacion ${visibility.datos}`}>
-      <div className="border-b border-gray-900/10 pb-12">
+    <div className={`space-y-12 datos-programacion ${enabledProductos}`}>
+      <div className="mt-10 border-b border-gray-900/10 pb-12 w-full">
         <h2 className="text-base font-semibold leading-7 text-gray-900">Productos del Pedido</h2>
         <p className="mt-1 text-sm leading-6 text-gray-600">
           Agrega los productos que serán parte de la programación.
@@ -84,10 +113,11 @@ const AgregarProgramacionProductos = ({visibility, productos, productosProgramac
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {productosProgramacion.length > 0 && (Array.isArray(productosProgramacion) ? productosProgramacion : []).map((producto, index) => (
-                  <>
-                    <tr key={index} className='group'>
+                  <Fragment key={index}>
+                    <tr className='group'>
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                         <ComboBoxRepeater 
+                          key={index}
                           elementos={comboBoxElements}
                           titulo={""}
                           state={productosProgramacion}
@@ -128,10 +158,7 @@ const AgregarProgramacionProductos = ({visibility, productos, productosProgramac
                         </button>
                       </td>
                     </tr>
-                    <p>
-                      {materialSugerido(valoresProducto(productosProgramacion[index].producto, "materialPrincipal"))}
-                    </p>
-                  </>
+                  </Fragment>
                 ))}
               </tbody>
             </table>
@@ -140,9 +167,9 @@ const AgregarProgramacionProductos = ({visibility, productos, productosProgramac
                   type="button" 
                   className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                   onClick={() => setProductosProgramacion([
-                    /* Aquí se agrega un nuevo array vacío para prodcutosProgramacion */
+                    /* Aquí se agrega un nuevo array vacío para productosProgramacion */
                     ...(productosProgramacion || []), 
-                    { cantidad: 0, precio: 0, producto: '' }
+                    { cantidad: 0, precio: 0, producto: '', materialPrincipal: ''}
                   ])}
                 >
                   <span aria-hidden="true">+</span> Agregar otro producto

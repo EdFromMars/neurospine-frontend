@@ -16,11 +16,16 @@ export const HospitalesProvider = ({ children }) => {
     },
   };
 
-  const obtenerHospitales = async () => {
+  const obtenerHospitales = async (id) => {
     try {
       if (!token) return;
 
-      const { data } = await clienteAxios.get("/hospitales", config);
+      const { data } = await clienteAxios.get("/hospitales", {
+        ...config,
+        params: {
+          locacion: id
+        }
+      });
       setHospitales(data);
     } catch (error) {
       console.log(error);

@@ -90,16 +90,15 @@ const horas = [
 ]
 
 const estados = [
-  { id: "", display: "Selecciona un Estado"},
   { id: "1", display: "Aguascalientes"},
   { id: "2", display: "Baja California"},
   { id: "3", display: "Baja California Sur"},
   { id: "4", display: "Campeche"},
+  { id: "9", display: "CDMX"},
   { id: "5", display: "Coahuila de Zaragoza"},
   { id: "6", display: "Colima"},
   { id: "7", display: "Chiapas"},
   { id: "8", display: "Chihuahua"},
-  { id: "9", display: "Distrito Federal"},
   { id: "10", display: "Durango"},
   { id: "11", display: "Guanajuato"},
   { id: "12", display: "Guerrero"},

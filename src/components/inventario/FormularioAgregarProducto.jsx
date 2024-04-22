@@ -38,6 +38,9 @@ const FormularioAgregarProducto = ({ productoEditar }) => {
     if(modoEdicion) {
       setProducto(productoEditar);
       setLocacion(productoEditar.locacion);
+      if(productoEditar.materialPrincipal) {
+        setMaterialComplementario(true);
+      }
     }
   }, [productoEditar]);
 

@@ -9,21 +9,12 @@ const FormularioAgregarProgramacion = () => {
   const { productos, obtenerProductos } = useProductos();
   const { locacion } = useAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if(productos.length === 0) {
-      obtenerProductos(locacion);
-    }
-  }, [locacion]);
-  
-  const [visibility, setVisibility] = useState({
-    datos: 'visible',
-    productos: 'hidden'
-  });
+  const [enabledProductos, setEnabledProductos] = useState('hidden');
 
   const [programacion, setProgramacion] = useState({
     tipoProgramacion: '',
-    distribuidor: false,
+    tipoVenta: '',
+    tipoMaterial: '',
     fechaCirugia: '',
     horaCirugia: '',
     estado: '',
@@ -44,13 +35,22 @@ const FormularioAgregarProgramacion = () => {
       producto: '',
       cantidad: 0,
       precio: 0,
-      materialPrincipal: ''
+      materialPrincipal: '',
+      multiple: false
     }
   ] || []);
+
+  useEffect(() => {
+    if(productos.length === 0) {
+      obtenerProductos(locacion);
+    }
+  }, [locacion]);
 
   const validarDatos = () => {
     const { 
       tipoProgramacion, 
+      tipoVenta,
+      tipoMaterial,
       fechaCirugia, 
       horaCirugia, 
       estado, 
@@ -66,6 +66,7 @@ const FormularioAgregarProgramacion = () => {
 
     if( 
       tipoProgramacion.trim() === '' || 
+      tipoMaterial.trim() === '' || 
       fechaCirugia.trim() === '' || 
       horaCirugia.trim() === '' || 
       estado.trim() === '' || 
@@ -76,17 +77,19 @@ const FormularioAgregarProgramacion = () => {
       empresaResponsable.trim() === '' || 
       fechaEntrega.trim() === '' || 
       fechaDevolucion.trim() === '' || 
-      formaPago.trim() === '' 
-    ) {
-      console.log('Todos los campos son obligatorios');
+      tipoProgramacion === 'cirugia' && tipoVenta.trim() === '' ||
+      tipoProgramacion === 'cirugia' && formaPago.trim() === ''
+    ){
+      setEnabledProductos('hidden');
       return;
     }
 
-    setVisibility({
-      datos: 'hidden',
-      productos: 'visible'
-    });
+    setEnabledProductos('flex');
   }
+
+  useEffect(() => {
+    validarDatos();
+  }, [programacion]);
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -100,33 +103,27 @@ const FormularioAgregarProgramacion = () => {
           <AgregarProgramacionDatos 
             programacion={programacion} 
             setProgramacion={setProgramacion}
-            visibility={visibility}
           />
 
           <AgregarProgramacionProductos 
-            visibility={visibility}
+            enabledProductos={enabledProductos}
             productos={productos}
             productosProgramacion={productosProgramacion}
             setProductosProgramacion={setProductosProgramacion}
+            programacion={programacion}
           />
 
           <div className="mt-6 flex items-center justify-end gap-x-6">
-            <button 
+            <button
               onClick={() => { navigate(-1) }}
-              type="button" 
-              className="text-sm font-semibold leading-6 text-gray-900">
+              type="button"
+              className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >
               Cancelar
             </button>
             <button
-            onClick={validarDatos}
-              type="button"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Agregar Productos
-            </button>
-            <button
               type="submit"
-              className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              className={`${enabledProductos} rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
             >
               Agregar Programación
             </button>

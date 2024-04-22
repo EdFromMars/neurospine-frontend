@@ -1,4 +1,4 @@
-const SelectSimple = ({selectOptions, value, onChange, target}) => {
+const SelectSimple = ({selectOptions, value, onChange, target, emptyOption}) => {
     
   return (
     <div>
@@ -9,6 +9,7 @@ const SelectSimple = ({selectOptions, value, onChange, target}) => {
         onChange={onChange}
         value={value}
       >
+        {emptyOption === '' ? null : <option value="" hidden>{emptyOption}</option>}
         {selectOptions.map( option => {
           return (
             <option 
