@@ -6,11 +6,12 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function ComboBoxSimple({ elementos, state, setState, titulo, posicion, propiedad }) {
+export default function ComboBoxSimple({ elementos, state, setState, titulo, posicion, propiedad, productos }) {
  
   const [comboBoxValue, setComboBoxValue] = useState('');
   const [query, setQuery] = useState('');
   
+  /* Se filtran los elementos que contengan la query */
   const filteredItems = 
     query === ''
       ? elementos 
@@ -22,11 +23,29 @@ export default function ComboBoxSimple({ elementos, state, setState, titulo, pos
     if(comboBoxValue !== '') {
       const elementoSeleccionado = elementos.find((item) => item.nombre === comboBoxValue);
       if(elementoSeleccionado){
-        let newState = [...state];
-        newState[posicion] = {
-          ...newState[posicion],
-          [propiedad] : elementoSeleccionado.id
+        /* Si el elemento seleccionado es multiple, se filtran los productos que tengan el mismo nombre */
+        if(elementoSeleccionado.multiple === true){
+          const productosRepetidos = productos.filter(producto => producto.nombreMaterial === elementoSeleccionado.nombre);
+          const newState = [...state];
+          newState[posicion] = productosRepetidos;
+
+          return setState(newState);
         };
+
+        let newState = [...state];
+
+        /* Si el estado en la posición es un array, se crea un objeto con la propiedad y el id del elemento seleccionado */
+        if(Array.isArray(newState[posicion])){
+          newState[posicion] = {
+            [propiedad] : elementoSeleccionado.id
+          }
+        } else {
+          newState[posicion] = {
+            ...newState[posicion],
+            [propiedad] : elementoSeleccionado.id
+          }
+        }
+
         setState(newState);
       }
     }

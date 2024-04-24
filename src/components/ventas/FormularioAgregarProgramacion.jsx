@@ -44,7 +44,7 @@ const FormularioAgregarProgramacion = () => {
     if(productos.length === 0) {
       obtenerProductos(locacion);
     }
-  }, [locacion]);
+  }, [locacion, productos]);
 
   const validarDatos = () => {
     const { 
