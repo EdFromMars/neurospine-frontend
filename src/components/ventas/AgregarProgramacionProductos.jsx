@@ -43,9 +43,10 @@ const AgregarProgramacionProductos = ({enabledProductos, productos, productosPro
     return producto ? producto[propiedad] : '';
   }
 
-  const mostrarPrecio = (id) => {
+  const mostrarPrecio = (id, productoParent) => {
     if(!id) return '';
     let precio = '';
+    console.log(productoParent);
     const tipoProgramacion = programacion.tipoProgramacion;
     const tipoVenta = programacion.tipoVenta;
     const producto = productos.find((item) => item._id === id);
