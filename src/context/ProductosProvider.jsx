@@ -10,6 +10,10 @@ export const ProductosProvider = ({ children }) => {
   const [locaciones, setLocaciones] = useState([]);
   const { auth , guardarBitacora, ejecutivo, almacen, vendedor, locacion } = useAuth();
 
+  useEffect(() => {
+    obtenerProductos();
+  }, [auth, locacion]);
+  
   const token = localStorage.getItem('neurospinetoken');
   const config = {
     headers: {
@@ -47,9 +51,6 @@ export const ProductosProvider = ({ children }) => {
     }
   };
   
-  useEffect(() => {
-    obtenerProductos();
-  }, [auth, locacion]);
 
   const descripcionProduct = ( producto ) => {
     return {
@@ -69,6 +70,7 @@ export const ProductosProvider = ({ children }) => {
   
   const guardarProducto = async (producto) => {
     const { nombreMaterial, existencias, materialPrincipal } = producto;
+    console.log(producto);
     
     try {
       if(!token) return;

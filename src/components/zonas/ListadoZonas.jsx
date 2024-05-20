@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { PlusCircleIcon  } from "@heroicons/react/20/solid";
 import ZonaCard from "./ZonaCard";
 
 import useAuth from "../../hooks/useAuth";
@@ -85,7 +83,7 @@ const ListadoZonas = () => {
           </ul>
         ) : (
           <div className="px-4 py-5 sm:px-6 text-sm text-gray-500">
-            <p>Aún no se ha agregado ninguna zona asociada a este almacén</p>
+            <p>Aún no se ha agregado ninguna zona asociada a este almacén.</p>
           </div>
         )}
 

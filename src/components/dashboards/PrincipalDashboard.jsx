@@ -10,14 +10,13 @@ import {
   CalendarIcon,
   ChartPieIcon,
   IdentificationIcon,
-  UserGroupIcon
+  UserGroupIcon, 
+  BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
 
 import Header from '../Header';
 import Sidebar from '../Sidebar';
 import MobileSidebar from '../MobileSidebar';
-
-
 
 const navigation = [
   { name: 'Inicio', href: '/inicio', icon: HomeIcon, current: false },
@@ -25,6 +24,7 @@ const navigation = [
   { name: 'Programación', href: '/programacion', icon: IdentificationIcon, current: false },
   // { name: 'Calendario de Equipo', href: '/calendario', icon: CalendarIcon, current: false },
   { name: 'Miembros de Equipo', href: '/equipo', icon: UserGroupIcon, current: false },
+  { name: 'Razón Social', href: '/razon-social', icon: BuildingOfficeIcon, current: false },
   { name: 'Reportes', href: '/reportes', icon: ChartPieIcon, current: false },
 ]
 

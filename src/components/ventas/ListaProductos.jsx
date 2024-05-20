@@ -19,7 +19,6 @@ const ListaProductos = ({ productosProgramacion, comboBoxElements, setProductosP
 
   const renderProducto = (producto, index) => {
     if(Array.isArray(producto) && producto.length > 0){
-      console.log(producto);
       return (
         <Fragment key={index}>
           <tr className='group'>
@@ -35,6 +34,24 @@ const ListaProductos = ({ productosProgramacion, comboBoxElements, setProductosP
                 productos={productosTipoMaterial}
               />
             </td>
+            <td className="relative py-4 pl-3 text-right text-sm font-semibold"></td>
+            <td className="relative py-4 pl-3 text-right text-sm font-semibold"></td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              <input
+                type='number'
+                value={productosProgramacion[index].cantidad}
+                min={0}
+                max={valoresProducto(productosProgramacion[index].producto, "existencias") || 0}
+                onChange={(e) => {
+                  /* Aquí se actualiza la cantidad */
+                  let newProductosProgramacion = [...productosProgramacion];
+                  newProductosProgramacion[index].cantidad = e.target.value;
+                  setProductosProgramacion(newProductosProgramacion);
+                }}
+                className="w-20 px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              />
+            </td>
+            <td className="relative py-4 pl-3 text-right text-sm font-semibold"></td>
             <td className="relative py-4 pl-3 text-right text-sm font-semibold">
               <button
                 type="button"
@@ -52,10 +69,25 @@ const ListaProductos = ({ productosProgramacion, comboBoxElements, setProductosP
               <Fragment key={index2}>
                 <tr className='group'>
                   <td className="whitespace-nowrap py-4 pl-8 pr-3 text-sm font-medium text-gray-900">
-                    <p>{item.nombreMaterial}</p>
+                    <p>{item.nombreMaterial + ' ' + item.medida}</p>
                   </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{valoresProducto(producto[index2]._id, "existencias") || 0}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{formatearDinero(mostrarPrecio(producto[index2]._id))}</td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                    <input
+                      type='number'
+                      value={productosProgramacion[index][index2].cantidad || 0}
+                      min={0}
+                      max={valoresProducto(productosProgramacion[index][index2]._id, "existencias") || 0}
+                      onChange={(e) => {
+                        /* Aquí se actualiza la cantidad */
+                        let newProductosProgramacion = [...productosProgramacion];
+                        newProductosProgramacion[index].cantidad = e.target.value;
+                        setProductosProgramacion(newProductosProgramacion);
+                      }}
+                      className="w-20 px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    />
+                  </td>
                 </tr>
               </Fragment>
             )

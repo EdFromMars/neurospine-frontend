@@ -47,6 +47,7 @@ const AgregarProgramacionProductos = ({enabledProductos, productos, productosPro
     if(!id) return '';
     let precio = '';
     console.log(productoParent);
+    console.log(id);
     const tipoProgramacion = programacion.tipoProgramacion;
     const tipoVenta = programacion.tipoVenta;
     const producto = productos.find((item) => item._id === id);
@@ -60,10 +61,10 @@ const AgregarProgramacionProductos = ({enabledProductos, productos, productosPro
       precio = '';
     }
     
-    const newProductosProgramacion = [...productosProgramacion];
+    const newProductos = [...productos];
     
     /* Aquí se actualiza el precio */
-    newProductosProgramacion.find((item) => item.producto === id).precio = precio;
+    newProductos.find((item) => item._id === id).precio = precio;
     
     /* Aquí se regresa el precio para mostrar en pantalla */
     return precio;
@@ -101,18 +102,18 @@ const AgregarProgramacionProductos = ({enabledProductos, productos, productosPro
               </tbody>
             </table>
             <div className="flex border-t border-gray-100 pt-6">
-                <button 
-                  type="button" 
-                  className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-                  onClick={() => setProductosProgramacion([
-                    /* Aquí se agrega un nuevo array vacío para productosProgramacion */
-                    ...(productosProgramacion || []), 
-                    { cantidad: 0, precio: 0, producto: '', materialPrincipal: ''}
-                  ])}
-                >
-                  <span aria-hidden="true">+</span> Agregar otro producto
-                </button>
-              </div>
+              <button 
+                type="button" 
+                className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                onClick={() => setProductosProgramacion([
+                  /* Aquí se agrega un nuevo array vacío para productosProgramacion */
+                  ...(productosProgramacion || []), 
+                  { cantidad: 0, precio: 0, producto: '', materialPrincipal: ''}
+                ])}
+              >
+                <span aria-hidden="true">+</span> Agregar otro producto
+              </button>
+            </div>
           </div>
         </div>
       </div>
