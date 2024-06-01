@@ -1,33 +1,46 @@
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { PlusCircleIcon  } from "@heroicons/react/20/solid";
-
+import { useEffect, useState } from "react";
 import useProductos from "../../hooks/useProductos";
 import ProductoInventario from "./ProductoInventario";
 import useAuth from "../../hooks/useAuth";
+import useMaterialApoyo from "../../hooks/useMaterialApoyo";
 
 
 const ListadoProductos = () => {
   
   const { productos, obtenerProductos, locaciones, obtenerLocaciones } = useProductos();
+  const { materialesApoyo, obtenerMaterialesApoyo } = useMaterialApoyo();
   const { auth, locacion, setLocacion, ejecutivo } = useAuth();
+  const [ listaProductos, setListaProductos ] = useState([]);
+
   
   useEffect(() => {
     if(locaciones.length === 0 || locaciones === ''){
       obtenerLocaciones();
     };
-
+    
     if(locacion === ''){
       setLocacion(auth.locacion);
     }
     
-    obtenerProductos(locacion);
-
+    actualizarListaProductos();
+    
   }, [locacion]);
+
+  const actualizarListaProductos = async () => {
+    await obtenerProductos(locacion);
+    await obtenerMaterialesApoyo();
+    const nuevaListaProductos = await [
+      ...productos,
+      ...materialesApoyo
+    ];
+    
+    setListaProductos(nuevaListaProductos);
+  }
+  
   
   const locacionFiltrada = locaciones.filter(locacionOption => locacionOption._id === locacion)[0];
   const nombreLocacion = locacionFiltrada ? locacionFiltrada.nombre : '';
-
+  
   return (
     <>
       <div
@@ -70,7 +83,7 @@ const ListadoProductos = () => {
         )}
         {productos.length ? (
           <ul>
-            {productos.map(producto => (
+            {listaProductos.map(producto => (
               <ProductoInventario 
               key={ producto._id }
               producto={ producto }

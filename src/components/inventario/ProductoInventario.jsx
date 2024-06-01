@@ -11,7 +11,8 @@ const ProductoInventario = ({ producto }) => {
     existencias, 
     cantidadMin, 
     cantidadMax, 
-    medida
+    medida,
+    piezasSet
   } = producto;
 
   const status = {
@@ -20,6 +21,14 @@ const ProductoInventario = ({ producto }) => {
     statusText: existencias <= cantidadMin ? 'Pocas' : existencias <= ((cantidadMax*.2)+cantidadMin) ? 'Bajas' : 'Normales',
   }  
 
+  // console.log(piezasSet)
+
+  if(piezasSet && piezasSet.length > 0){
+    console.log(piezasSet)
+  } else {
+    console.log('No hay piezas set')
+  }
+
   return (
     <li className="relative flex justify-between gap-x-6 px-4 py-5 hover:bg-gray-50 sm:px-6">
       <div className="flex min-w-0 gap-x-4">
@@ -27,7 +36,7 @@ const ProductoInventario = ({ producto }) => {
           <p className="text-sm font-semibold leading-6 text-gray-900 capitalize">
             <Link to={`producto/${_id}`}>
                 <span className="absolute inset-x-0 -top-px bottom-0" />
-                {nombreMaterial + ' ' + medida}
+                {nombreMaterial + ' ' + (medida ? medida : '')}
             </Link>
           </p>
           <p className="mt-1 flex text-xs leading-5 text-gray-500">
