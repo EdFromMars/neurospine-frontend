@@ -16,6 +16,7 @@ import Inventario from "./pages/inventario/Inventario";
 import Producto from "./pages/inventario/Producto";
 import AgregarProducto from "./pages/inventario/AgregarProducto";
 import EditarProducto from "./pages/inventario/EditarProducto";
+import MaterialApoyo from "./pages/inventario/MaterialApoyo";
 
 import Programaciones from "./pages/ventas/Programaciones";
 import AgregarProgramacion from "./pages/ventas/AgregarProgramacion";
@@ -77,6 +78,7 @@ function App() {
                   <Route path="agregar-material" element={<AgregarProducto/>}/>
                   <Route path="producto/:id" element={<Producto/>}/>
                   <Route path="editar-material/:id" element={<EditarProducto/>}/>
+                  <Route path="material-apoyo/:id" element={<MaterialApoyo/>}/>
                 </Route>
 
                 <Route path="/programacion" element={

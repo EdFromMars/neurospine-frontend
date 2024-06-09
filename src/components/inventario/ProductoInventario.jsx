@@ -21,12 +21,8 @@ const ProductoInventario = ({ producto }) => {
     statusText: existencias <= cantidadMin ? 'Pocas' : existencias <= ((cantidadMax*.2)+cantidadMin) ? 'Bajas' : 'Normales',
   }  
 
-  // console.log(piezasSet)
-
-  if(piezasSet && piezasSet.length > 0){
-    console.log(piezasSet)
-  } else {
-    console.log('No hay piezas set')
+  if(piezasSet){
+    const piezas = JSON.parse(piezasSet);
   }
 
   return (
@@ -34,13 +30,24 @@ const ProductoInventario = ({ producto }) => {
       <div className="flex min-w-0 gap-x-4">
         <div className="min-w-0 flex-auto">
           <p className="text-sm font-semibold leading-6 text-gray-900 capitalize">
-            <Link to={`producto/${_id}`}>
+            <Link to={piezasSet ? `material-apoyo/${_id}`:`producto/${_id}`}>
                 <span className="absolute inset-x-0 -top-px bottom-0" />
-                {nombreMaterial + ' ' + (medida ? medida : '')}
+                {nombreMaterial + ' ' + (medida ? medida : '') + (piezasSet ? 'material de apoyo' : '')}
+                {piezasSet && piezasSet.length > 0 && (
+                  <FlatPillDot {...{
+                    statusBgColor: 'bg-blue-100 mx-4',
+                    statusColor: 'fill-blue-400',
+                    statusText: 'Material de Apoyo',
+                  }}
+                  />
+                )}
             </Link>
           </p>
           <p className="mt-1 flex text-xs leading-5 text-gray-500">
-            <Link to={`producto/${_id}`} className="relative truncate hover:underline">
+            <Link 
+              to={piezasSet ? `material-apoyo/${_id}`:`producto/${_id}`}
+              className="relative truncate hover:underline"
+            >
               {descripcionExtendida}
             </Link>
           </p>

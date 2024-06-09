@@ -7,7 +7,7 @@ const MaterialApoyoContext = createContext();
 
 export const MaterialApoyoProvider = ({ children }) => {
   const [materialesApoyo, setMaterialesApoyo] = useState([]);
-  const { auth, locacion } = useAuth();
+  const { auth, locacion, ejecutivo, almacen, vendedor } = useAuth();
 
   useEffect(() => {
     obtenerMaterialesApoyo();
@@ -21,12 +21,22 @@ export const MaterialApoyoProvider = ({ children }) => {
     }
   }
 
-  const obtenerMaterialesApoyo = async () => {
+  const obtenerMaterialesApoyo = async (id) => {
     try {
       if(!token) return;
-
-      const { data } = await clienteAxios.get('/material-apoyo', config);
-      setMaterialesApoyo(data);
+      
+      if(ejecutivo || vendedor || almacen) {
+        const { data } = await clienteAxios.get('/material-apoyo', {
+          ...config,
+          params: {
+            locacion: id
+          }});
+        const materialPorLocacion = data.filter( producto => producto.locacion === locacion );
+        setMaterialesApoyo(materialPorLocacion);
+        return materialPorLocacion;
+      } else {
+        return;
+      }
     } catch (error) {
       console.log(error);
     }

@@ -34,6 +34,7 @@ export const ProductosProvider = ({ children }) => {
           }});
         const materialPorLocacion = data.filter( producto => producto.locacion === locacion );
         setProductos(materialPorLocacion);
+        return materialPorLocacion;
       } else {
         return;
       }

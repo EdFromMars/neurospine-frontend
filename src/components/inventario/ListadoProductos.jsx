@@ -3,6 +3,7 @@ import useProductos from "../../hooks/useProductos";
 import ProductoInventario from "./ProductoInventario";
 import useAuth from "../../hooks/useAuth";
 import useMaterialApoyo from "../../hooks/useMaterialApoyo";
+import { act } from "react";
 
 
 const ListadoProductos = () => {
@@ -12,32 +13,33 @@ const ListadoProductos = () => {
   const { auth, locacion, setLocacion, ejecutivo } = useAuth();
   const [ listaProductos, setListaProductos ] = useState([]);
 
+  const actualizarListaProductos = async (loc) => {
+    const productosObtenidos = await obtenerProductos(loc);
+    const materialesApoyoObtenidos = await obtenerMaterialesApoyo(loc);
+    
+    const nuevaListaProductos = [
+      ...productosObtenidos,
+      ...materialesApoyoObtenidos
+    ];
+    
+    await setListaProductos(nuevaListaProductos);
+  }
   
   useEffect(() => {
+    
     if(locaciones.length === 0 || locaciones === ''){
       obtenerLocaciones();
     };
     
     if(locacion === ''){
       setLocacion(auth.locacion);
+      actualizarListaProductos(auth.locacion);
+    } else {
+      actualizarListaProductos(locacion);
     }
     
-    actualizarListaProductos();
-    
-  }, [locacion]);
+  }, [locacion, locaciones]);
 
-  const actualizarListaProductos = async () => {
-    await obtenerProductos(locacion);
-    await obtenerMaterialesApoyo();
-    const nuevaListaProductos = await [
-      ...productos,
-      ...materialesApoyo
-    ];
-    
-    setListaProductos(nuevaListaProductos);
-  }
-  
-  
   const locacionFiltrada = locaciones.filter(locacionOption => locacionOption._id === locacion)[0];
   const nombreLocacion = locacionFiltrada ? locacionFiltrada.nombre : '';
   
@@ -81,7 +83,7 @@ const ListadoProductos = () => {
             </div>
           </>
         )}
-        {productos.length ? (
+        {listaProductos.length ? (
           <ul>
             {listaProductos.map(producto => (
               <ProductoInventario 
