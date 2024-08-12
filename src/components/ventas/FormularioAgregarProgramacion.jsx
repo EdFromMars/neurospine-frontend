@@ -1,20 +1,31 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useProductos from "../../hooks/useProductos";
+import useMaterialApoyo from "../../hooks/useMaterialApoyo";
 import useAuth from "../../hooks/useAuth";
+import useRazonSocial from "../../hooks/useRazonSocial";
+import useProgramacion from "../../hooks/useProgramacion";
+
+import SeleccionarRazonSocial from "./SeleccionarRazonSocial";
 import AgregarProgramacionDatos from "./AgregarProgramacionDatos";
 import AgregarProgramacionProductos from "./AgregarProgramacionProductos";
+import ConfirmarProgramacion from "./ConfirmarProgramacion";
 
 const FormularioAgregarProgramacion = () => {
   const { productos, obtenerProductos } = useProductos();
-  const { locacion } = useAuth();
+  const { materialesApoyo, obtenerMaterialesApoyo } = useMaterialApoyo();
+  const { razonSocial, setRazonSocial, obtenerRazonSocial } = useRazonSocial();
+  const { agregarProgramacion } = useProgramacion();
+  const { auth, locacion } = useAuth();
   const navigate = useNavigate();
   const [enabledProductos, setEnabledProductos] = useState('hidden');
+  const [mostrarProgramacion, setMostrarProgramacion] = useState('hidden');
 
   const [programacion, setProgramacion] = useState({
+    razonSocial: '',
     tipoProgramacion: '',
     tipoVenta: '',
-    tipoMaterial: '',
+    tipoCirugia: '',
     fechaCirugia: '',
     horaCirugia: '',
     estado: '',
@@ -40,33 +51,57 @@ const FormularioAgregarProgramacion = () => {
     }
   ] || []);
 
+  const [materialApoyoProgramacion, setMaterialApoyoProgramacion] = useState([
+    {
+      producto: '',
+      cantidad: 0,
+      precio: 0,
+      materialPrincipal: '',
+      multiple: false
+    }
+  ] || []);
+
+  useEffect(() => {
+    const mostrarRazonesSociales = async () => {
+      const data = await obtenerRazonSocial();
+      setRazonSocial(data);
+    }
+    mostrarRazonesSociales();
+  }, []);
+  
+  
   useEffect(() => {
     if(productos.length === 0) {
       obtenerProductos(locacion);
+    }
+    if(materialesApoyo.length === 0) {
+      obtenerMaterialesApoyo(locacion);
     }
   }, [locacion, productos]);
 
   const validarDatos = () => {
     const { 
+      razonSocial,
       tipoProgramacion, 
+      tipoCirugia,
       tipoVenta,
-      tipoMaterial,
+      formaPago,
       fechaCirugia, 
       horaCirugia, 
-      estado, 
+      fechaEntrega, 
+      fechaDevolucion, 
       hospital, 
+      estado, 
       nombrePaciente, 
       nombreCirujano, 
       responsableMaterial, 
       empresaResponsable, 
-      fechaEntrega, 
-      fechaDevolucion, 
-      formaPago 
     } = programacion;
 
     if( 
+      razonSocial.trim() === '' || 
       tipoProgramacion.trim() === '' || 
-      tipoMaterial.trim() === '' || 
+      tipoCirugia.trim() === '' || 
       fechaCirugia.trim() === '' || 
       horaCirugia.trim() === '' || 
       estado.trim() === '' || 
@@ -80,7 +115,8 @@ const FormularioAgregarProgramacion = () => {
       tipoProgramacion === 'cirugia' && tipoVenta.trim() === '' ||
       tipoProgramacion === 'cirugia' && formaPago.trim() === ''
     ){
-      setEnabledProductos('hidden');
+      // setEnabledProductos('hidden');
+      setEnabledProductos('flex');
       return;
     }
 
@@ -93,12 +129,28 @@ const FormularioAgregarProgramacion = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
+
+    const programacionInfo = {
+      ...programacion,
+      usuario: auth._id,
+      productos: JSON.stringify(productosProgramacion),
+      materialApoyo: JSON.stringify(materialApoyoProgramacion)
+    }
+    
+    console.log(programacionInfo);
+    agregarProgramacion(programacionInfo);
   }
 
   return (
     <>
       <div className="bg-white shadow sm:rounded-lg px-4 py-5 sm:px-6">
         <form onSubmit={handleSubmit}>
+
+          <SeleccionarRazonSocial
+            programacion={programacion}
+            setProgramacion={setProgramacion}
+            razonSocial={razonSocial}
+          />
           
           <AgregarProgramacionDatos 
             programacion={programacion} 
@@ -108,9 +160,19 @@ const FormularioAgregarProgramacion = () => {
           <AgregarProgramacionProductos 
             enabledProductos={enabledProductos}
             productos={productos}
+            materialesApoyo={materialesApoyo}
             productosProgramacion={productosProgramacion}
             setProductosProgramacion={setProductosProgramacion}
             programacion={programacion}
+            materialApoyoProgramacion={materialApoyoProgramacion}
+            setMaterialApoyoProgramacion={setMaterialApoyoProgramacion}
+          />
+
+          <ConfirmarProgramacion 
+            mostrarProgramacion={mostrarProgramacion}
+            programacion={programacion}
+            productosProgramacion={productosProgramacion}
+            materialApoyoProgramacion={materialApoyoProgramacion}
           />
 
           <div className="mt-6 flex items-center justify-end gap-x-6">
@@ -122,8 +184,16 @@ const FormularioAgregarProgramacion = () => {
               Cancelar
             </button>
             <button
+              onClick={() => { setMostrarProgramacion('visible') }}
+              type="button"
+              className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+              disabled={enabledProductos === 'hidden'}
+            >
+              Confirmar Programación
+            </button>
+            <button
               type="submit"
-              className={`${enabledProductos} rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+              className={`hidden rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
             >
               Agregar Programación
             </button>

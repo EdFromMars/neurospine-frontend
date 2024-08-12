@@ -3,8 +3,6 @@ import useProductos from "../../hooks/useProductos";
 import ProductoInventario from "./ProductoInventario";
 import useAuth from "../../hooks/useAuth";
 import useMaterialApoyo from "../../hooks/useMaterialApoyo";
-import { act } from "react";
-
 
 const ListadoProductos = () => {
   

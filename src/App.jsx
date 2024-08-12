@@ -42,6 +42,7 @@ import { HospitalesProvider } from "./context/HospitalesProvider";
 import { DoctoresProvider } from "./context/DoctoresProvider";
 import { RazonSocialProvider } from "./context/RazonSocialProvider";
 import { MaterialApoyoProvider } from "./context/MaterialApoyoProvider";
+import { ProgramacionProvider } from "./context/ProgramacionProvider";
 
 function App() {
 
@@ -83,7 +84,11 @@ function App() {
 
                 <Route path="/programacion" element={
                   <ZonasProvider>
-                    <RutaProtegida />
+                    <RazonSocialProvider>
+                      <ProgramacionProvider>
+                        <RutaProtegida />
+                      </ProgramacionProvider>
+                    </RazonSocialProvider>
                   </ZonasProvider>} 
                 >
                   <Route index element={<Programaciones />}/>

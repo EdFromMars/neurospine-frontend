@@ -43,7 +43,6 @@ const MaterialApoyo = () => {
   
   if(piezasSet){
     contenidoSet = JSON.parse(piezasSet)
-    console.log(contenidoSet)
   }
 
 

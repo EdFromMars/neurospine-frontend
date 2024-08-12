@@ -12,7 +12,9 @@ const ProductoInventario = ({ producto }) => {
     cantidadMin, 
     cantidadMax, 
     medida,
-    piezasSet
+    piezasSet,
+    consigna, 
+    reserva
   } = producto;
 
   const status = {
@@ -53,12 +55,20 @@ const ProductoInventario = ({ producto }) => {
           </p>
         </div>
       </div>
-      <div className="flex shrink-0 items-center gap-x-4">
-        <div className="flex flex-col items-end">
-          <p className="text-sm leading-6 text-gray-900">Existencias: {existencias}</p>
-            <FlatPillDot {...status} />
+      <div>
+        <div className="flex shrink-0 items-center gap-x-4">
+          <div className="flex flex-col items-end">
+            <p className="text-sm leading-6 text-gray-900">Existencias: {existencias}</p>
+              <FlatPillDot {...status} />
+          </div>
+          <ChevronRightIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
         </div>
-        <ChevronRightIcon className="h-5 w-5 flex-none text-gray-400" aria-hidden="true" />
+        <div>
+          <p className="text-sm leading-6 text-gray-900">Reserva: {reserva || 0}</p>
+        </div>
+        <div>
+          <p className="text-sm leading-6 text-gray-900">Consigna: {consigna || 0}</p>
+        </div>
       </div>
     </li>
   )

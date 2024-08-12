@@ -117,6 +117,16 @@ export const ProductosProvider = ({ children }) => {
     }
   }
 
+  const reservarProducto = async (id, existencias, cantidadReservar) => {
+    try {
+      if(!token) return;
+      const { data } = await clienteAxios.put(`/productos/${id}`, { existencias: existencias - cantidadReservar, reservas: cantidadReservar }, config);
+      obtenerProductos();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const actualizarProducto = async (producto, productoActualizado) => {
     try {
       if(!token) return;
@@ -151,6 +161,7 @@ export const ProductosProvider = ({ children }) => {
         guardarProducto,
         mostrarProducto,
         actualizarCantidad,
+        reservarProducto,
         actualizarProducto,
         eliminarProducto,
         obtenerLocaciones,
