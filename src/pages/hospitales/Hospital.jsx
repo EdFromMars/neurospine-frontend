@@ -54,7 +54,7 @@ const Hospital = () => {
           to={`/hospital/${_id}/agregar-doctor`}
           className="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         >
-          Agregar Doctor
+          Agregar Registro
           <PlusCircleIcon  className="-mr-0.5 h-5 w-5" aria-hidden="true" />
         </Link>
         </div>
@@ -62,12 +62,12 @@ const Hospital = () => {
       <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-8">
         <div className="px-4 py-6 sm:px-6">
           <h3 className="text-base font-semibold leading-7 text-gray-900 capitalize">{nombreHospital}</h3>
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Información de doctores asignados a este hospital</p>
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Información de registros asignados a {nombreHospital}</p>
         </div>
       </div>
       {doctores.length === 0 ? (
         <div className="flex items-center justify-center h-96">
-          <p className="text-lg font-semibold text-gray-500">No hay doctores asignados a este hospital</p>
+          <p className="text-lg font-semibold text-gray-500">No hay registros asignados a {nombreHospital}</p>
         </div>
         ) : (
           <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

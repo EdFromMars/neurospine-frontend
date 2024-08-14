@@ -70,7 +70,7 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
 
         <div className="sm:col-span-2">
           <label htmlFor="nombre-material" className="block text-sm font-medium leading-6 text-gray-900">
-            Clave ALG
+            Clave APB
           </label>
           <div className="mt-2">
             <input

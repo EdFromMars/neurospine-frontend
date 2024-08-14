@@ -36,11 +36,11 @@ const NuevoProducto = ({
       <div className="border-b border-gray-900/10 pb-12">
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6 ">
           <fieldset className="col-span-full">
+              <p className="text-base font-semibold leading-7 text-gray-900">Es material de apoyo</p>
             <div className="relative flex">
               <ToggleButton 
                 enabled={isMaterialApoyo || false} 
                 setEnabled={e => setIsMaterialApoyo(e)}
-                title={"Es material de apoyo"}
                 copy={"Selecciona esta opción si el material será registrado como material de apoyo."}
               />
             </div>
