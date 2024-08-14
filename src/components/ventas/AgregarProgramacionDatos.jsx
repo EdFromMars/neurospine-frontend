@@ -119,6 +119,7 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion }) => {
                     >
                       <option value="" hidden>Selecciona el Tipo de Venta</option>
                       <option value="angeles">Grupo Ángeles</option>
+                      <option value="aseguradora">Hospital Privado / Aseguradora</option>
                       <option value="distribuidor">Distribuidor</option>
                       <option value="directa">Venta Directa</option>
                     </select>
