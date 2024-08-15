@@ -36,8 +36,10 @@ const FormularioAgregarProgramacion = () => {
     empresaResponsable: '',
     fechaEntrega: '',
     fechaDevolucion: '',
-    formaPago: '',
+    iva: false,
     asistencia: false,
+    montoAsistencia: 0,
+    viaticos: false,
     observaciones: ''
   });
 
@@ -55,6 +57,9 @@ const FormularioAgregarProgramacion = () => {
     {
       producto: '',
       cantidad: 0,
+      tipoPrecio: 'renta',
+      setCompleto: 'false',
+      piezasSet: '',
       precio: 0,
       materialPrincipal: '',
       multiple: false
@@ -85,7 +90,7 @@ const FormularioAgregarProgramacion = () => {
       tipoProgramacion, 
       tipoCirugia,
       tipoVenta,
-      formaPago,
+      iva,
       fechaCirugia, 
       horaCirugia, 
       fechaEntrega, 
@@ -113,7 +118,7 @@ const FormularioAgregarProgramacion = () => {
       fechaEntrega.trim() === '' || 
       fechaDevolucion.trim() === '' || 
       tipoProgramacion === 'cirugia' && tipoVenta.trim() === '' ||
-      tipoProgramacion === 'cirugia' && formaPago.trim() === ''
+      ''
     ){
       // setEnabledProductos('hidden');
       setEnabledProductos('flex');
@@ -193,7 +198,7 @@ const FormularioAgregarProgramacion = () => {
             </button>
             <button
               type="submit"
-              className={`hidden rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+              className={`rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
             >
               Agregar Programación
             </button>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import ListaProductos from './ListaProductos';
+import ListaMaterialApoyo from './ListaMaterialApoyo';
 
 const AgregarProgramacionProductos = ({
   enabledProductos, 
@@ -156,18 +157,14 @@ const AgregarProgramacionProductos = ({
               <thead>
                 <tr>
                   <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Material de apoyo</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Existencias</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Precio</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Cantidad</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Monto</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                <ListaProductos 
+                <ListaMaterialApoyo 
                   tipoVenta={programacion.tipoVenta}
-                  productosProgramacion={materialApoyoProgramacion} 
+                  materialProgramacion={materialApoyoProgramacion} 
                   comboBoxElements={materialApoyoComboBox}
-                  setProductosProgramacion={setMaterialApoyoProgramacion}
+                  setMaterialProgramacion={setMaterialApoyoProgramacion}
                   productosTipoMaterial={productosTipoMaterial}
                   valoresProducto={valoresProducto}
                   mostrarPrecio={mostrarPrecio}

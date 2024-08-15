@@ -127,21 +127,21 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion }) => {
                 </div>
               </div>
               <div className="sm:col-span-3">
-                <label htmlFor="forma-pago" className="block text-sm font-medium leading-6 text-gray-900">
-                  Forma de Pago
+                <label htmlFor="agregar-iva" className="block text-sm font-medium leading-6 text-gray-900">
+                  Agregar IVA
                 </label>
                 <div className="mt-2">
-                  <select
-                    name="forma-pago"
-                    id="forma-pago"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    value={programacion.formaPago || ''}
-                    onChange={e => setProgramacion({ ...programacion, formaPago: e.target.value })}
-                    >
-                    <option value="" hidden>Selecciona la forma de pago</option>
-                    <option value="particular">Particular - Pago Directo</option>
-                    <option value="privado">Privado</option>
-                  </select>
+                  <fieldset className="col-span-full">
+                    <div className="relative flex">
+                      <ToggleButton 
+                        enabled={programacion.iva || false} 
+                        setEnabled={e => {
+                          setProgramacion({...programacion, iva: e})
+                        }}
+                        copy={"Selecciona esta opción para agregar el IVA en la programación"}
+                      />
+                    </div>
+              </fieldset>
                 </div>
               </div>
             </>
@@ -321,35 +321,71 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion }) => {
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
           <div className="sm:col-span-6">
             <div className="border-b border-gray-900/10 pb-12">
-              <h2 className="text-base font-semibold leading-7 text-gray-900">Requiere Asistencia Técnica</h2>
-              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <fieldset className="col-span-full">
-                  <div className="relative flex">
-                    <ToggleButton 
-                      enabled={programacion.asistencia || false} 
-                      setEnabled={e => {
-                        setProgramacion({...programacion, asistencia: e})
-                      }}
-                      copy={"Selecciona esta opción para volverlo un material complementario"}
-                    />
-                  </div>
-                </fieldset>
+              <label htmlFor="observaciones" className="block text-sm font-medium leading-6 text-gray-900">
+                Observaciones
+              </label>
+              <div className="mt-2">
+                <textarea
+                  name="observaciones"
+                  id="observaciones"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  value={programacion.observaciones || ''}
+                  onChange={e => setProgramacion({ ...programacion, observaciones: e.target.value })}
+                />
               </div>
             </div>
           </div>
 
           <div className="sm:col-span-6">
-            <label htmlFor="observaciones" className="block text-sm font-medium leading-6 text-gray-900">
-              Observaciones
-            </label>
-            <div className="mt-2">
-              <textarea
-                name="observaciones"
-                id="observaciones"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                value={programacion.observaciones || ''}
-                onChange={e => setProgramacion({ ...programacion, observaciones: e.target.value })}
-              />
+            <h2 className="text-base font-semibold leading-7 text-gray-900">Requiere Asistencia Técnica</h2>
+            <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+              <fieldset className="col-span-full">
+                <div className="relative flex">
+                  <ToggleButton 
+                    enabled={programacion.asistencia || false} 
+                    setEnabled={e => {
+                      setProgramacion({...programacion, asistencia: e})
+                    }}
+                    copy={"Selecciona esta opción para mostrar las opciones de asistencia técnica"}
+                  />
+                </div>
+              </fieldset>
+              {programacion.asistencia && (
+                <>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="monto-asistencia" className="block text-sm font-medium leading-6 text-gray-900">
+                      Monto de Asistencia
+                    </label>
+                    <div className="mt-2">
+                      <select
+                        name="monto-asistencia"
+                        id="monto-asistencia"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={programacion.montoAsistencia || ''}
+                        onChange={e => setProgramacion({ ...programacion, montoAsistencia: e.target.value })}
+                      >
+                        <option value="">Selecciona el Monto de Asistencia</option>
+                        <option value="1500">$1,500</option>
+                        <option value="2000">$2,000</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="monto-asistencia" className="block text-sm font-medium leading-6 text-gray-900">
+                      Agregar Viáticos
+                    </label>
+                    <div className="mt-2">
+                      <ToggleButton 
+                      enabled={programacion.viaticos || false} 
+                      setEnabled={e => {
+                        setProgramacion({...programacion, viaticos: e})
+                      }}
+                      copy={"Selecciona esta opción para indicar que se agregan viáticos al precio final"}
+                  />
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

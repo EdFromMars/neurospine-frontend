@@ -5,7 +5,7 @@ const ConfirmarProgramacion = ({
   materialApoyoProgramacion
 }) => {
 
-  console.log(programacion);
+  // console.log(programacion);
 
   return (
     <div className={`${mostrarProgramacion} flex flex-col md:flex-row gap-12`}>
