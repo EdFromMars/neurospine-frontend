@@ -142,8 +142,11 @@ const FormularioAgregarProgramacion = () => {
       materialApoyo: JSON.stringify(materialApoyoProgramacion)
     }
     
-    console.log(programacionInfo);
     agregarProgramacion(programacionInfo);
+    
+    setTimeout(() => {
+      navigate('/programacion');
+    }, 3000);
   }
 
   return (
