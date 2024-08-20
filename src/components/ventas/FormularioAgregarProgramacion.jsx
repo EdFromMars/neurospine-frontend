@@ -137,13 +137,16 @@ const FormularioAgregarProgramacion = () => {
 
     const programacionInfo = {
       ...programacion,
+      fechaCirugia: new Date(fechaCirugia.replace(/-/g, '/')),
+      fechaEntrega: new Date(fechaEntrega.replace(/-/g, '/')),
+      fechaDevolucion: new Date(fechaDevolucion.replace(/-/g, '/')),
       usuario: auth._id,
       productos: JSON.stringify(productosProgramacion),
       materialApoyo: JSON.stringify(materialApoyoProgramacion)
     }
     
     agregarProgramacion(programacionInfo);
-    
+
     setTimeout(() => {
       navigate('/programacion');
     }, 3000);
