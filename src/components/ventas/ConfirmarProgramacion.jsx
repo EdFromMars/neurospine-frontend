@@ -9,13 +9,12 @@ const ConfirmarProgramacion = ({
 
   const [viaticosMonto, setViaticosMonto] = useState(0);
 
-  console.log(materialApoyoProgramacion);
   const { razonSocial, tipoCirugia, tipoProgramacion, tipoVenta, fechaCirugia, horaCirugia, fechaEntrega, fechaDevolucion, hospital, estado, nombrePaciente, nombreCirujano, responsableMaterial, empresaResponsable, asistencia, montoAsistencia, viaticos } = programacion;
 
-  const productosProgramados = productosProgramacion.map(producto => {
+  const productosProgramados = productosProgramacion.map(( producto, productoIndex ) => {
     if(Array.isArray(producto)){
-      return producto.map((productoIndividual) => (
-        <tr key={productoIndividual._id}>
+      return producto.map((productoIndividual, productoIndividualIndex) => (
+        <tr key={`${productoIndividual._id}-${productoIndividualIndex}`}>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm font-medium text-gray-900">{productoIndividual.nombreMaterial} {productoIndividual.medida}</div>
           </td>
@@ -29,7 +28,7 @@ const ConfirmarProgramacion = ({
       ))
     } else {
       return (
-        <tr key={producto._id}>
+        <tr key={`${producto._id}-${productoIndex}`}>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm font-medium text-gray-900">{producto.producto}</div>
           </td>
@@ -42,10 +41,10 @@ const ConfirmarProgramacion = ({
     }
   );
 
-  const materialApoyoProgramado = materialApoyoProgramacion.map(producto => {
+  const materialApoyoProgramado = materialApoyoProgramacion.map(( producto, productoIndex ) => {
     if(Array.isArray(producto)){
       return producto.map((productoIndividual) => (
-        <tr key={productoIndividual._id}>
+        <tr key={`${productoIndividual._id}-${productoIndividualIndex}`}>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm font-medium text-gray-900">{productoIndividual.nombreMaterial} {productoIndividual.medida}</div>
           </td>
@@ -59,7 +58,7 @@ const ConfirmarProgramacion = ({
       ))
     } else {
       return (
-        <tr key={producto._id}>
+        <tr key={`${producto._id}-${productoIndex}`}>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm font-medium text-gray-900">{producto.producto}</div>
           </td>

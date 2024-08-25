@@ -32,8 +32,7 @@ const Programaciones = () => {
   });
 
   const programacionesActivas = programaciones.map((programacion) => {
-    const date = new Date(programacion.fechaCirugia.replace(/-/g, '/'))
-    if(isPast(date) && !isToday(date)){
+    if(programacion.activa === true){
       return programacion;
     }
   });
@@ -46,10 +45,6 @@ const Programaciones = () => {
   
   programaciones.map((programacion) => {
     const date = new Date(programacion.fechaCirugia.replace(/-/g, '/'))
-    console.log(date);
-    console.log(isPast(date));
-    console.log(isToday(date));
-    console.log(isFuture(date));
   });
 
   return (
