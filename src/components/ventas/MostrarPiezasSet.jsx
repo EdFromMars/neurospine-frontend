@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 const MostrarPiezasSet = ({ producto, materialesApoyo, materialProgramacion, tipoVenta, formatearDinero }) => {
   const [piezasSet, setPiezasSet] = useState([]);
+  const materialActual = materialProgramacion.filter(material => material.producto === producto.producto);
   
   useEffect(() => {
     if (materialesApoyo.length > 0) {
@@ -10,7 +11,7 @@ const MostrarPiezasSet = ({ producto, materialesApoyo, materialProgramacion, tip
     }
   }, [producto.piezas]);
   
-  console.log('piezasSet:', piezasSet);
+  //console.log('piezasSet:', piezasSet);
   const mostrarTotal = (index) => {
     const pieza = piezasSet[index];
     if (pieza.pedido !== 0) {
@@ -45,11 +46,11 @@ const MostrarPiezasSet = ({ producto, materialesApoyo, materialProgramacion, tip
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
             <input 
               type="number"
-              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              className="block w-24 p-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
               step={1}
               min={0}
               max={pieza.cantidad}
-              value={pieza.pedido}
+              value={pieza.pedido || 0}
               onChange={(e) => {
                 const newPiezasSet = [...piezasSet];
                 newPiezasSet[piezaIndex] = { ...pieza, pedido: +e.target.value };

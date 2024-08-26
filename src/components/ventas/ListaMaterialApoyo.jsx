@@ -28,6 +28,7 @@ const ListaMaterialApoyo = ({
   }
 
   const renderProducto = (producto, index) => {
+    console.log('materialProgramación:', index, materialProgramacion[index]);
     return (
       <Fragment key={index}>
         <tr className='group'>
@@ -45,7 +46,7 @@ const ListaMaterialApoyo = ({
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
             <select
-              className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              className="block w-full pl-3 pr-10 py-2 mt-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
               value={producto.tipoPrecio}
               onChange={(e) => {
                 const newMaterial = [...materialProgramacion];
@@ -56,29 +57,37 @@ const ListaMaterialApoyo = ({
               <option value="renta">Renta</option>
               <option value="venta">Venta</option>
             </select>
+          </td>
+          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
             <fieldset>
-              <div className="space-y-6 sm:flex items-center sm:space-x-10 sm:space-y-0">
-                <div key="completo" className="flex items-center">
+              <div className="space-y-6 sm:flex text-center items-center content-center sm:space-x-10 sm:space-y-0">
+                <div key="completo" className="flex items-center self-center">
                   <input
-                    checked={producto.setCompleto === 'true'}
+                    checked={materialProgramacion[index].setCompleto === true}
                     id="completo"
                     name="completo"
                     type="radio"
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    onChange={() => {producto.setCompleto = 'true'; setMaterialProgramacion([...materialProgramacion])}}
+                    onChange={() => {
+                      producto.setCompleto = true; 
+                      setMaterialProgramacion([...materialProgramacion])
+                    }}
                   />
                   <label htmlFor="completo" className="ml-3 block text-sm font-medium leading-6 text-gray-900">
                     Set Completo
                   </label>
                 </div>
-                <div key="piezas" className="flex items-center">
+                <div key="piezas" className="flex items-center self-center">
                   <input
-                    checked={producto.setCompleto === 'false'}
+                    checked={materialProgramacion[index].setCompleto === false}
                     id="piezas"
                     name="piezas"
                     type="radio"
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                    onChange={() => {producto.setCompleto = 'false'; setMaterialProgramacion([...materialProgramacion])}}
+                    onChange={() => {
+                      producto.setCompleto = false; 
+                      setMaterialProgramacion([...materialProgramacion])
+                    }}
                   />
                   <label htmlFor="piezas" className="ml-3 block text-sm font-medium leading-6 text-gray-900">
                     Piezas
@@ -87,6 +96,11 @@ const ListaMaterialApoyo = ({
               </div>
             </fieldset>
           </td>
+          {producto.setCompleto === true && (
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              Costo
+          </td>
+          )}
           <td className="relative py-4 pl-3 text-right text-sm font-semibold">
             <button
               type="button"
@@ -99,10 +113,10 @@ const ListaMaterialApoyo = ({
             </button>
           </td>
         </tr>
-        {producto.setCompleto === 'false' && (
+        {producto.setCompleto === false && (
           <tr>
             <td colSpan="4">
-              <table>
+              <table className="w-full">
                 <tbody>
                   <MostrarPiezasSet
                     producto={producto}
@@ -121,11 +135,13 @@ const ListaMaterialApoyo = ({
   }
   
   return (
-    <table>
+    <table className="w-full">
       <thead>
         <tr>
           <th>Producto</th>
           <th>Tipo Precio</th>
+          <th>Tipo de Venta</th>
+          <th>Costo</th>
           <th></th>
         </tr>
       </thead>

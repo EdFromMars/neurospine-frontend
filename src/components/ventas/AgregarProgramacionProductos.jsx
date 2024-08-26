@@ -178,7 +178,7 @@ const AgregarProgramacionProductos = ({
                 onClick={() => setMaterialApoyoProgramacion([
                   /* Aquí se agrega un nuevo array vacío para productosProgramacion */
                   ...(materialApoyoProgramacion || []), 
-                  { cantidad: 0, precio: 0, producto: '', materialPrincipal: ''}
+                  { cantidad: 0, precio: 0, producto: '', materialPrincipal: '', setCompleto: true}
                 ])}
               >
                 <span aria-hidden="true">+</span> Agregar otro producto
