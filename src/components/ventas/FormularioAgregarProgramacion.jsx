@@ -137,9 +137,9 @@ const FormularioAgregarProgramacion = () => {
 
     const programacionInfo = {
       ...programacion,
-      fechaCirugia: new Date(fechaCirugia.replace(/-/g, '/')),
-      fechaEntrega: new Date(fechaEntrega.replace(/-/g, '/')),
-      fechaDevolucion: new Date(fechaDevolucion.replace(/-/g, '/')),
+      // fechaCirugia: new Date(fechaCirugia.replace(/-/g, '/')),
+      // fechaEntrega: new Date(fechaEntrega.replace(/-/g, '/')),
+      // fechaDevolucion: new Date(fechaDevolucion.replace(/-/g, '/')),
       usuario: auth._id,
       productos: JSON.stringify(productosProgramacion),
       materialApoyo: JSON.stringify(materialApoyoProgramacion)
@@ -181,7 +181,10 @@ const FormularioAgregarProgramacion = () => {
 
           <ConfirmarProgramacion 
             mostrarProgramacion={mostrarProgramacion}
+            razonesSocialesLista={razonSocial}
             programacion={programacion}
+            productos={productos}
+            materialesApoyo={materialesApoyo}
             productosProgramacion={productosProgramacion}
             materialApoyoProgramacion={materialApoyoProgramacion}
           />

@@ -39,7 +39,6 @@ const Login = () => {
       puestos[data.puesto]();
       navigate("/inicio");
     } catch (error) {
-      console.log(error.response);
       setAlerta({
         msg: error.response.data.msg,
         error: true

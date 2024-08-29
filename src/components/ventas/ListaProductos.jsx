@@ -49,7 +49,7 @@ const ListaProductos = ({
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
               <input
                 type='number'
-                value={productosProgramacion[index].cantidad}
+                value={productosProgramacion[index].cantidad || 0}
                 min={0}
                 max={99}
                 onChange={(e) => {

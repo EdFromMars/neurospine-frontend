@@ -1,20 +1,20 @@
 import { Fragment } from "react";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import ComboBoxRepeater from "../ui/ComboBoxRepeater";
-import { formatearDinero } from '../../helpers';
 import MostrarPiezasSet from "./MostrarPiezasSet";
-import useMaterialApoyo from "../../hooks/useMaterialApoyo";
+import { formatearDinero } from "../../helpers";
 
 const ListaMaterialApoyo = ({
   materialProgramacion,
   setMaterialProgramacion,
   comboBoxElements,
   productosTipoMaterial,
-  formatearDinero,
+  materialesApoyo,
+  materialApoyoProgramacion,
   mostrarPrecio,
-  tipoVenta
+  tipoVenta,
+  programacion
 }) => {
-  const { materialesApoyo } = useMaterialApoyo();
   
   const calcularMonto = (index) => {
     const monto = materialProgramacion[index].cantidad * mostrarPrecio(materialProgramacion[index].producto) || '0';
@@ -27,8 +27,17 @@ const ListaMaterialApoyo = ({
     setMaterialProgramacion(newMaterialProgramacion);
   }
 
+  const precioSetCompleto = (id, tipoPrecio, index) => {
+    if (materialesApoyo === undefined) return '';
+    const producto = materialesApoyo.find(producto => producto._id === id);
+    if (producto) {
+      const precio = programacion.tipoVenta === 'angeles' && tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
+      return precio;
+    }
+    return '';
+  }
+
   const renderProducto = (producto, index) => {
-    console.log('materialProgramación:', index, materialProgramacion[index]);
     return (
       <Fragment key={index}>
         <tr className='group'>
@@ -70,6 +79,8 @@ const ListaMaterialApoyo = ({
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                     onChange={() => {
                       producto.setCompleto = true; 
+                      producto.cantidad = 1;
+                      producto.precio = precioSetCompleto(producto.producto, producto.tipoPrecio, index);
                       setMaterialProgramacion([...materialProgramacion])
                     }}
                   />
@@ -98,7 +109,7 @@ const ListaMaterialApoyo = ({
           </td>
           {producto.setCompleto === true && (
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              Costo
+              {formatearDinero(precioSetCompleto(producto.producto, producto.tipoPrecio, index))}
           </td>
           )}
           <td className="relative py-4 pl-3 text-right text-sm font-semibold">
@@ -119,11 +130,12 @@ const ListaMaterialApoyo = ({
               <table className="w-full">
                 <tbody>
                   <MostrarPiezasSet
+                    indexProducto={index}
                     producto={producto}
                     materialesApoyo={materialesApoyo}
                     materialProgramacion={materialProgramacion}
+                    setMaterialProgramacion={setMaterialProgramacion}
                     tipoVenta={tipoVenta}
-                    formatearDinero={formatearDinero}
                   />
                 </tbody>
               </table>

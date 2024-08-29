@@ -76,8 +76,8 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion }) => {
                   onChange={e => setProgramacion({ ...programacion, tipoProgramacion: e.target.value })}
                 >
                   <option value="" hidden>Tipo de Programación</option>
-                  <option value="cirugia">Cirugia</option>
-                  <option value="demostracion">Demostracion</option>
+                  <option value="cirugia">Cirugía</option>
+                  <option value="demostracion">Demostración</option>
                 </select>
               </div>
             </div>

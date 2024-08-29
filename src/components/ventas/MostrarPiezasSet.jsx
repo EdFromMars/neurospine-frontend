@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { formatearDinero } from '../../helpers/index';
 
-const MostrarPiezasSet = ({ producto, materialesApoyo, materialProgramacion, tipoVenta, formatearDinero }) => {
+const MostrarPiezasSet = ({ indexProducto, producto, materialesApoyo, materialProgramacion, setMaterialProgramacion, tipoVenta }) => {
   const [piezasSet, setPiezasSet] = useState([]);
   const materialActual = materialProgramacion.filter(material => material.producto === producto.producto);
+  console.log('materialProgramación:', materialProgramacion);
   
   useEffect(() => {
     if (materialesApoyo.length > 0) {
@@ -10,12 +12,18 @@ const MostrarPiezasSet = ({ producto, materialesApoyo, materialProgramacion, tip
       setPiezasSet(JSON.parse(materialJSON));
     }
   }, [producto.piezas]);
+
+  useEffect(() => {
+    const newMaterialProgramacion = [...materialProgramacion];
+    newMaterialProgramacion[indexProducto] = { ...materialActual[0], piezasSet };
+    setMaterialProgramacion(newMaterialProgramacion);
+  }, [piezasSet]);
   
   //console.log('piezasSet:', piezasSet);
   const mostrarTotal = (index) => {
     const pieza = piezasSet[index];
     if (pieza.pedido !== 0) {
-      return tipoVenta === 'angeles' ? pieza.precioAngeles * (pieza.pedido || 1) : pieza.precioEstandar * (pieza.pedido || 1);
+      return tipoVenta === 'angeles' ? pieza.precioAngeles * (pieza.pedido || 0) : pieza.precioEstandar * (pieza.pedido || 0);
     } else {
       return 0;
     }
@@ -41,7 +49,7 @@ const MostrarPiezasSet = ({ producto, materialesApoyo, materialProgramacion, tip
             {pieza.cantidad}
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {tipoVenta === 'angeles' ? pieza.precioAngeles : pieza.precioEstandar}
+            {formatearDinero(tipoVenta === 'angeles' ? pieza.precioAngeles : pieza.precioEstandar)}
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
             <input 
@@ -55,11 +63,12 @@ const MostrarPiezasSet = ({ producto, materialesApoyo, materialProgramacion, tip
                 const newPiezasSet = [...piezasSet];
                 newPiezasSet[piezaIndex] = { ...pieza, pedido: +e.target.value };
                 setPiezasSet(newPiezasSet);
+                console.log(materialActual[0]);
               }}
             />
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            ${( new Intl.NumberFormat().format(mostrarTotal(piezaIndex)))}
+            {(formatearDinero(mostrarTotal(piezaIndex)))}
           </td>
         </tr>
         )))

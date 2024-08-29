@@ -166,8 +166,11 @@ const AgregarProgramacionProductos = ({
                   comboBoxElements={materialApoyoComboBox}
                   setMaterialProgramacion={setMaterialApoyoProgramacion}
                   productosTipoMaterial={productosTipoMaterial}
+                  materialesApoyo={materialesApoyo}
+                  materialApoyoProgramacion={materialApoyoProgramacion}
                   valoresProducto={valoresProducto}
                   mostrarPrecio={mostrarPrecio}
+                  programacion={programacion}
                 />
               </tbody>
             </table>
