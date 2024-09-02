@@ -69,10 +69,11 @@ const AgregarProgramacionProductos = ({
     let precio = '';
     const tipoProgramacion = programacion.tipoProgramacion;
     const tipoVenta = programacion.tipoVenta;
+    const precioGrupoAngeles = programacion.precioGrupoAngeles;
     const producto = productos.find((item) => item._id === id) || materialesApoyo.find((item) => item._id === id);
 
     /*Validar tipo de programación y tipo de venta para mostrar el precio correcto*/
-    if(tipoVenta === 'angeles'){
+    if(tipoVenta === 'angeles' || precioGrupoAngeles === true){
       precio = producto.precioAngeles;
     } else if(tipoProgramacion === 'demostracion' || tipoVenta === 'directa'){
       precio = producto.precioEstandar;
