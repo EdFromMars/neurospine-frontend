@@ -53,6 +53,17 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion }) => {
     }
   }
 
+  const handleDatosFacturacion = (e) => {
+    const nuevosDatosFacturacion = {...programacion.datosFacturacion};
+    nuevosDatosFacturacion[e.target.name] = e.target.value;
+
+    console.log(nuevosDatosFacturacion);
+    setProgramacion({ 
+      ...programacion, 
+      datosFacturacion: nuevosDatosFacturacion
+    });
+  }
+
   return (
     <div className={`space-y-12 datos-programacion`}>
       <div className="border-b border-gray-900/10 pb-12">
@@ -126,6 +137,29 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion }) => {
                   </div>
                 </div>
               </div>
+              {programacion.tipoVenta === 'aseguradora' && (
+                <div className="sm:col-span-3">
+                  <label htmlFor="agregar-iva" className="block text-sm font-medium leading-6 text-gray-900">
+                    Precio Grupo Ángeles
+                  </label>
+                  <div className="mt-2">
+                    <fieldset className="col-span-full">
+                      <div className="relative flex">
+                        <ToggleButton 
+                          enabled={programacion.precioGrupoAngeles || false} 
+                          setEnabled={e => {
+                            setProgramacion({...programacion, precioGrupoAngeles: e})
+                          }}
+                          copy={"Selecciona esta opción para usar el precio de Grupo Ángeles, de lo contrario el precio será agregado manualmente en la programación"}
+                        />
+                      </div>
+                    </fieldset>
+                  </div>
+                </div>
+              )}
+              
+              <div className="border-b border-gray-900/10 pb-12 col-span-6"></div>
+              
               <div className="sm:col-span-3">
                 <label htmlFor="agregar-iva" className="block text-sm font-medium leading-6 text-gray-900">
                   Agregar IVA
@@ -141,9 +175,109 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion }) => {
                         copy={"Selecciona esta opción para agregar el IVA en la programación"}
                       />
                     </div>
-              </fieldset>
+                  </fieldset>
                 </div>
               </div>
+              <div className="sm:col-span-6"></div>
+
+              {programacion.iva && (
+                <>
+                  <div className="sm:col-span-3">
+                    <label htmlFor="calle" className="block text-sm font-medium leading-6 text-gray-900">
+                      Calle
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="calle"
+                        id="calle"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={programacion.datosFacturacion.calle || ''}
+                        onChange={e => handleDatosFacturacion(e)}
+                      />
+                    </div>
+                  </div>
+                  <div className="sm:col-span-3">
+                    <label htmlFor="razonSocial" className="block text-sm font-medium leading-6 text-gray-900">
+                      Razón Social
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="razonSocial"
+                        id="razonSocial"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={programacion.datosFacturacion.razonSocial || ''}
+                        onChange={e => handleDatosFacturacion(e)}
+                      />
+                    </div>
+                  </div>
+                  <div className="sm:col-span-3">
+                    <label htmlFor="rfc" className="block text-sm font-medium leading-6 text-gray-900">
+                      RFC
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="rfc"
+                        id="rfc"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={programacion.datosFacturacion.rfc || ''}
+                        onChange={e => handleDatosFacturacion(e)}
+                      />
+                    </div>
+                  </div>
+                  <div className="sm:col-span-3">
+                    <label htmlFor="cfdi" className="block text-sm font-medium leading-6 text-gray-900">
+                      Uso de CFDI
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="cfdi"
+                        id="cfdi"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={programacion.datosFacturacion.cfdi || ''}
+                        onChange={e => handleDatosFacturacion(e)}
+                      />
+                    </div>
+                  </div>
+                  <div className="sm:col-span-3">
+                    <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                      Email
+                    </label>
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        name="email"
+                        id="email"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={programacion.datosFacturacion.email || ''}
+                        onChange={e => handleDatosFacturacion(e)}
+                      />
+                    </div>
+                  </div>
+                  <div className="sm:col-span-3">
+                    <label htmlFor="tipoPago" className="block text-sm font-medium leading-6 text-gray-900">
+                      Tipo de Pago
+                    </label>
+                    <div className="mt-2">
+                      <select
+                          name="tipoPago"
+                          id="tipoPago"
+                          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          value={programacion.datosFacturacion.tipoPago || ''}
+                          onChange={e => handleDatosFacturacion(e)}
+                        >
+                          <option value="" hidden>Selecciona el Tipo de Pago</option>
+                          <option value="transferencia">Transferencia</option>
+                          <option value="cheque">Cheque</option>
+                          <option value="tarjeta">Tarjeta</option>
+                        </select>
+                    </div>
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>
