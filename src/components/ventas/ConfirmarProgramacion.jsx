@@ -50,7 +50,6 @@ const ConfirmarProgramacion = ({
       } else {
         obtenerHospitales(locacion);
       }
-      console.log(hospitales);
     }
     listaHospitales();
   }, 
@@ -129,19 +128,24 @@ const ConfirmarProgramacion = ({
   );
 
   const materialApoyoProgramado = materialApoyoProgramacion.map(( producto, productoIndex ) => {
-    if(Array.isArray(producto)){
-      return producto.map((productoIndividual) => (
-        <tr key={`${productoIndividual._id}-${productoIndividualIndex}`}>
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm font-medium text-gray-900">{productoIndividual.nombreMaterial} {productoIndividual.medida}</div>
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm font-medium text-gray-900">{producto.cantidad}</div>
-          </td>
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm font-medium text-gray-900 text-right">{formatearDinero(productoIndividual.precioAngeles)}</div>
-          </td>
-        </tr>
+    if(producto.piezasSet && Array.isArray(producto.piezasSet)){
+      return producto.piezasSet.map((productoIndividual, productoIndividualIndex) => (
+        (productoIndividual.pedido && productoIndividual.pedido !== 0) && (
+          <tr key={`${productoIndividual._id}-${productoIndividualIndex}`}>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="text-sm font-medium text-gray-900">{productoIndividual.nombre} {productoIndividual.medida}</div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="text-sm font-medium text-gray-900">{productoIndividual.pedido || 0}</div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="text-sm font-medium text-gray-900 text-right">{formatearDinero(productoIndividual.precio)}</div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="text-sm font-medium text-gray-900 text-right">{formatearDinero(productoIndividual.precio * productoIndividual.pedido)}</div>
+            </td>
+          </tr>
+        ) 
       ))
     } else {
       return (
@@ -324,6 +328,12 @@ const ConfirmarProgramacion = ({
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
                   Cantidad
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Precio
                 </th>
                 <th
                   scope="col"

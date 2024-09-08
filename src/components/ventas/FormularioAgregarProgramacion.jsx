@@ -66,7 +66,7 @@ const FormularioAgregarProgramacion = () => {
     {
       producto: '',
       cantidad: 0,
-      tipoPrecio: 'renta',
+      tipoPrecio: '',
       setCompleto: true,
       piezasSet: '',
       precio: 0,

@@ -57,7 +57,6 @@ const AgregarProgramacionDatos = ({ programacion, setProgramacion }) => {
     const nuevosDatosFacturacion = {...programacion.datosFacturacion};
     nuevosDatosFacturacion[e.target.name] = e.target.value;
 
-    console.log(nuevosDatosFacturacion);
     setProgramacion({ 
       ...programacion, 
       datosFacturacion: nuevosDatosFacturacion

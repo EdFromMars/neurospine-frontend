@@ -1,21 +1,39 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import ComboBoxRepeater from "../ui/ComboBoxRepeater";
 import MostrarPiezasSet from "./MostrarPiezasSet";
 import { formatearDinero } from "../../helpers";
+import useMaterialApoyo from "../../hooks/useMaterialApoyo";
 
 const ListaMaterialApoyo = ({
   materialProgramacion,
   setMaterialProgramacion,
   comboBoxElements,
   productosTipoMaterial,
-  materialesApoyo,
-  materialApoyoProgramacion,
   mostrarPrecio,
   tipoVenta,
   programacion
 }) => {
-  
+
+  const { iva, precioGrupoAngeles } = programacion;
+  const { materialesApoyo } = useMaterialApoyo();
+  const [prevMaterialProgramacion, setPrevMaterialProgramacion] = useState(materialProgramacion);
+
+  useEffect(() => {
+    if (JSON.stringify(prevMaterialProgramacion) !== JSON.stringify(materialProgramacion)) {
+      const newMaterialProgramacion = materialProgramacion.map((item, index) => {
+        const producto = materialesApoyo.find(producto => producto._id === item.producto);
+        if (producto) {
+          const precio = programacion.tipoVenta === 'angeles' && item.tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
+          return { ...item, precio: +precio };
+        }
+        return item;
+      });
+      setMaterialProgramacion(newMaterialProgramacion);
+      setPrevMaterialProgramacion(materialProgramacion);
+    }
+  }, [materialProgramacion, materialesApoyo, programacion.tipoVenta, setMaterialProgramacion, prevMaterialProgramacion]);
+
   const calcularMonto = (index) => {
     const monto = materialProgramacion[index].cantidad * mostrarPrecio(materialProgramacion[index].producto) || '0';
     return formatearDinero(monto);
@@ -28,13 +46,21 @@ const ListaMaterialApoyo = ({
   }
 
   const precioSetCompleto = (id, tipoPrecio, index) => {
+    let precio = 0;
+    
     if (materialesApoyo === undefined) return '';
     const producto = materialesApoyo.find(producto => producto._id === id);
+        
     if (producto) {
-      const precio = programacion.tipoVenta === 'angeles' && tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
-      return precio;
+      precio = programacion.tipoVenta === 'angeles' && tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
+      const newMaterial = [...materialProgramacion];
+      newMaterial[index].precio = +precio;
+      setMaterialProgramacion(newMaterial);
     }
-    return '';
+
+    return (
+      <span>{formatearDinero(materialProgramacion[index].precio)}</span>
+    )
   }
 
   const renderProducto = (producto, index) => {
@@ -63,6 +89,7 @@ const ListaMaterialApoyo = ({
                 setMaterialProgramacion(newMaterial);
               }}
             >
+              <option value="" hidden>Selecciona el Tipo de Venta</option>
               <option value="renta">Renta</option>
               <option value="venta">Venta</option>
             </select>
@@ -106,12 +133,7 @@ const ListaMaterialApoyo = ({
                 </div>
               </div>
             </fieldset>
-          </td>
-          {producto.setCompleto === true && (
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              {formatearDinero(precioSetCompleto(producto.producto, producto.tipoPrecio, index))}
-          </td>
-          )}
+            </td>
           <td className="relative py-4 pl-3 text-right text-sm font-semibold">
             <button
               type="button"
@@ -124,24 +146,47 @@ const ListaMaterialApoyo = ({
             </button>
           </td>
         </tr>
-        {producto.setCompleto === false && (
+        {producto.setCompleto === 'false' && (
           <tr>
             <td colSpan="4">
-              <table className="w-full">
+              <table>
                 <tbody>
                   <MostrarPiezasSet
-                    indexProducto={index}
                     producto={producto}
                     materialesApoyo={materialesApoyo}
                     materialProgramacion={materialProgramacion}
-                    setMaterialProgramacion={setMaterialProgramacion}
                     tipoVenta={tipoVenta}
+                    formatearDinero={formatearDinero}
                   />
                 </tbody>
               </table>
             </td>
           </tr>
         )}
+        <tr>
+          <td colSpan="4">
+            {tipoVenta === 'distribuidor' || (tipoVenta === 'aseguradora' && !precioGrupoAngeles) ? (
+              <input 
+                type="number"
+                className="block w-24 p-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                step={1}
+                min={0}
+                value={producto.precio || 0}
+                onChange={(e) => {
+                  const newMaterial = [...materialProgramacion];
+                  newMaterial[index].precio = +e.target.value;
+                  setMaterialProgramacion(newMaterial);
+                }}
+              />
+            ) : (
+              (tipoVenta === 'angeles' || tipoVenta === 'directa' || precioGrupoAngeles) ? (
+                <>
+                  <span>{formatearDinero(producto.precio)}</span>
+                </>
+              ) : null
+            )}
+          </td>
+        </tr>
       </Fragment>
     )
   }

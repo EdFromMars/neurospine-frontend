@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { formatearDinero } from '../../helpers/index';
 
-const MostrarPiezasSet = ({ indexProducto, producto, materialesApoyo, materialProgramacion, setMaterialProgramacion, tipoVenta }) => {
+const MostrarPiezasSet = ({ indexProducto, producto, materialesApoyo, materialProgramacion, setMaterialProgramacion, tipoVenta, precioGrupoAngeles }) => {
   const [piezasSet, setPiezasSet] = useState([]);
   const materialActual = materialProgramacion.filter(material => material.producto === producto.producto);
   console.log('materialProgramación:', materialProgramacion);
@@ -23,7 +23,7 @@ const MostrarPiezasSet = ({ indexProducto, producto, materialesApoyo, materialPr
   const mostrarTotal = (index) => {
     const pieza = piezasSet[index];
     if (pieza.pedido !== 0) {
-      return tipoVenta === 'angeles' ? pieza.precioAngeles * (pieza.pedido || 0) : pieza.precioEstandar * (pieza.pedido || 0);
+      return pieza.precio * pieza.pedido;
     } else {
       return 0;
     }
@@ -49,7 +49,21 @@ const MostrarPiezasSet = ({ indexProducto, producto, materialesApoyo, materialPr
             {pieza.cantidad}
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {formatearDinero(tipoVenta === 'angeles' ? pieza.precioAngeles : pieza.precioEstandar)}
+            {tipoVenta === 'distribuidor' || precioGrupoAngeles === false && (
+              <input 
+                type='number' 
+                className="block w-24 p-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md" 
+                value={pieza.precio || 0}
+                onChange={(e) => {
+                  const newPiezasSet = [...piezasSet];
+                  newPiezasSet[piezaIndex] = { ...pieza, precio: +e.target.value };
+                  setPiezasSet(newPiezasSet);
+                }}
+              />
+            )}
+            {tipoVenta === 'angeles' || tipoVenta === 'directa' || precioGrupoAngeles === true && (
+              formatearDinero(tipoVenta === 'directa' ? pieza.precioEstandar : pieza.precioAngeles)
+            )}
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
             <input 
@@ -68,7 +82,7 @@ const MostrarPiezasSet = ({ indexProducto, producto, materialesApoyo, materialPr
             />
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            {(formatearDinero(mostrarTotal(piezaIndex)))}
+            {(formatearDinero(mostrarTotal(piezaIndex) || 0))}
           </td>
         </tr>
         )))
