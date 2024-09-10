@@ -20,6 +20,7 @@ import MaterialApoyo from "./pages/inventario/MaterialApoyo";
 
 import Programaciones from "./pages/ventas/Programaciones";
 import AgregarProgramacion from "./pages/ventas/AgregarProgramacion";
+import Programacion from "./pages/ventas/Programacion";
 
 import Zonas from "./pages/zonas/Zonas";
 import AgregarZona from "./pages/zonas/AgregarZona";
@@ -93,6 +94,7 @@ function App() {
                 >
                   <Route index element={<Programaciones />}/>
                   <Route path="agregar-programacion" element={<AgregarProgramacion/>}/>
+                  <Route path=":id" element={<Programacion/>}/>
                 </Route>
 
                 <Route path="/zonas" element={

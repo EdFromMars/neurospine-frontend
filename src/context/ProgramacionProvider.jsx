@@ -27,6 +27,17 @@ export const ProgramacionProvider = ({ children }) => {
     }
   }
 
+  const obtenerProgramacion = async (id) => {
+    try {
+      if(!token) return;
+
+      const { data } = await clienteAxios.get(`/programacion/${id}`, config);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const agregarProgramacion = async (programacion) => {
     try {
       if(!token) return;
@@ -66,6 +77,7 @@ export const ProgramacionProvider = ({ children }) => {
     <ProgramacionContext.Provider value={{ 
       programaciones, 
       obtenerProgramaciones,
+      obtenerProgramacion,
       agregarProgramacion, 
       actualizarProgramacion, 
       eliminarProgramacion 
