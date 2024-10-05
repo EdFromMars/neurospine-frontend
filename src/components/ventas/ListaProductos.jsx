@@ -11,15 +11,36 @@ const ListaProductos = ({
   productosTipoMaterial, 
   valoresProducto, 
   mostrarPrecio,
-  tipoVenta
+  tipoVenta,
+  programacion
 }) => {
 
-  
+  const { precioGrupoAngeles } = programacion;
+
   const calcularMonto = (index) => {
+    if(productosProgramacion[index].cantidad === 0 || productosProgramacion[index].cantidad === isNaN){
+      return '0';
+    }
+    if(Array.isArray(productosProgramacion[index])){
+      const monto = productosProgramacion[index].cantidad * productosProgramacion[index].precio;
+      return monto == isNaN ? '0' : formatearDinero(monto) + " Por Medida";
+    }
     const monto = productosProgramacion[index].cantidad * mostrarPrecio(productosProgramacion[index].producto) || '0';
     return formatearDinero(monto);
   }
 
+  const actualizarProducto = (index, campo, valor) => {
+    setProductosProgramacion(prevProductos => {
+      const nuevosProductos = prevProductos.map((prod, i) => {
+        if (i === index) {
+          return { ...prod, [campo]: valor };
+        }
+        return prod;
+      });
+      return nuevosProductos;
+    });
+  };
+  
   const eliminarProducto = (index) => {
     const newProductosProgramacion = [...productosProgramacion];
     newProductosProgramacion.splice(index, 1);
@@ -45,7 +66,28 @@ const ListaProductos = ({
                 />
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Múltiple</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">Múltiple</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              {tipoVenta === 'distribuidor' || (tipoVenta === 'aseguradora' && !precioGrupoAngeles) ? (
+                <input 
+                  type="number"
+                  className="block w-24 p-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  step={1}
+                  min={0}
+                  value={producto.precio || 0}
+                  onChange={(e) => {
+                    const newProductosProgramacion = [...productosProgramacion];
+                    newProductosProgramacion[index].precio = parseFloat(e.target.value) || 0;
+                    setProductosProgramacion(newProductosProgramacion);
+                  }}
+                />
+              ) : (
+                (tipoVenta === 'angeles' || tipoVenta === 'directa' || precioGrupoAngeles) ? (
+                  <>
+                    <span>Múltiple</span>
+                  </>
+                ) : null
+              )}
+            </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
               <input
                 type='number'
@@ -62,7 +104,7 @@ const ListaProductos = ({
               />
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              Variable
+              {calcularMonto(index)}
             </td>
             <td className="relative py-4 pl-3 text-right text-sm font-semibold">
               <button
@@ -169,24 +211,34 @@ const ListaProductos = ({
                 />
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{valoresProducto(productosProgramacion[index].producto, "existencias") || 0}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{formatearDinero(mostrarPrecio(productosProgramacion[index].producto))}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+              {tipoVenta === 'distribuidor' || (tipoVenta === 'aseguradora' && !precioGrupoAngeles) ? (
+                <input 
+                  type="number"
+                  id="precio"
+                  className="block w-24 p-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                  step={0.01}
+                  min={0}
+                  value={productosProgramacion[index].precio ?? ''}
+                  onChange={(e) => actualizarProducto(index, 'precio', e.target.value === '' ? '' : parseFloat(e.target.value))}
+                />
+              ) : (
+                formatearDinero(mostrarPrecio(producto.producto))
+              )}
+            </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
               <input
                 type='number'
-                value={productosProgramacion[index].cantidad}
+                id="cantidad"
+                value={producto.cantidad ?? ''}
                 min={0}
-                max={valoresProducto(productosProgramacion[index].producto, "existencias") || 0}
-                onChange={(e) => {
-                  /* Aquí se actualiza la cantidad */
-                  let newProductosProgramacion = [...productosProgramacion];
-                  newProductosProgramacion[index].cantidad = e.target.value;
-                  setProductosProgramacion(newProductosProgramacion);
-                }}
+                max={valoresProducto(producto.producto, "existencias") || 0}
+                onChange={(e) => actualizarProducto(index, 'cantidad', e.target.value === '' ? '' : parseInt(e.target.value))}
                 className="w-20 px-3 py-1.5 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-              {calcularMonto(index)}
+              {calcularMonto(index) ?? 0}
             </td>
             <td className="relative py-4 pl-3 text-right text-sm font-semibold">
               <button

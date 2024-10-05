@@ -24,7 +24,9 @@ const ListaMaterialApoyo = ({
       const newMaterialProgramacion = materialProgramacion.map((item, index) => {
         const producto = materialesApoyo.find(producto => producto._id === item.producto);
         if (producto) {
-          const precio = programacion.tipoVenta === 'angeles' && item.tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
+          (programacion.tipoVenta === 'aseguradora' && !precioGrupoAngeles) ? 
+            precio = 25 : 
+            precio = programacion.tipoVenta === 'angeles' && item.tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
           return { ...item, precio: +precio };
         }
         return item;
@@ -52,10 +54,13 @@ const ListaMaterialApoyo = ({
     const producto = materialesApoyo.find(producto => producto._id === id);
         
     if (producto) {
-      precio = programacion.tipoVenta === 'angeles' && tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
+      precio = (programacion.tipoVenta === 'angeles' && tipoPrecio === 'renta') ? 
+        producto.precioRentaAngeles : 
+        producto.precioRentaEstandar;
       const newMaterial = [...materialProgramacion];
-      newMaterial[index].precio = +precio;
+      newMaterial[index].precio = parseFloat(precio);
       setMaterialProgramacion(newMaterial);
+      console.log(materialProgramacion[index].precio);
     }
 
     return (
@@ -133,17 +138,6 @@ const ListaMaterialApoyo = ({
                 </div>
               </div>
             </fieldset>
-            </td>
-          <td className="relative py-4 pl-3 text-right text-sm font-semibold">
-            <button
-              type="button"
-              className="opacity-0 group-hover:opacity-100 text-indigo-600 hover:text-indigo-900 flex content-center gap-2"
-              onClick={() => {
-                eliminarProducto(index);
-              }}
-            >
-              <XCircleIcon className="text-gray-400 group-hover:text-indigo-600 h-8 w-8 shrink-0" />
-            </button>
           </td>
         </tr>
         {producto.setCompleto === 'false' && (
@@ -185,6 +179,19 @@ const ListaMaterialApoyo = ({
                 </>
               ) : null
             )}
+          </td>
+        </tr>
+        <tr>
+          <td className="relative py-4 pl-3 text-right text-sm font-semibold">
+            <button
+              type="button"
+              className="opacity-0 group-hover:opacity-100 text-indigo-600 hover:text-indigo-900 flex content-center gap-2"
+              onClick={() => {
+                eliminarProducto(index);
+              }}
+            >
+              <XCircleIcon className="text-gray-400 group-hover:text-indigo-600 h-8 w-8 shrink-0" />
+            </button>
           </td>
         </tr>
       </Fragment>

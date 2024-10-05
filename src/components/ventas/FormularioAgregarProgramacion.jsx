@@ -57,7 +57,6 @@ const FormularioAgregarProgramacion = () => {
       producto: '',
       cantidad: 0,
       precio: 0,
-      materialPrincipal: '',
       multiple: false
     }
   ] || []);
@@ -139,6 +138,10 @@ const FormularioAgregarProgramacion = () => {
   useEffect(() => {
     validarDatos();
   }, [programacion]);
+
+  useEffect(() => {
+    console.log(productosProgramacion);
+  }, [productosProgramacion]);
 
   const handleSubmit = e => {
     e.preventDefault();

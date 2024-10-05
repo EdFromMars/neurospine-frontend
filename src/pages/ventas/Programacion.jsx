@@ -181,8 +181,11 @@ const Programacion = () => {
         <div className="md:flex md:items-center md:justify-between mb-10">
           <div className="min-w-0 flex-1">
             <h2 className="text-2xl font-bold leading-7 mt-16 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-              Confirmar Programación
+              Programación - {formatoFecha(fechaCirugia)}
             </h2>
+            <h3 className="mt-4 text-lg font-semibold leading-7 text-gray-900 sm:truncate sm:text-xl sm:tracking-tight">
+              {mostrarHospital(hospital)}
+            </h3>
           </div>
         </div>
         <div>
@@ -257,33 +260,35 @@ const Programacion = () => {
                   <dt className="text-sm font-medium leading-6 text-gray-900">Asistencia técnica</dt>
                   <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {formatearDinero(montoAsistencia)}
-                    {viaticos && (
-                      <>
-                        <div className="mt-4 text-sm font-medium leading-6 text-gray-900">Agrega el monto de los viáticos que serán agregados al costo final.</div>
-                        <div className="relative mt-2 rounded-md shadow-sm">
-                          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                            <span className="text-gray-500 sm:text-sm">$</span>
-                          </div>
-                          <input
-                            id="price"
-                            name="price"
-                            type="text"
-                            placeholder="0.00"
-                            aria-describedby="price-currency"
-                            className="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            value={viaticosMonto || '0'}
-                            onChange={(e) => setViaticosMonto(e.target.value)}
-                          />
-                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                            <span id="price-currency" className="text-gray-500 sm:text-sm">
-                              MXN
-                            </span>
-                          </div>
-                        </div>
-                      </>
-                    )}
                   </dd>
                 </div>
+              )}
+              {viaticos && (
+                <>
+                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">Viáticos</dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 relative">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <span className="text-gray-500 sm:text-sm">$</span>
+                      </div>
+                      <input
+                        id="price"
+                        name="price"
+                        type="text"
+                        placeholder="0.00"
+                        aria-describedby="price-currency"
+                        className="block w-full rounded-md border-0 py-1.5 pl-7 pr-12 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        value={viaticosMonto || '0'}
+                        onChange={(e) => setViaticosMonto(e.target.value)}
+                      />
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                        <span id="price-currency" className="text-gray-500 sm:text-sm">
+                          MXN
+                        </span>
+                      </div>
+                    </dd>
+                  </div>
+                </>
               )}
             </dl>
           </div>

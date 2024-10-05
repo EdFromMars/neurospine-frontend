@@ -60,7 +60,7 @@ const AgregarProgramacionProductos = ({
   }, [productos, productosProgramacion, materialesApoyo, materialApoyoProgramacion, tipoMaterial]);
   
   const valoresProducto = ( id, propiedad ) => {
-    const producto = productos.find((item) => item._id === id) ? productos.find((item) => item._id === id) : materialesApoyo.find((item) => item._id === id);    
+    const producto = productos.find((item) => item._id === id) ? productos.find((item) => item._id === id) : materialesApoyo.find((item) => item._id === id);
     return producto ? producto[propiedad] : '';
   }
 
@@ -70,15 +70,15 @@ const AgregarProgramacionProductos = ({
     const tipoProgramacion = programacion.tipoProgramacion;
     const tipoVenta = programacion.tipoVenta;
     const precioGrupoAngeles = programacion.precioGrupoAngeles;
-    const producto = productos.find((item) => item._id === id) || materialesApoyo.find((item) => item._id === id);
+    const producto = productos.find((item) => item._id === id) || materialesApoyo.find((item) => item._id === id); 
 
     /*Validar tipo de programación y tipo de venta para mostrar el precio correcto*/
-    if(tipoVenta === 'angeles' || precioGrupoAngeles === true){
+    if(tipoVenta === 'angeles' || precioGrupoAngeles === true){
       precio = producto.precioAngeles;
     } else if(tipoProgramacion === 'demostracion' || tipoVenta === 'directa'){
       precio = producto.precioEstandar;
     } else {
-      precio = '';
+      precio = productosProgramacion.find(producto => producto.producto === id).precio || materialProgramacion.find(producto => producto.producto === id).precio || '';
     }
     
     const newProductos = [...productos].concat([...materialesApoyo]);
@@ -129,6 +129,7 @@ const AgregarProgramacionProductos = ({
                   productosTipoMaterial={productosTipoMaterial}
                   valoresProducto={valoresProducto}
                   mostrarPrecio={mostrarPrecio}
+                  programacion={programacion}
                 />
               </tbody>
             </table>
@@ -139,7 +140,7 @@ const AgregarProgramacionProductos = ({
                 onClick={() => setProductosProgramacion([
                   /* Aquí se agrega un nuevo array vacío para productosProgramacion */
                   ...(productosProgramacion || []), 
-                  { cantidad: 0, precio: 0, producto: '', materialPrincipal: ''}
+                  { cantidad: 0, precio: 0, producto: '' }
                 ])}
               >
                 <span aria-hidden="true">+</span> Agregar otro producto
