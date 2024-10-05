@@ -19,22 +19,22 @@ const ListaMaterialApoyo = ({
   const { materialesApoyo } = useMaterialApoyo();
   const [prevMaterialProgramacion, setPrevMaterialProgramacion] = useState(materialProgramacion);
 
-  useEffect(() => {
-    if (JSON.stringify(prevMaterialProgramacion) !== JSON.stringify(materialProgramacion)) {
-      const newMaterialProgramacion = materialProgramacion.map((item, index) => {
-        const producto = materialesApoyo.find(producto => producto._id === item.producto);
-        if (producto) {
-          (programacion.tipoVenta === 'aseguradora' && !precioGrupoAngeles) ? 
-            precio = 25 : 
-            precio = programacion.tipoVenta === 'angeles' && item.tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
-          return { ...item, precio: +precio };
-        }
-        return item;
-      });
-      setMaterialProgramacion(newMaterialProgramacion);
-      setPrevMaterialProgramacion(materialProgramacion);
-    }
-  }, [materialProgramacion, materialesApoyo, programacion.tipoVenta, setMaterialProgramacion, prevMaterialProgramacion]);
+  // useEffect(() => {
+  //   if (JSON.stringify(prevMaterialProgramacion) !== JSON.stringify(materialProgramacion)) {
+  //     const newMaterialProgramacion = materialProgramacion.map((item, index) => {
+  //       const producto = materialesApoyo.find(producto => producto._id === item.producto);
+  //       if (producto) {
+  //         (programacion.tipoVenta === 'aseguradora' && !precioGrupoAngeles) ? 
+  //           precio = 25 : 
+  //           precio = programacion.tipoVenta === 'angeles' && item.tipoPrecio === 'renta' ? producto.precioRentaAngeles : producto.precioRentaEstandar;
+  //         return { ...item, precio: +precio };
+  //       }
+  //       return item;
+  //     });
+  //     setMaterialProgramacion(newMaterialProgramacion);
+  //     setPrevMaterialProgramacion(materialProgramacion);
+  //   }
+  // }, [materialProgramacion, materialesApoyo, programacion.tipoVenta, setMaterialProgramacion, prevMaterialProgramacion]);
 
   const calcularMonto = (index) => {
     const monto = materialProgramacion[index].cantidad * mostrarPrecio(materialProgramacion[index].producto) || '0';
