@@ -36,6 +36,8 @@ import RazonesSociales from "./pages/razonSocial/RazonesSociales";
 import RazonSocial from './pages/razonSocial/RazonSocial';
 import AgregarRazonSocial from "./pages/razonSocial/AgregarRazonSocial";
 
+import Equipo from "./pages/equipo/Equipo";
+
 import { AuthProvider } from "./context/AuthProvider";
 import { ProductosProvider } from "./context/ProductosProvider";
 import { ZonasProvider } from "./context/ZonasProvider";
@@ -44,6 +46,7 @@ import { DoctoresProvider } from "./context/DoctoresProvider";
 import { RazonSocialProvider } from "./context/RazonSocialProvider";
 import { MaterialApoyoProvider } from "./context/MaterialApoyoProvider";
 import { ProgramacionProvider } from "./context/ProgramacionProvider";
+import { MiembrosEquipoProvider } from "./context/MiembrosEquipoProvider";
 
 function App() {
 
@@ -131,6 +134,16 @@ function App() {
                   <Route index element={<RazonesSociales/>}/>
                   <Route path=":id" element={<RazonSocial/>}/>
                   <Route path="agregar-razon-social" element={<AgregarRazonSocial/>}/>
+                </Route>
+
+                <Route path="/equipo" element={
+                  <ZonasProvider>
+                    <MiembrosEquipoProvider>
+                      <RutaProtegida />
+                    </MiembrosEquipoProvider>
+                  </ZonasProvider>
+                }>
+                  <Route index element={<Equipo/>}/>
                 </Route>
                 
                 <Route path="*" element={<h1>Not Found</h1>} />

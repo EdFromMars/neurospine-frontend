@@ -38,7 +38,7 @@ const ProgramacionCard = ({ programacion }) => {
               {diaCirugia.getDate()}
             </p>
             <p className="mt-1 flex text-xs leading-5 text-gray-500">
-              {mostrarEstado(estado)}
+              {format(diaCirugia, 'MMMM', { locale: es })} - {mostrarEstado(estado)}
             </p>
           </div>
         </div>
