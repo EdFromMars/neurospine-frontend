@@ -1,14 +1,26 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useMiembrosEquipo from "../../hooks/useMiembrosEquipo";
+import MiembrosEquipo from "../../components/miembrosEquipo/MiembrosEquipo";
 
 const Equipo = () => {
   const { auth } = useAuth();
   const { miembrosEquipo, obtenerMiembrosEquipo } = useMiembrosEquipo();
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
-    obtenerMiembrosEquipo();
+    if(!auth.token) {
+      navigate('/');
+    }
+
+    if (auth.puesto !== 'ejecutivo') {
+      navigate('/inicio');
+      return;
+    }
+    if(auth.puesto === 'ejecutivo') {
+      obtenerMiembrosEquipo();
+    }
   }, []);
 
   return (
@@ -21,6 +33,9 @@ const Equipo = () => {
             </h2>
           </div>
         </div>
+        <MiembrosEquipo 
+          miembrosEquipo={miembrosEquipo}
+        />
       </div>
     </div>
   )

@@ -15,7 +15,7 @@ export const MiembrosEquipoProvider = ({ children }) => {
 
   const obtenerMiembrosEquipo = async () => {
     try {
-      const { data } = await clienteAxios.get('/miembros-equipo', {
+      const { data } = await clienteAxios.get('/lista-usuarios', {
         headers: {
           Authorization: `Bearer ${auth.token}`
         }
