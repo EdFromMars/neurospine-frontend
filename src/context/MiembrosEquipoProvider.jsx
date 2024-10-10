@@ -8,6 +8,13 @@ const MiembrosEquipoContext = createContext();
 export const MiembrosEquipoProvider = ({ children }) => {
   const [miembrosEquipo, setMiembrosEquipo] = useState([]);
   const { auth } = useAuth();
+  const token = localStorage.getItem("neurospinetoken");
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    }
+  };
 
   useEffect(() => {
     obtenerMiembrosEquipo();
@@ -15,12 +22,19 @@ export const MiembrosEquipoProvider = ({ children }) => {
 
   const obtenerMiembrosEquipo = async () => {
     try {
-      const { data } = await clienteAxios.get('/lista-usuarios', {
-        headers: {
-          Authorization: `Bearer ${auth.token}`
-        }
-      });
+      const { data } = await clienteAxios.get('/equipo/lista-usuarios', config);
       setMiembrosEquipo(data);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const bloquearMiembro = async (miembroId) => {
+    try {
+      const miembro = miembrosEquipo.find((miembro) => miembro._id === miembroId);
+      const miembroBloqueado = { ...miembro, bloqueado: !miembro.bloqueado };    
+      const { data } = await clienteAxios.put(`/equipo/bloquear-usuario/${miembroId}`, miembroBloqueado, config);
       console.log(data);
     } catch (error) {
       console.error(error);
@@ -30,7 +44,8 @@ export const MiembrosEquipoProvider = ({ children }) => {
   return (
     <MiembrosEquipoContext.Provider value={{
       miembrosEquipo,
-      obtenerMiembrosEquipo
+      obtenerMiembrosEquipo,
+      bloquearMiembro
     }}>
       {children}
     </MiembrosEquipoContext.Provider>

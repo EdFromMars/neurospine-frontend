@@ -3,14 +3,18 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useMiembrosEquipo from "../../hooks/useMiembrosEquipo";
 import MiembrosEquipo from "../../components/miembrosEquipo/MiembrosEquipo";
+import useZonas from "../../hooks/useZonas";
 
 const Equipo = () => {
   const { auth } = useAuth();
   const { miembrosEquipo, obtenerMiembrosEquipo } = useMiembrosEquipo();
+  const { zonas } = useZonas();
+  
   const navigate = useNavigate();
+  const token = localStorage.getItem("neurospinetoken");
   
   useEffect(() => {
-    if(!auth.token) {
+    if(!token) {
       navigate('/');
     }
 
@@ -35,6 +39,7 @@ const Equipo = () => {
         </div>
         <MiembrosEquipo 
           miembrosEquipo={miembrosEquipo}
+          zonas={zonas}
         />
       </div>
     </div>
