@@ -111,6 +111,7 @@ const Login = () => {
                         onChange = { (e) => setPassword(e.target.value) }
                       />
                     </div>
+                    { msg && <Alerta alerta={alerta} /> }
                   </div>
 
 

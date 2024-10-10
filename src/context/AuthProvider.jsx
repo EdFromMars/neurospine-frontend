@@ -49,9 +49,8 @@ const AuthProvider = ({ children }) => {
         setAuth(data);
         puestos[data.puesto]();
       } catch (error) {
-        console.log(error);
         setAuth({});
-        
+        localStorage.removeItem('neurospinetoken');
       }
       
       setCargando(false);
