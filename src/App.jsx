@@ -36,7 +36,9 @@ import RazonesSociales from "./pages/razonSocial/RazonesSociales";
 import RazonSocial from './pages/razonSocial/RazonSocial';
 import AgregarRazonSocial from "./pages/razonSocial/AgregarRazonSocial";
 
-import Equipo from "./pages/equipo/Equipo";
+import MiembrosEquipo from "./pages/equipo/MiembrosEquipo";
+import MiembroEquipo from "./pages/equipo/MiembroEquipo";
+import EditarMiembroEquipo from "./pages/equipo/EditarMiembroEquipo";
 
 import { AuthProvider } from "./context/AuthProvider";
 import { ProductosProvider } from "./context/ProductosProvider";
@@ -47,7 +49,7 @@ import { RazonSocialProvider } from "./context/RazonSocialProvider";
 import { MaterialApoyoProvider } from "./context/MaterialApoyoProvider";
 import { ProgramacionProvider } from "./context/ProgramacionProvider";
 import { MiembrosEquipoProvider } from "./context/MiembrosEquipoProvider";
-
+import { LocacionProvider } from "./context/LocacionProvider";
 function App() {
 
   return (
@@ -56,8 +58,9 @@ function App() {
         <HospitalesProvider>
           <ProductosProvider>
             <MaterialApoyoProvider>
-              <Routes>
-                <Route path="/" element={<AuthLayout/>}>
+              <LocacionProvider>
+                <Routes>
+                  <Route path="/" element={<AuthLayout/>}>
                   <Route index element={<Login/>}/>
                   <Route path="registrar" element={<Registrar/>}/>
                   <Route path="confirmar/:id" element={<ConfirmarCuenta/>}/>
@@ -143,11 +146,14 @@ function App() {
                     </MiembrosEquipoProvider>
                   </ZonasProvider>
                 }>
-                  <Route index element={<Equipo/>}/>
+                  <Route index element={<MiembrosEquipo/>}/>
+                  <Route path=":id" element={<MiembroEquipo/>}/>
+                  <Route path="editar/:id" element={<EditarMiembroEquipo/>}/>
                 </Route>
                 
                 <Route path="*" element={<h1>Not Found</h1>} />
               </Routes>
+              </LocacionProvider>
             </MaterialApoyoProvider>
           </ProductosProvider>
         </HospitalesProvider>

@@ -85,8 +85,8 @@ const ListadoProductos = () => {
           <ul>
             {listaProductos.map(producto => (
               <ProductoInventario 
-              key={ producto._id }
-              producto={ producto }
+                key={ producto._id }
+                producto={ producto }
               />
             ))}
           </ul>

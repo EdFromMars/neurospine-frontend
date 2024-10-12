@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import ModalAlert from "../components/ui/ModalAlert";
 
 import clienteAxios from "../config/clienteAxios";
 import useAuth from "../hooks/useAuth";
@@ -24,18 +25,27 @@ export const MiembrosEquipoProvider = ({ children }) => {
     try {
       const { data } = await clienteAxios.get('/equipo/lista-usuarios', config);
       setMiembrosEquipo(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const bloquearMiembro = async (miembroId) => {
+  const obtenerMiembro = async (miembroId) => {
+    try {
+      const { data } = await clienteAxios.get(`/equipo/obtener-usuario/${miembroId}`, config);
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const actualizarMiembro = async (miembroId) => {
     try {
       const miembro = miembrosEquipo.find((miembro) => miembro._id === miembroId);
-      const miembroBloqueado = { ...miembro, bloqueado: !miembro.bloqueado };    
-      const { data } = await clienteAxios.put(`/equipo/bloquear-usuario/${miembroId}`, miembroBloqueado, config);
-      console.log(data);
+      const miembroActualizado = { ...miembro, bloqueado: !miembro.bloqueado };    
+      const { data } = await clienteAxios.put(`/equipo/actualizar-usuario/${miembroId}`, miembroActualizado, config);
+      obtenerMiembrosEquipo();
+      return data;
     } catch (error) {
       console.error(error);
     }
@@ -45,7 +55,8 @@ export const MiembrosEquipoProvider = ({ children }) => {
     <MiembrosEquipoContext.Provider value={{
       miembrosEquipo,
       obtenerMiembrosEquipo,
-      bloquearMiembro
+      obtenerMiembro,
+      actualizarMiembro
     }}>
       {children}
     </MiembrosEquipoContext.Provider>

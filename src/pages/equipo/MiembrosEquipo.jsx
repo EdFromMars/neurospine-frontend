@@ -2,10 +2,10 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useMiembrosEquipo from "../../hooks/useMiembrosEquipo";
-import MiembrosEquipo from "../../components/miembrosEquipo/MiembrosEquipo";
+import ListaMiembrosEquipo from "../../components/miembrosEquipo/ListaMiembrosEquipo";
 import useZonas from "../../hooks/useZonas";
 
-const Equipo = () => {
+const MiembrosEquipo = () => {
   const { auth } = useAuth();
   const { miembrosEquipo, obtenerMiembrosEquipo } = useMiembrosEquipo();
   const { zonas } = useZonas();
@@ -37,7 +37,7 @@ const Equipo = () => {
             </h2>
           </div>
         </div>
-        <MiembrosEquipo 
+        <ListaMiembrosEquipo 
           miembrosEquipo={miembrosEquipo}
           zonas={zonas}
         />
@@ -46,4 +46,4 @@ const Equipo = () => {
   )
 }
 
-export default Equipo
+export default MiembrosEquipo
