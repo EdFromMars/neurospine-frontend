@@ -31,7 +31,9 @@ const Login = () => {
     }
 
     try {
+      console.log('Iniciando sesión');
       const { data } = await clienteAxios.post('/usuarios/', { email, password });
+      console.log(data);
 
       localStorage.setItem('neurospinetoken', data.token);
 

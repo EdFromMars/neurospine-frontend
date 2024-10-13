@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import 'eventsource-polyfill';
 
 import AuthLayout from "./layout/AuthLayout";
 import RutaProtegida from "./layout/RutaProtegida";
@@ -50,8 +52,49 @@ import { MaterialApoyoProvider } from "./context/MaterialApoyoProvider";
 import { ProgramacionProvider } from "./context/ProgramacionProvider";
 import { MiembrosEquipoProvider } from "./context/MiembrosEquipoProvider";
 import { LocacionProvider } from "./context/LocacionProvider";
-function App() {
 
+
+function App() {
+  //Notificaciones SSE
+  
+  const [notificaciones, setNotificaciones] = useState([]);
+  
+  console.log(notificaciones);
+  
+  const handleSSEMessage = (event) => {
+    const data = JSON.parse(event.data);
+    
+    setNotificaciones([...notificaciones, data]);
+  }
+  
+  useEffect(() => {
+    const token = localStorage.getItem('neurospinetoken');
+    
+    if(!token) return;
+
+    const eventSource = new EventSource(`http://localhost:4000/events?token=${token}`, {
+      withCredentials: false
+    });
+
+    eventSource.onopen = () => {
+      console.log('Conectado al servidor SSE');
+    }
+    
+    eventSource.onmessage = handleSSEMessage;
+
+    eventSource.onerror = () => {
+      console.log('Error al conectar con el servidor SSE');
+      eventSource.close();
+    }
+
+    console.log('Notificaciones', notificaciones);
+
+    return () => {
+      eventSource.close();
+    }
+
+  }, []);
+  
   return (
     <BrowserRouter>
       <AuthProvider>

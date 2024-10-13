@@ -68,6 +68,17 @@ const PrincipalDashboard = () => {
   
   return (
     <>    
+      {auth.bloqueado ? (
+        <ModalSingleAction
+          alertType="warning"
+          title="Cuenta Bloqueda"
+          message="Tu cuenta ha sido bloqueada, contacta al administrador"
+          buttonText="Cerrar Sesión"
+          open={openModal}
+          setOpen={setOpenModal}
+          onConfirm={cerrarSesion}
+        />
+      ) : (
         <div>
           {auth.puesto && (
             <>
@@ -104,8 +115,8 @@ const PrincipalDashboard = () => {
             ) : (
               <ModalSingleAction 
                 alertType="warning"
-                title="Solicita acceso a la plataforma"
-                message="Solicita a un administrador acceso a la plataforma"
+                title="Registro Incompleto"
+                message="Solicita a un administrador completar tu registro"
                 buttonText="Cerrar Sesión"
                 open={openModal}
                 setOpen={setOpenModal}
@@ -114,6 +125,7 @@ const PrincipalDashboard = () => {
             )}
           </div>
         </div>
+      )}
     </>
   )
 }

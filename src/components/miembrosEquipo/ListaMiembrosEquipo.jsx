@@ -61,7 +61,7 @@ const ListaMiembrosEquipo = ({ miembrosEquipo, zonas }) => {
           {miembrosEquipo.map((miembro) => (
             <tr key={miembro._id} className='group'>
               <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{miembro.nombre}</td>
-              <td className="px-3 py-4 text-sm text-gray-500">{miembro.puesto.charAt(0).toUpperCase() + miembro.puesto.slice(1)}</td>
+              <td className="px-3 py-4 text-sm text-gray-500">{miembro.puesto ? miembro.puesto.charAt(0).toUpperCase() + miembro.puesto.slice(1) : 'Puesto no asignado'}</td>
               <td className="px-3 py-4 text-sm text-gray-500">{zonas.find((zona) => zona._id === miembro.locacion)?.nombreZona || 'Zona no asignada'}</td>
               <td className="px-3 py-4 text-sm text-gray-500">
                 <FlatPillDot {...(miembro.bloqueado ? statusBloqueado : statusActivo)} />
