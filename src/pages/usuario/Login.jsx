@@ -36,13 +36,14 @@ const Login = () => {
       localStorage.setItem('neurospinetoken', data.token);
 
       setAuth(data);
-      puestos[data.puesto]();
+      data.puesto ? puestos[data.puesto]() : null;
       navigate("/inicio");
     } catch (error) {
       setAlerta({
         msg: error.response.data.msg,
         error: true
       });
+      console.log(error.response.data.msg);
     }
   }
   

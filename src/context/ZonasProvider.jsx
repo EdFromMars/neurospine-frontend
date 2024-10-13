@@ -23,6 +23,8 @@ export const ZonasProvider = ({ children }) => {
       console.log('No hay token');
       return;
     }
+
+    if(!locacion) return;
     try {
       const { data } = await clienteAxios.get("/zonas", config);
       setZonas(data);

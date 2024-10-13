@@ -18,6 +18,8 @@ import Header from '../Header';
 import Sidebar from '../Sidebar';
 import MobileSidebar from '../MobileSidebar';
 
+import ModalSingleAction from '../ui/ModalSingleAction';
+
 const navigation = [
   { name: 'Inicio', href: '/inicio', icon: HomeIcon, current: false },
   { name: 'Inventario', href: '/inventario', icon: ListBulletIcon, current: false },
@@ -30,10 +32,11 @@ const navigation = [
 
 const PrincipalDashboard = () => {
   
-  const { auth, ejecutivo, locacion, setLocacion } = useAuth();
+  const { auth, ejecutivo, locacion, setLocacion, cerrarSesion } = useAuth();
   const { obtenerLocaciones, locaciones } = useProductos();
   const { zonas } = useZonas();
   const [pathname, setPathname] = useState('');
+  const [openModal, setOpenModal] = useState(true);
   
   const almacenes = locaciones.map(locacion => {
     return {
@@ -65,38 +68,52 @@ const PrincipalDashboard = () => {
   
   return (
     <>    
-      <div>
-        <MobileSidebar 
-          setSidebarOpen={setSidebarOpen}
-          sidebarOpen={sidebarOpen}
-          navigation={navigation}
-          almacenes={almacenes}
-          zonas = {zonasLocacion}
-          pathname={pathname}
-        />
+        <div>
+          {auth.puesto && (
+            <>
+              <MobileSidebar 
+                setSidebarOpen={setSidebarOpen}
+                sidebarOpen={sidebarOpen}
+                navigation={navigation}
+                almacenes={almacenes}
+                zonas = {zonasLocacion}
+                pathname={pathname}
+              />
 
-        <Sidebar 
-          navigation={navigation}
-          almacenes={almacenes}
-          zonas = {zonasLocacion}
-          pathname={pathname}
-        />
+              <Sidebar 
+                navigation={navigation}
+                almacenes={almacenes}
+                zonas = {zonasLocacion}
+                pathname={pathname}
+              />
+            </>
+          )}
+          <div className="lg:pl-72">
+            {auth.puesto ? (
+              <>
+                <Header 
+                  setSidebarOpen={setSidebarOpen}
+              />
 
-        <div className="lg:pl-72">
-          <Header 
-            setSidebarOpen={setSidebarOpen}
-          />
-
-          <main className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8">
-              <Outlet />
-            </div>
-          </main>
+                <main className="py-10">
+                  <div className="px-4 sm:px-6 lg:px-8">
+                    <Outlet />
+                  </div>
+                </main>
+              </>
+            ) : (
+              <ModalSingleAction 
+                alertType="warning"
+                title="Solicita acceso a la plataforma"
+                message="Solicita a un administrador acceso a la plataforma"
+                buttonText="Cerrar Sesión"
+                open={openModal}
+                setOpen={setOpenModal}
+                onConfirm={cerrarSesion}
+              />
+            )}
+          </div>
         </div>
-      </div>
-    
-        
-
     </>
   )
 }
