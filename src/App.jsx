@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'eventsource-polyfill';
 
@@ -58,7 +58,7 @@ function App() {
   //Notificaciones SSE
   
   const [notificaciones, setNotificaciones] = useState([]);
-  
+  const [eventSource, setEventSource] = useState(null);
   console.log(notificaciones);
   
   const handleSSEMessage = (event) => {
@@ -66,34 +66,42 @@ function App() {
     
     setNotificaciones([...notificaciones, data]);
   }
-  
-  useEffect(() => {
-    const token = localStorage.getItem('neurospinetoken');
-    
-    if(!token) return;
 
-    const eventSource = new EventSource(`http://localhost:4000/events?token=${token}`, {
+  const conectarSSE = useCallback(() => {
+    const token = localStorage.getItem('neurospinetoken');
+    if (!token) return;
+
+    const nuevoEventSource = new EventSource(`http://localhost:4000/events`, {
       withCredentials: false
     });
 
-    eventSource.onopen = () => {
+    nuevoEventSource.onopen = () => {
       console.log('Conectado al servidor SSE');
     }
     
-    eventSource.onmessage = handleSSEMessage;
+    nuevoEventSource.onmessage = handleSSEMessage;
 
-    eventSource.onerror = () => {
+    nuevoEventSource.onerror = () => {
       console.log('Error al conectar con el servidor SSE');
-      eventSource.close();
+      nuevoEventSource.close();
+      setTimeout(conectarSSE, 5000); // Intenta reconectar después de 5 segundos
     }
 
-    console.log('Notificaciones', notificaciones);
-
-    return () => {
-      eventSource.close();
-    }
-
+    setEventSource(nuevoEventSource);
   }, []);
+  
+  useEffect(() => {
+    const token = localStorage.getItem('neurospinetoken');
+    if(!token) return;
+
+    conectarSSE();
+    
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+      }
+    };
+  }, [conectarSSE]);
   
   return (
     <BrowserRouter>
