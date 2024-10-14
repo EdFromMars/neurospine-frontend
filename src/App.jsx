@@ -5,6 +5,9 @@ import 'eventsource-polyfill';
 import AuthLayout from "./layout/AuthLayout";
 import RutaProtegida from "./layout/RutaProtegida";
 
+import useNotificaciones from "./hooks/useNotificaciones";
+import useAuth from "./hooks/useAuth";
+
 import Inicio from "./pages/Inicio";
 
 import Login from "./pages/usuario/Login";
@@ -55,17 +58,16 @@ import { LocacionProvider } from "./context/LocacionProvider";
 
 
 function App() {
+  const { actualizarAuth } = useAuth();
+  const { setNotificaciones, notificaciones } = useNotificaciones();
+  
   //Notificaciones SSE
-  
-  const [notificaciones, setNotificaciones] = useState([]);
   const [eventSource, setEventSource] = useState(null);
-  console.log(notificaciones);
   
-  const handleSSEMessage = (event) => {
+  const handleSSEMessage = useCallback((event) => {
     const data = JSON.parse(event.data);
-    
-    setNotificaciones([...notificaciones, data]);
-  }
+    setNotificaciones(prevNotificaciones => [...prevNotificaciones, data]);
+  }, [setNotificaciones]);
 
   const conectarSSE = useCallback(() => {
     const token = localStorage.getItem('neurospinetoken');
@@ -88,7 +90,7 @@ function App() {
     }
 
     setEventSource(nuevoEventSource);
-  }, []);
+  }, [handleSSEMessage]);
   
   useEffect(() => {
     const token = localStorage.getItem('neurospinetoken');
@@ -101,12 +103,20 @@ function App() {
         eventSource.close();
       }
     };
-  }, [conectarSSE]);
+  }, [conectarSSE, eventSource]);
+
+  useEffect(() => {
+    if(notificaciones && notificaciones.length > 0){
+      const ultimaNotificacion = notificaciones[notificaciones.length - 1];
+      actualizarAuth(ultimaNotificacion);
+    }
+  }, [notificaciones, actualizarAuth]);
   
   return (
     <BrowserRouter>
       <AuthProvider>
-        <HospitalesProvider>
+        <NotificacionesProvider>
+          <HospitalesProvider>
           <ProductosProvider>
             <MaterialApoyoProvider>
               <LocacionProvider>
@@ -207,7 +217,8 @@ function App() {
               </LocacionProvider>
             </MaterialApoyoProvider>
           </ProductosProvider>
-        </HospitalesProvider>
+          </HospitalesProvider>
+        </NotificacionesProvider>
       </AuthProvider>
     </BrowserRouter>
   )

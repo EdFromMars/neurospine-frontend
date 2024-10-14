@@ -8,7 +8,7 @@ const ListadoProductos = () => {
   
   const { productos, obtenerProductos, locaciones, obtenerLocaciones } = useProductos();
   const { materialesApoyo, obtenerMaterialesApoyo } = useMaterialApoyo();
-  const { auth, locacion, setLocacion, ejecutivo } = useAuth();
+  const { auth, actualizarAuth, locacion, setLocacion, ejecutivo } = useAuth();
   const [ listaProductos, setListaProductos ] = useState([]);
 
   const actualizarListaProductos = async (loc) => {

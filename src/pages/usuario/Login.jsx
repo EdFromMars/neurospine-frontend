@@ -7,7 +7,6 @@ import useAuth from "../../hooks/useAuth";
 const Login = () => {
 
   const { setAuth, puestos } = useAuth();
-  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [alerta, setAlerta] = useState({});
@@ -31,9 +30,7 @@ const Login = () => {
     }
 
     try {
-      console.log('Iniciando sesión');
       const { data } = await clienteAxios.post('/usuarios/', { email, password });
-      console.log(data);
 
       localStorage.setItem('neurospinetoken', data.token);
 
@@ -41,11 +38,11 @@ const Login = () => {
       data.puesto ? puestos[data.puesto]() : null;
       navigate("/inicio");
     } catch (error) {
-      setAlerta({
-        msg: error.response.data.msg,
-        error: true
-      });
-      console.log(error.response.data.msg);
+      // setAlerta({
+      //   msg: error.response.data.msg,
+      //   error: true
+      // });
+      console.log(error);
     }
   }
   

@@ -59,6 +59,23 @@ const AuthProvider = ({ children }) => {
     autenticarUsuario();
   }, []);
 
+  const actualizarAuth = async (datos) => {
+    if (datos.coleccion === 'usuarios') {
+      try {
+        const { data } = await clienteAxios.get('/usuarios/perfil', config);
+        setAuth(data);
+        puestos[data.puesto]();
+        setEjecutivo(false);
+        setAlmacen(false);
+        setVendedor(false);
+        setAdministrador(false);
+        puestos[data.puesto]();
+      } catch (error) {
+        console.error('Error al actualizar el perfil:', error);
+      }
+    }
+  };
+
   const guardarBitacora = async (descripcion, acciones) => {
         
     const bitacora = {
@@ -89,6 +106,7 @@ const AuthProvider = ({ children }) => {
       value={{
         auth,
         setAuth,
+        actualizarAuth,
         puestos,
         ejecutivo,
         almacen,
