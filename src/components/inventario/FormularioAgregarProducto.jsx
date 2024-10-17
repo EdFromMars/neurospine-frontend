@@ -7,9 +7,7 @@ import useAuth from "../../hooks/useAuth";
 
 import NuevoProducto from "./NuevoProducto";
 
-const FormularioAgregarProducto = ({ productoEditar }) => {
-
-  const [isMaterialApoyo, setIsMaterialApoyo] = useState(false);
+const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
 
   const [producto, setProducto] = useState({
     nombreMaterial: '',
@@ -41,7 +39,7 @@ const FormularioAgregarProducto = ({ productoEditar }) => {
   const [materialComplementario, setMaterialComplementario] = useState(false);
   
   const { productos, guardarProducto, actualizarProducto } = useProductos();
-  const { guardarMaterialApoyo } = useMaterialApoyo();
+  const { guardarMaterialApoyo, editarMaterialApoyo } = useMaterialApoyo();
   const { auth, locacion, setLocacion, ejecutivo } = useAuth();
   const navigate = useNavigate();
   
@@ -49,13 +47,14 @@ const FormularioAgregarProducto = ({ productoEditar }) => {
 
   useEffect(() => {
     if(modoEdicion) {
-      setProducto(productoEditar);
-      setLocacion(productoEditar.locacion);
-      if(productoEditar.materialPrincipal) {
-        setMaterialComplementario(true);
+      if(editMaterialApoyo) {
+        setMaterialApoyo(productoEditar);
+      } else {
+        setProducto(productoEditar);
       }
+      setLocacion(productoEditar.locacion);
     }
-    if(isMaterialApoyo){
+    if(editMaterialApoyo){
       setProducto({
         nombreMaterial: '',
         tipoMaterial: 'cervical',
@@ -79,7 +78,7 @@ const FormularioAgregarProducto = ({ productoEditar }) => {
         piezasSet: '',
       });
     }
-  }, [productoEditar, isMaterialApoyo]);
+  }, [productoEditar, editMaterialApoyo]);
 
   const [alerta, setAlerta] = useState({});
   
@@ -122,7 +121,19 @@ const FormularioAgregarProducto = ({ productoEditar }) => {
       usuario: auth._id
     };
     
-    modoEdicion ? actualizarProducto( productoEditar, productoGuardar ) : guardarProducto( productoGuardar );
+    if(modoEdicion) {
+      if(editMaterialApoyo) {
+        editarMaterialApoyo( productoGuardar );
+      } else {
+        actualizarProducto( productoEditar, productoGuardar );
+      }
+    } else {
+      if(editMaterialApoyo) {
+        guardarMaterialApoyo( productoGuardar );
+      } else {
+        guardarProducto( productoGuardar );
+      }
+    }
 
     setAlerta({
       msg: 'El material se ha agregado correctamente'
@@ -186,7 +197,7 @@ const FormularioAgregarProducto = ({ productoEditar }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(isMaterialApoyo) {
+    if(editMaterialApoyo) {
       console.log(materialApoyo);
       guardarNuevoMaterialApoyo(materialApoyo);
     } else {
@@ -211,8 +222,7 @@ const FormularioAgregarProducto = ({ productoEditar }) => {
                 productos={productos}
                 materialApoyo={materialApoyo}
                 setMaterialApoyo={setMaterialApoyo}
-                isMaterialApoyo={isMaterialApoyo}
-                setIsMaterialApoyo={setIsMaterialApoyo}
+                editMaterialApoyo={editMaterialApoyo}
                 setProducto={setProducto} 
                 ejecutivo={ejecutivo}
                 materialComplementario={materialComplementario}

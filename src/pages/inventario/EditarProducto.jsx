@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 import useProductos from "../../hooks/useProductos";
+import useMaterialApoyo from "../../hooks/useMaterialApoyo";
 import FormularioAgregarProducto from "../../components/inventario/FormularioAgregarProducto";
 
 const EditarProducto = () => {
@@ -9,11 +10,14 @@ const EditarProducto = () => {
   const [producto, setProducto] = useState({});
 
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const editMaterialApoyo = searchParams.get('editMaterialApoyo');
   const { mostrarProducto } = useProductos();
-  
+  const { mostrarMaterialApoyo } = useMaterialApoyo();
+
   useEffect(() => {
     const obtenerProducto = async () => {
-      const data = await mostrarProducto(id);
+      const data = editMaterialApoyo ? await mostrarMaterialApoyo(id) : await mostrarProducto(id) || {};
 
       setProducto({
         alg: data.alg || '',
@@ -21,7 +25,7 @@ const EditarProducto = () => {
         cantidadMin: data.cantidadMin || '',
         descripcionExtendida: data.descripcionExtendida || '',
         existencias: data.existencias || '',
-        materialApoyo: data.materialApoyo || false,
+        materialApoyo: editMaterialApoyo || false,
         medida: data.medida || '',
         nombreMaterial: data.nombreMaterial || '',
         precioAngeles: data.precioAngeles || '',
@@ -47,6 +51,7 @@ const EditarProducto = () => {
       </div>
       <FormularioAgregarProducto
         productoEditar={ producto }
+        editMaterialApoyo={ editMaterialApoyo }
       />
     </>
   )

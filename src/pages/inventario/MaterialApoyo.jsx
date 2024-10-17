@@ -160,7 +160,7 @@ const MaterialApoyo = () => {
                     Eliminar Material
                   </button>
                   <Link
-                    to={`/inventario/editar-material/${id}`}
+                    to={`/inventario/editar-material/${id}?editMaterialApoyo=true`}
                     className="ml-3 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Editar Material
@@ -171,7 +171,7 @@ const MaterialApoyo = () => {
               <>
                 <div className="px-4 py-6 gap-4 grid grid-flow-col justify-end">
                   <Link
-                    to={`/inventario/editar-material/${id}`}
+                    to={`/inventario/editar-material/${id}?editMaterialApoyo=true`}
                     className="ml-3 inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Editar Material
