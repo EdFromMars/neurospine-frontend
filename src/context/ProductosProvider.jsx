@@ -26,17 +26,20 @@ export const ProductosProvider = ({ children }) => {
     try {
       if(!token) return;
 
-      if(ejecutivo || vendedor || almacen) {
-        const { data } = await clienteAxios.get('/productos', {
-          ...config,
-          params: {
-            locacion: id
-          }});
+      const { data } = id ? await clienteAxios.get('/productos', {
+        ...config,
+        params: {
+          locacion: id
+        }
+      }) : await clienteAxios.get('/productos', config);
+    
+      if(locacion){
         const materialPorLocacion = data.filter( producto => producto.locacion === locacion );
         setProductos(materialPorLocacion);
         return materialPorLocacion;
       } else {
-        return;
+        setProductos(data);
+        return data;
       }
     } catch (error) {
       console.log(error);
@@ -157,6 +160,7 @@ export const ProductosProvider = ({ children }) => {
     <ProductosContext.Provider 
       value={{
         productos,
+        setProductos,
         obtenerProductos,
         guardarProducto,
         mostrarProducto,

@@ -18,4 +18,6 @@ const NotificacionesProvider = ({ children }) => {
   )
 }
 
-export default NotificacionesProvider;
+export { NotificacionesProvider }
+
+export default NotificacionesContext;

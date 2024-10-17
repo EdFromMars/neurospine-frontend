@@ -24,7 +24,6 @@ const ListadoProductos = () => {
   }
   
   useEffect(() => {
-    
     if(locaciones.length === 0 || locaciones === ''){
       obtenerLocaciones();
     };
@@ -36,7 +35,8 @@ const ListadoProductos = () => {
       actualizarListaProductos(locacion);
     }
     
-  }, [locacion, locaciones]);
+    actualizarAuth(locacion);
+  }, [locacion, locaciones, productos]);
 
   const locacionFiltrada = locaciones.filter(locacionOption => locacionOption._id === locacion)[0];
   const nombreLocacion = locacionFiltrada ? locacionFiltrada.nombre : '';

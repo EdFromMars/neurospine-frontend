@@ -39,10 +39,20 @@ export const MiembrosEquipoProvider = ({ children }) => {
     }
   }
 
-  const actualizarMiembro = async (miembroId) => {
+  const actualizarMiembro = async (miembroActualizado) => {
     try {
-      const miembro = miembrosEquipo.find((miembro) => miembro._id === miembroId);
-      const miembroActualizado = { ...miembro, bloqueado: !miembro.bloqueado };    
+      const { data } = await clienteAxios.put(`/equipo/actualizar-usuario/${miembroActualizado._id}`, miembroActualizado, config);
+      obtenerMiembrosEquipo();
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const bloquearMiembro = async (miembroId) => {
+    const miembro = miembrosEquipo.find((miembro) => miembro._id === miembroId);
+    const miembroActualizado = { ...miembro, bloqueado: !miembro.bloqueado };
+    try {
       const { data } = await clienteAxios.put(`/equipo/actualizar-usuario/${miembroId}`, miembroActualizado, config);
       obtenerMiembrosEquipo();
       return data;
@@ -56,7 +66,8 @@ export const MiembrosEquipoProvider = ({ children }) => {
       miembrosEquipo,
       obtenerMiembrosEquipo,
       obtenerMiembro,
-      actualizarMiembro
+      actualizarMiembro,
+      bloquearMiembro
     }}>
       {children}
     </MiembrosEquipoContext.Provider>

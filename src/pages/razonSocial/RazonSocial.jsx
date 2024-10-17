@@ -16,7 +16,6 @@ const RazonSocial = () => {
     mostrarRazonSocial();
   }, [id]);
 
-  console.log(razonSocial);
   const { nombre, rfc, email, telefono, direccion, _id } = razonSocial[0] || [];
   
   return (

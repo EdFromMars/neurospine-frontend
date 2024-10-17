@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { PaperClipIcon } from '@heroicons/react/20/solid';
 import useAuth from '../../hooks/useAuth';
 import useRazonSocial from "../../hooks/useRazonSocial";
 import useHospitales from "../../hooks/useHospitales";
@@ -27,7 +26,6 @@ const Programacion = () => {
   useEffect(() => {
     const obtenerProgramacionID = async () => {
       const data = await obtenerProgramacion(id);
-      console.log(data);
       setProgramacion(data);
     }
     
@@ -47,13 +45,13 @@ const Programacion = () => {
     obtenerProgramacionID();
     listaHospitales();
     mostrarRazonesSociales();
-  }, [id]);
+  }, []);
 
   const { razonSocial, tipoProgramacion, tipoCirugia, tipoVenta, fechaCirugia, fechaEntrega, fechaDevolucion, horaCirugia, hospital, estado, nombrePaciente, nombreCirujano, responsableMaterial, empresaResponsable, observaciones, asistencia, montoAsistencia, viaticos, productos, materialApoyo } = programacion;
 
   const mostrarRazonSocial = (id) => {
     if(!id) return '';
-    if(razonesSocialesLista.length === 0) return '';
+    if(!razonesSocialesLista || razonesSocialesLista.length === 0) return '';
     const razon = razonesSocialesLista.find((item) => item._id === id);
     return razon ? razon.nombre : '';
   }
@@ -97,7 +95,6 @@ const Programacion = () => {
 
   if(productos !== undefined && materialApoyo !== undefined) {
     productosObject = JSON.parse(productos);
-    console.log(productosObject);
 
     materialApoyoObject = JSON.parse(materialApoyo);
   }

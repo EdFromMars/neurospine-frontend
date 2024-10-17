@@ -22,11 +22,8 @@ const ListadoZonas = () => {
       setLocacion(auth.locacion);
     }
   }, [zonas, locaciones, locacion]);
-
-  console.log(locaciones);
-  
+ 
   const zonasAlmacen = zonas.filter(zona => zona.locacion === locacion);
-  console.log(zonasAlmacen);
   const locacionFiltrada = locaciones.filter(locacionOption => locacionOption._id === locacion)[0];
   const nombreLocacion = locacionFiltrada ? locacionFiltrada.nombre : '';
 

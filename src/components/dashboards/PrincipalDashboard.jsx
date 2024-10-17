@@ -20,23 +20,28 @@ import MobileSidebar from '../MobileSidebar';
 
 import ModalSingleAction from '../ui/ModalSingleAction';
 
-const navigation = [
-  { name: 'Inicio', href: '/inicio', icon: HomeIcon, current: false },
-  { name: 'Inventario', href: '/inventario', icon: ListBulletIcon, current: false },
-  { name: 'Programación', href: '/programacion', icon: IdentificationIcon, current: false },
-  // { name: 'Calendario de Equipo', href: '/calendario', icon: CalendarIcon, current: false },
-  { name: 'Miembros de Equipo', href: '/equipo', icon: UserGroupIcon, current: false },
-  { name: 'Razón Social', href: '/razon-social', icon: BuildingOfficeIcon, current: false },
-  { name: 'Reportes', href: '/reportes', icon: ChartPieIcon, current: false },
-]
-
 const PrincipalDashboard = () => {
   
-  const { auth, ejecutivo, locacion, setLocacion, cerrarSesion } = useAuth();
+  const { auth, locacion, setLocacion, cerrarSesion } = useAuth();
   const { obtenerLocaciones, locaciones } = useProductos();
   const { zonas } = useZonas();
   const [pathname, setPathname] = useState('');
   const [openModal, setOpenModal] = useState(true);
+
+  const navigation = auth.puesto === 'ejecutivo' ? [
+    { name: 'Inicio', href: '/inicio', icon: HomeIcon, current: false },
+    { name: 'Inventario', href: '/inventario', icon: ListBulletIcon, current: false },
+    { name: 'Programación', href: '/programacion', icon: IdentificationIcon, current: false },
+    // { name: 'Calendario de Equipo', href: '/calendario', icon: CalendarIcon, current: false },
+    { name: 'Miembros de Equipo', href: '/equipo', icon: UserGroupIcon, current: false },
+    { name: 'Razón Social', href: '/razon-social', icon: BuildingOfficeIcon, current: false },
+    { name: 'Reportes', href: '/reportes', icon: ChartPieIcon, current: false },
+  ] : [
+    { name: 'Inicio', href: '/inicio', icon: HomeIcon, current: false },
+    { name: 'Inventario', href: '/inventario', icon: ListBulletIcon, current: false },
+    { name: 'Programación', href: '/programacion', icon: IdentificationIcon, current: false },
+    { name: 'Reportes', href: '/reportes', icon: ChartPieIcon, current: false },
+  ]
   
   const almacenes = locaciones.map(locacion => {
     return {
@@ -55,7 +60,7 @@ const PrincipalDashboard = () => {
   useEffect(() => {
     setPathname(history.pathname);
 
-    if(ejecutivo) {
+    if(auth.puesto === 'ejecutivo') {
       obtenerLocaciones();
     }
 

@@ -24,7 +24,6 @@ export default function WeekCalendar({ horario }) {
 
   if(horario !== undefined){
     horarioObject = JSON.parse(horario);
-    console.log(horarioObject);
   };
 
   const horaInicio = (hora) => {
@@ -50,9 +49,6 @@ export default function WeekCalendar({ horario }) {
     </li>
     )
   ));
-
-  console.log(eventos);
-
 
   return (
     <div className="flex h-full flex-col">

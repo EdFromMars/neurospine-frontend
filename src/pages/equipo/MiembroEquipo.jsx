@@ -4,23 +4,36 @@ import FlatPillDot from "../../components/ui/FlatPillDot";
 import useMiembrosEquipo from "../../hooks/useMiembrosEquipo";
 import useAuth from "../../hooks/useAuth";
 import useLocacion from "../../hooks/useLocacion";
+import useZonas from "../../hooks/useZonas";
 
 import ModalAlert from "../../components/ui/ModalAlert";
 import ModalAccept from "../../components/ui/ModalAccept";
 
 const MiembroEquipo = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { ejecutivo } = useAuth();
   const [miembro, setMiembro] = useState([]);
-  const { obtenerMiembro, actualizarMiembro } = useMiembrosEquipo();
-  const { obtenerLocaciones } = useLocacion();
   const [locaciones, setLocaciones] = useState([]);
+  const [listaZonas, setListaZonas] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalAcceptOpen, setModalAcceptOpen] = useState(false);
   const [selectedMiembroId, setSelectedMiembroId] = useState(null);
-  const [open, setOpen] = useState(false);
 
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const { ejecutivo } = useAuth();
+  const { obtenerMiembro, actualizarMiembro } = useMiembrosEquipo();
+  const { obtenerLocaciones } = useLocacion();
+  const { obtenerZonas } = useZonas();
+
+  useEffect(() => {
+    const fetchZonas = async () => {
+      const zonas = await obtenerZonas();
+      console.log(zonas);
+      setListaZonas(zonas || []);
+    }
+    fetchZonas();
+  }, []);
+  
   useEffect(() => {
     const fetchMiembro = async () => {
       const miembro = await obtenerMiembro(id);
@@ -35,7 +48,7 @@ const MiembroEquipo = () => {
   }, [id, obtenerMiembro]);
 
   useEffect(() => {
-    const fetchAlmacenes = async () => {
+    const fetchLocaciones = async () => {
       try {
         const locaciones = await obtenerLocaciones();
         setLocaciones(locaciones || []);
@@ -44,13 +57,19 @@ const MiembroEquipo = () => {
         setLocaciones([]);
       }
     }
-    fetchAlmacenes();
+
+    fetchLocaciones();
   }, [obtenerLocaciones]);
-
+  
   const { nombre, puesto, zonas, bloqueado, email, locacion } = miembro;
-
+  
   const locacionFiltrada = locaciones.filter(locacionOption => locacionOption._id === locacion)[0];
   const nombreLocacion = locacionFiltrada ? locacionFiltrada.nombre : '';
+
+  const zonasFiltradas = listaZonas.length > 0 && zonas ? listaZonas.filter(zona => zonas.includes(zona._id)) : [];
+  console.log(zonasFiltradas);
+  const nombreZonas = zonasFiltradas.map(zona => zona.nombreZona).join(', ');
+  
 
   const statusBloqueado = {
     statusBgColor: 'bg-red-100',
@@ -80,7 +99,7 @@ const MiembroEquipo = () => {
     setModalOpen(false);
     setModalAcceptOpen(false);
   };
-  
+    
   return (
     <>
       <div className="overflow-hidden bg-white shadow sm:rounded-lg">
@@ -108,7 +127,7 @@ const MiembroEquipo = () => {
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-900">Zonas</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 capitalize">{zonas || 'Sin zonas'}</dd>
+              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 capitalize">{nombreZonas || 'Zonas no asignadas'}</dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-900">Estatus</dt>

@@ -28,6 +28,7 @@ export const ZonasProvider = ({ children }) => {
     try {
       const { data } = await clienteAxios.get("/zonas", config);
       setZonas(data);
+      return data;
     } catch (error) {
       console.log(error);
     }

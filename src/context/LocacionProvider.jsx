@@ -17,20 +17,24 @@ export const LocacionProvider = ({ children }) => {
   };
 
   const obtenerLocaciones = async () => {
-    try {
-      const { data } = await clienteAxios.get('/locaciones', config);
-      return data;
-    } catch (error) {
-      console.error(error);
+    if(auth) {
+      try {
+        const { data } = await clienteAxios.get('/locaciones', config);
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
   
   const obtenerLocacion = async (id) => {
-    try {
-      const { data } = await clienteAxios.get(`/locaciones/${id}`, config);
-      return data;
-    } catch (error) {
-      console.error(error);
+    if(auth) {
+      try {
+        const { data } = await clienteAxios.get(`/locaciones/${id}`, config);
+        return data;
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 

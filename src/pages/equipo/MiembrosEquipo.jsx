@@ -1,14 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useMiembrosEquipo from "../../hooks/useMiembrosEquipo";
 import ListaMiembrosEquipo from "../../components/miembrosEquipo/ListaMiembrosEquipo";
 import useZonas from "../../hooks/useZonas";
-
+import useLocacion from "../../hooks/useLocacion";
 const MiembrosEquipo = () => {
+  const [locaciones, setLocaciones] = useState([]);
   const { auth } = useAuth();
   const { miembrosEquipo, obtenerMiembrosEquipo } = useMiembrosEquipo();
   const { zonas } = useZonas();
+  const { obtenerLocaciones } = useLocacion();
   
   const navigate = useNavigate();
   const token = localStorage.getItem("neurospinetoken");
@@ -25,6 +27,12 @@ const MiembrosEquipo = () => {
     if(auth.puesto === 'ejecutivo') {
       obtenerMiembrosEquipo();
     }
+
+    const fetchLocaciones = async () => {
+      const locaciones = await obtenerLocaciones();
+      setLocaciones(locaciones);
+    }
+    fetchLocaciones();
   }, []);
 
   return (
@@ -40,6 +48,7 @@ const MiembrosEquipo = () => {
         <ListaMiembrosEquipo 
           miembrosEquipo={miembrosEquipo}
           zonas={zonas}
+          locaciones={locaciones}
         />
       </div>
     </div>

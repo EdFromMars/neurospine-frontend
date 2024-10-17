@@ -13,9 +13,7 @@ const ListadoRazonSocial = () => {
     }
     mostrarRazonSocial();
   }, []);
-  
-  console.log(razonesSociales);
-  
+    
   return (
     <>
       <div

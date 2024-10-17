@@ -21,16 +21,13 @@ export const RazonSocialProvider = ({ children }) => {
     try {
       if(!token) return;
 
-      if( ejecutivo ) {
-        const { data } = await clienteAxios.get('/razon-social', config);
-        if( !id ) {
-          return data;
-        }
-        const razonSocialActual = await data.filter( razonSocial => razonSocial._id === id );
-        return razonSocialActual;
-      } else {
-        return;
+      const { data } = await clienteAxios.get('/razon-social', config);
+      
+      if( !id ) {
+        return data;
       }
+      const razonSocialActual = await data.filter( razonSocial => razonSocial._id === id );
+      return razonSocialActual;
     } catch (error) {
       console.log(error);
     }

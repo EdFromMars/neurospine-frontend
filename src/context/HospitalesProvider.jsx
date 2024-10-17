@@ -20,13 +20,18 @@ export const HospitalesProvider = ({ children }) => {
     try {
       if (!token) return;
 
+      if (id) {
       const { data } = await clienteAxios.get("/hospitales", {
         ...config,
         params: {
           locacion: id
         }
-      });
-      setHospitales(data);
+        });
+        setHospitales(data);
+      } else {
+        const { data } = await clienteAxios.get("/hospitales", config);
+        setHospitales(data);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -34,6 +39,8 @@ export const HospitalesProvider = ({ children }) => {
 
   const obtenerHospital = async (id) => {
     try {
+      if (!token) return;
+
       const { data } = await clienteAxios.get(`/hospitales/${id}`, config);
       return data;
     } catch (error) {
@@ -43,6 +50,8 @@ export const HospitalesProvider = ({ children }) => {
 
   const crearHospital = async (hospital) => {
     try {
+      if (!token) return;
+
       const { data } = await clienteAxios.post("/hospitales", hospital, config);
       setHospitales([...hospitales, data]);
     } catch (error) {
@@ -52,6 +61,8 @@ export const HospitalesProvider = ({ children }) => {
 
   const eliminarHospital = async (hospitalEliminar) => {
     try {
+      if (!token) return;
+
       const { data } = await clienteAxios.delete(`/hospitales/${hospitalEliminar._id}`, config);
       const nuevosHospitales = hospitales.filter(hospital => hospital._id !== hospitalEliminar._id);
       setHospitales(nuevosHospitales);

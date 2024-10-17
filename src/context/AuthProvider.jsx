@@ -60,16 +60,19 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const actualizarAuth = async (datos) => {
-    if (datos.coleccion === 'usuarios') {
+    if (datos.collection === 'usuarios') {
       try {
         const { data } = await clienteAxios.get('/usuarios/perfil', config);
         setAuth(data);
-        puestos[data.puesto]();
         setEjecutivo(false);
         setAlmacen(false);
         setVendedor(false);
         setAdministrador(false);
-        puestos[data.puesto]();
+        if (data.puesto && puestos.hasOwnProperty(data.puesto)) {
+          puestos[data.puesto]();
+        } else {
+          console.warn(`Puesto no reconocido: ${data.puesto}`);
+        }  
       } catch (error) {
         console.error('Error al actualizar el perfil:', error);
       }

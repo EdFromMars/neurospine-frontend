@@ -16,7 +16,7 @@ const NuevoProducto = ({
       setMaterialComplementario 
   }) => {
 
-  const comboBoxElements = productos.reduce((unique, item) => {
+  const comboBoxElements = Array.isArray(productos) ? productos.reduce((unique, item) => {
     const {nombreMaterial: label, nombreMaterial: year} = item;
     
     if (!unique.some(obj => obj.label === label && obj.year === year)) {
@@ -24,12 +24,12 @@ const NuevoProducto = ({
     }
     
     return unique;
-  }, []);
+  }, []) : [];
 
-  const comboBoxElementsPrincipal = productos.map((item) => {
+  const comboBoxElementsPrincipal = Array.isArray(productos) ? productos.map((item) => {
     const {nombreMaterial: nombre, _id: id} = item;
     return {nombre, id};
-  });
+  }) : [];
   
   return (
     <>
