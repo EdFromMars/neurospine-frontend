@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import AutoCompleteInput from "../ui/AutoCompleteInput";
 import PiezasSet from "./PiezasSet";
+import PiezasMaterialApoyo from "./PiezasMaterialApoyo";
 
 const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejecutivo }) => {
-  const [piezasSet, setPiezasSet] = useState([{ 
+  const [nuevaPiezaSet, setNuevaPiezaSet] = useState([{ 
     nombre: '', 
     cantidad: 0, 
     precioAngeles: 0, 
@@ -11,10 +12,6 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
     rentaAngeles: 0,
     rentaEstandar: 0
   }]);
-
-  useEffect(() => {
-    setMaterialApoyo({ ...materialApoyo, piezasSet: piezasSet });
-  }, [piezasSet]);
   
   return (
     <div className="pb-12">
@@ -167,59 +164,53 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
             />
           </div>
         </div>
-      </div>
 
-      <div className="mt-10 border-b border-gray-900/10 pb-12">
+      <div className="col-span-full mt-10 border-b border-gray-900/10 pb-12">
         <h2 className="text-base font-semibold leading-7 text-gray-900">Registrar contenido del set</h2>
         <p className="mt-1 text-sm leading-6 text-gray-600">Agrega las piezas que conforman el set, así como la cantidad que lleva de cada pieza.</p>
 
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          <table className="w-full divide-y divide-gray-300 col-span-6">
-            <thead>
-              <tr>
-                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Material</th>
-                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Cantidad</th>
+        <div className="mt-10 space-y-8">
+          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div className="col-span-full">
+              <div className="grid grid-cols-[1fr,1fr,repeat(4,auto),auto] gap-4 items-center py-4">
+                <div className="font-semibold text-sm text-gray-900">Material</div>
+                <div className="font-semibold text-sm text-gray-900">Cantidad</div>
                 {ejecutivo && (
                   <>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Precio Ángeles</th>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Precio Estándar</th>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Renta Ángeles</th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Renta Estándar</th>
+                    <div className="font-semibold text-sm text-gray-900">Precio Ángeles</div>
+                    <div className="font-semibold text-sm text-gray-900">Precio Estándar</div>
+                    <div className="font-semibold text-sm text-gray-900">Renta Ángeles</div>
+                    <div className="font-semibold text-sm text-gray-900">Renta Estándar</div>
                   </>
                 )}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {/* Aquí se mapean las piezas del set */
-              piezasSet.map((pieza, index) => {
-                return (
-                  <PiezasSet 
-                    key={index}
-                    pieza={pieza}
-                    index={index}
-                    piezasSet={piezasSet}
-                    setPiezasSet={setPiezasSet}
-                    ejecutivo={ejecutivo}
-                  />
-                )
-              })
-              }
-            </tbody>
-          </table>
-          <div className="flex border-t border-gray-100 pt-6 col-span-6">
+                <div></div>
+              </div>
+              {nuevaPiezaSet.map((pieza, index) => (
+                <PiezasMaterialApoyo 
+                  key={index}
+                  pieza={pieza}
+                  index={index}
+                  piezasSet={nuevaPiezaSet}
+                  setPiezasSet={setNuevaPiezaSet}
+                  ejecutivo={ejecutivo}
+                />
+              ))}
+            </div>
+            </div>
+          </div>
+          <div className="flex border-t border-gray-100 pt-6">
             <button 
               type="button" 
               className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
               onClick={e => {
                 e.preventDefault();
-                setPiezasSet([
-                  ...piezasSet,
-                  { nombre: '', cantidad: 0, precio: 0 }
+                setNuevaPiezaSet([
+                  ...nuevaPiezaSet,
+                  { nombre: '', cantidad: 0, precioAngeles: 0, precioEstandar: 0, rentaAngeles: 0, rentaEstandar: 0 }
                 ])
-              
               }}
-            >
-              <span aria-hidden="true">+</span> Agregar otra pieza
+              >
+                <span aria-hidden="true">+</span> Agregar otra pieza
             </button>
           </div>
         </div>
