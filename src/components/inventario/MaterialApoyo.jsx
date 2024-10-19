@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import AutoCompleteInput from "../ui/AutoCompleteInput";
-import PiezasSet from "./PiezasSet";
 import PiezasMaterialApoyo from "./PiezasMaterialApoyo";
 
 const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejecutivo }) => {
@@ -12,6 +11,8 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
     rentaAngeles: 0,
     rentaEstandar: 0
   }]);
+
+  console.log(nuevaPiezaSet);
   
   return (
     <div className="pb-12">
@@ -169,34 +170,30 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
         <h2 className="text-base font-semibold leading-7 text-gray-900">Registrar contenido del set</h2>
         <p className="mt-1 text-sm leading-6 text-gray-600">Agrega las piezas que conforman el set, así como la cantidad que lleva de cada pieza.</p>
 
-        <div className="mt-10 space-y-8">
-          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="col-span-full">
-              <div className="grid grid-cols-[1fr,1fr,repeat(4,auto),auto] gap-4 items-center py-4">
-                <div className="font-semibold text-sm text-gray-900">Material</div>
-                <div className="font-semibold text-sm text-gray-900">Cantidad</div>
-                {ejecutivo && (
-                  <>
-                    <div className="font-semibold text-sm text-gray-900">Precio Ángeles</div>
-                    <div className="font-semibold text-sm text-gray-900">Precio Estándar</div>
-                    <div className="font-semibold text-sm text-gray-900">Renta Ángeles</div>
-                    <div className="font-semibold text-sm text-gray-900">Renta Estándar</div>
-                  </>
-                )}
-                <div></div>
-              </div>
-              {nuevaPiezaSet.map((pieza, index) => (
-                <PiezasMaterialApoyo 
-                  key={index}
-                  pieza={pieza}
-                  index={index}
-                  piezasSet={nuevaPiezaSet}
-                  setPiezasSet={setNuevaPiezaSet}
-                  ejecutivo={ejecutivo}
-                />
-              ))}
-            </div>
-            </div>
+        <div className="mt-10 space-y-2">
+          <div className="sticky top-14 bg-white border-b border-gray-900/10 grid grid-cols-9 gap-4 items-center pt-4">
+            <div className="col-span-3 font-semibold text-sm text-gray-900">Material</div>
+            <div className="col-span-1 font-semibold text-sm text-gray-900">Cantidad</div>
+            {ejecutivo && (
+              <>
+                <div className="col-span-1 font-semibold text-sm text-gray-900">Precio Ángeles</div>
+                <div className="col-span-1 font-semibold text-sm text-gray-900">Precio Estándar</div>
+                <div className="col-span-1 font-semibold text-sm text-gray-900">Renta Ángeles</div>
+                <div className="col-span-1 font-semibold text-sm text-gray-900">Renta Estándar</div>
+              </>
+            )}
+            <div className="col-span-1"></div>
+          </div>
+          {nuevaPiezaSet.map((pieza, index) => (
+            <PiezasMaterialApoyo 
+              key={index}
+              pieza={pieza}
+              index={index}
+              piezasSet={nuevaPiezaSet}
+              setPiezasSet={setNuevaPiezaSet}
+              ejecutivo={ejecutivo}
+            />
+          ))}
           </div>
           <div className="flex border-t border-gray-100 pt-6">
             <button 
