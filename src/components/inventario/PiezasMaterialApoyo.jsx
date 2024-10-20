@@ -96,17 +96,16 @@ const PiezasMaterialApoyo = ({ pieza, index, piezasSet, setPiezasSet, ejecutivo 
               />
             </div>
             <div className="col-span-1 text-center">
-            <button
-              type="button"
-              className="opacity-0 group-hover:opacity-100 text-indigo-600 hover:text-indigo-900 flex items-center justify-end"
-              onClick={() => eliminarProducto(index)}
-            >
-                <XCircleIcon className="text-gray-400 group-hover:text-indigo-600 h-8 w-8 shrink-0" />
-              </button>
+              <button
+                type="button"
+                className="opacity-0 group-hover:opacity-100 text-indigo-600 hover:text-indigo-900 flex items-center justify-end"
+                onClick={() => eliminarProducto(index)}
+              >
+                  <XCircleIcon className="text-gray-400 group-hover:text-indigo-600 h-8 w-8 shrink-0" />
+                </button>
             </div>
           </>
         )}
-        
       </div>
     </div>
   )

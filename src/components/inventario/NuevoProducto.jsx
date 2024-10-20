@@ -13,11 +13,11 @@ const NuevoProducto = ({
       setEditMaterialApoyo,
       setProducto, 
       ejecutivo, 
-      materialComplementario, 
-      setMaterialComplementario 
+      agregarMaterialApoyo,
+      setAgregarMaterialApoyo,
+      piezasSetMaterialApoyo,
+      setPiezasSetMaterialApoyo
   }) => {
-
-  const [editarMaterialApoyo, setEditarMaterialApoyo] = useState(false);
 
   const comboBoxElements = Array.isArray(productos) ? productos.reduce((unique, item) => {
     const {nombreMaterial: label, nombreMaterial: year} = item;
@@ -44,8 +44,8 @@ const NuevoProducto = ({
                 <p className="text-base font-semibold leading-7 text-gray-900">Es material de apoyo</p>
                 <div className="relative flex">
                   <ToggleButton 
-                    enabled={editMaterialApoyo ? true : editarMaterialApoyo} 
-                    setEnabled={e => setEditarMaterialApoyo(e)}
+                    enabled={editMaterialApoyo ? true : agregarMaterialApoyo} 
+                    setEnabled={e => setAgregarMaterialApoyo(e)}
                     copy={"Selecciona esta opción si el material será registrado como material de apoyo."}
                   />
                 </div>
@@ -55,7 +55,7 @@ const NuevoProducto = ({
         </>
       )}
 
-      {(!editMaterialApoyo && !editarMaterialApoyo) ? (
+      {(!editMaterialApoyo && !agregarMaterialApoyo) ? (
         <ProductoEstandar 
           producto={producto} 
           setProducto={setProducto} 
@@ -68,6 +68,8 @@ const NuevoProducto = ({
           setMaterialApoyo={setMaterialApoyo}
           comboBoxElements={comboBoxElements}
           ejecutivo={ejecutivo}
+          piezasSetMaterialApoyo={piezasSetMaterialApoyo}
+          setPiezasSetMaterialApoyo={setPiezasSetMaterialApoyo}
         />
       )}
 

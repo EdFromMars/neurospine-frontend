@@ -11,7 +11,7 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
 
   const [producto, setProducto] = useState({
     nombreMaterial: '',
-    tipoMaterial: 'cervical',
+    tipoMaterial: '',
     descripcionExtendida: '',
     existencias: 0,
     cantidadMin: 0,
@@ -26,17 +26,26 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
   const [materialApoyo, setMaterialApoyo] = useState({
     nombreMaterial: '',
     existencias: 0,
-    tipoMaterial: 'cervical',
+    tipoMaterial: '',
     descripcionExtendida: '',
     alg: '',
     precioAngeles: 0,
     precioEstandar: 0,
     precioRentaAngeles: 0,
     precioRentaEstandar: 0,
-    piezasSet: '',
   });
 
-  const [materialComplementario, setMaterialComplementario] = useState(false);
+  const [agregarMaterialApoyo, setAgregarMaterialApoyo] = useState(false);
+
+  const [piezasSetMaterialApoyo, setPiezasSetMaterialApoyo] = useState([{ 
+    nombre: '', 
+    cantidad: 0, 
+    precioAngeles: 0, 
+    precioEstandar: 0,
+    rentaAngeles: 0,
+    rentaEstandar: 0
+  }]);
+
   
   const { productos, guardarProducto, actualizarProducto } = useProductos();
   const { guardarMaterialApoyo, editarMaterialApoyo } = useMaterialApoyo();
@@ -57,7 +66,7 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
     if(editMaterialApoyo){
       setProducto({
         nombreMaterial: '',
-        tipoMaterial: 'cervical',
+        tipoMaterial: '',
         descripcionExtendida: '',
         existencias: 0,
         cantidadMin: 0,
@@ -75,7 +84,6 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
         tipoMaterial: 'cervical',
         descripcionExtendida: '',
         alg: '',
-        piezasSet: '',
       });
     }
   }, [productoEditar, editMaterialApoyo]);
@@ -144,25 +152,16 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
     }, 3000);
   }
 
-  const guardarNuevoMaterialApoyo = (materialApoyo) => {
+  const guardarNuevoMaterialApoyo = () => {
     let piezasValidation = true;
-    if(
-      materialApoyo.nombreMaterial.trim() === '' ||
-      materialApoyo.existencias <= 0 ||
-      materialApoyo.alg.trim() === '' ||
-      materialApoyo.descripcionExtendida.trim() === ''
-    ) {
-      setAlerta({
-        error: true,
-        msg: 'Todos los campos son obligatorios'
-      })
+
+    if(materialApoyo.nombreMaterial.trim() === '' || materialApoyo.existencias <= 0 || materialApoyo.tipoMaterial.trim() === '' || materialApoyo.alg.trim() === '' || materialApoyo.descripcionExtendida.trim() === ''){
+      piezasValidation = false;
       return;
     }
-
-    materialApoyo.piezasSet.forEach(pieza => {
-      if( pieza.nombre.trim() === '' || 
-        pieza.cantidad <= 0
-      ){
+        
+    piezasSetMaterialApoyo.forEach(pieza => {
+      if( pieza.nombre.trim() === '' || pieza.cantidad <= 0 ){
         piezasValidation = false;
         return;
       }
@@ -171,7 +170,7 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
     if(!piezasValidation) {
       setAlerta({
         error: true,
-        msg: 'Todos los campos de las piezas son obligatorios'
+        msg: 'Todos los campos son obligatorios'
       })
       return;
     }
@@ -180,29 +179,41 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
       ...materialApoyo,
       locacion: locacion || auth.locacion,
       usuario: auth._id,
-      piezasSet: JSON.stringify(materialApoyo.piezasSet)
     }
 
-    guardarMaterialApoyo(newMaterialApoyo);
+    // guardarMaterialApoyo(newMaterialApoyo);
 
     setAlerta({
       msg: 'El material se ha agregado correctamente'
     });
 
-    setTimeout(() => {
-      navigate('/inventario');
-    }, 3000);
+    // setTimeout(() => {
+    //   navigate('/inventario');
+    // }, 3000);
   }
   
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(editMaterialApoyo) {
-      console.log(materialApoyo);
-      guardarNuevoMaterialApoyo(materialApoyo);
+    if(modoEdicion) {
+      if(editMaterialApoyo) {
+        console.log(materialApoyo);
+        // guardarNuevoMaterialApoyo(materialApoyo);
+      } else {
+        guardarMaterialEstandar(producto);
+      }
+      return;
     } else {
-      guardarMaterialEstandar(producto);
+      if(agregarMaterialApoyo) {
+        console.log(materialApoyo);
+        guardarNuevoMaterialApoyo(materialApoyo);
+      } else {
+        guardarMaterialEstandar(producto);
+      }
+      return;
     }
+
+    console.log(materialApoyo);
   }
   
   const { msg } = alerta;
@@ -225,8 +236,10 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
                 editMaterialApoyo={editMaterialApoyo}
                 setProducto={setProducto} 
                 ejecutivo={ejecutivo}
-                materialComplementario={materialComplementario}
-                setMaterialComplementario={setMaterialComplementario}
+                agregarMaterialApoyo={agregarMaterialApoyo}
+                setAgregarMaterialApoyo={setAgregarMaterialApoyo}
+                piezasSetMaterialApoyo={piezasSetMaterialApoyo}
+                setPiezasSetMaterialApoyo={setPiezasSetMaterialApoyo}
               />
             </div>
           </div>
@@ -240,7 +253,6 @@ const FormularioAgregarProducto = ({ productoEditar, editMaterialApoyo }) => {
             </button>
             <button
               type="submit"
-              disabled={!producto.nombreMaterial || !producto.existencias || !producto.alg || !producto.descripcionExtendida}
               className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-400 disabled:text-gray-500"
             >
               {modoEdicion ? 'Actualizar Material' : 'Guardar Material'}

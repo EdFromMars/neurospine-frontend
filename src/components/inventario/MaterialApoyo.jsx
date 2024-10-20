@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 import AutoCompleteInput from "../ui/AutoCompleteInput";
 import PiezasMaterialApoyo from "./PiezasMaterialApoyo";
 
-const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejecutivo }) => {
-  const [nuevaPiezaSet, setNuevaPiezaSet] = useState([{ 
-    nombre: '', 
-    cantidad: 0, 
-    precioAngeles: 0, 
-    precioEstandar: 0,
-    rentaAngeles: 0,
-    rentaEstandar: 0
-  }]);
-
-  console.log(nuevaPiezaSet);
+const MaterialApoyo = ({ 
+  materialApoyo, 
+  setMaterialApoyo, 
+  comboBoxElements, 
+  ejecutivo, 
+  piezasSetMaterialApoyo, 
+  setPiezasSetMaterialApoyo 
+}) => {
   
   return (
     <div className="pb-12">
@@ -57,9 +54,10 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
               id="tipo-material"
               name="tipo-material"
               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-              value={materialApoyo.tipoMaterial || 'cervical'}
+              value={materialApoyo.tipoMaterial || ''}
               onChange={e => setMaterialApoyo({ ...materialApoyo, tipoMaterial: e.target.value })}
             >
+              <option value="">Selecciona el tipo de material</option>
               <option value="cervical">Cervical</option>
               <option value="lumbar">Lumbar</option>
             </select>
@@ -171,7 +169,7 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
         <p className="mt-1 text-sm leading-6 text-gray-600">Agrega las piezas que conforman el set, así como la cantidad que lleva de cada pieza.</p>
 
         <div className="mt-10 space-y-2">
-          <div className="sticky top-14 bg-white border-b border-gray-900/10 grid grid-cols-9 gap-4 items-center pt-4">
+          <div className="sticky top-14 bg-white border-b border-gray-900/10 grid grid-cols-9 gap-4 items-center pt-4 z-20">
             <div className="col-span-3 font-semibold text-sm text-gray-900">Material</div>
             <div className="col-span-1 font-semibold text-sm text-gray-900">Cantidad</div>
             {ejecutivo && (
@@ -184,13 +182,13 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
             )}
             <div className="col-span-1"></div>
           </div>
-          {nuevaPiezaSet.map((pieza, index) => (
+          {piezasSetMaterialApoyo.map((pieza, index) => (
             <PiezasMaterialApoyo 
               key={index}
               pieza={pieza}
               index={index}
-              piezasSet={nuevaPiezaSet}
-              setPiezasSet={setNuevaPiezaSet}
+              piezasSet={piezasSetMaterialApoyo}
+              setPiezasSet={setPiezasSetMaterialApoyo}
               ejecutivo={ejecutivo}
             />
           ))}
@@ -201,8 +199,8 @@ const MaterialApoyo = ({ materialApoyo, setMaterialApoyo, comboBoxElements, ejec
               className="text-sm font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
               onClick={e => {
                 e.preventDefault();
-                setNuevaPiezaSet([
-                  ...nuevaPiezaSet,
+                setPiezasSetMaterialApoyo([
+                  ...piezasSetMaterialApoyo,
                   { nombre: '', cantidad: 0, precioAngeles: 0, precioEstandar: 0, rentaAngeles: 0, rentaEstandar: 0 }
                 ])
               }}
