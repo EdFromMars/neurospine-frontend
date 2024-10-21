@@ -17,11 +17,11 @@ const PiezasMaterialApoyo = ({ pieza, index, piezasSet, setPiezasSet, ejecutivo 
             type="text"
             name={`material[${index}]`}
             id={`material[${index}]`}
-            className={`w-full rounded-md border-0 py-1.5 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 ${piezasSet[index].nombre.trim() === '' ? 'bg-red-300 ring-red-300' : ''}`}
-            value={piezasSet[index].nombre || ''}
+            className={`w-full rounded-md border-0 py-1.5 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 ${piezasSet[index].nombrePieza.trim() === '' ? 'bg-red-300 ring-red-300' : ''}`}
+            value={piezasSet[index].nombrePieza || ''}
             onChange={e => {
               const newPiezasSet = [...piezasSet];
-              newPiezasSet[index].nombre = e.target.value;
+              newPiezasSet[index].nombrePieza = e.target.value;
               setPiezasSet(newPiezasSet);
             }}
           />
@@ -29,14 +29,14 @@ const PiezasMaterialApoyo = ({ pieza, index, piezasSet, setPiezasSet, ejecutivo 
         <div className="col-span-1 text-right">
           <input
             type="number"
-            name={`cantidad[${index}]`}
-            id={`cantidad[${index}]`}
-            className={`w-full rounded-md border-0 py-1.5 text-sm text-right text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${piezasSet[index].cantidad <= 0 ? 'bg-red-300 ring-red-300' : ''}`}
-            value={piezasSet[index].cantidad || 0}
+            name={`piezasPorSet[${index}]`}
+            id={`piezasPorSet[${index}]`}
+            className={`w-full rounded-md border-0 py-1.5 text-sm text-right text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600  [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${piezasSet[index].piezasPorSet <= 0 ? 'bg-red-300 ring-red-300' : ''}`}
+            value={piezasSet[index].piezasPorSet || 0}
             min="0"
             onChange={e => {
               const newPiezasSet = [...piezasSet];
-              newPiezasSet[index].cantidad = e.target.value;
+              newPiezasSet[index].piezasPorSet = Number(e.target.value);
               setPiezasSet(newPiezasSet);
             }}
           />
@@ -50,7 +50,7 @@ const PiezasMaterialApoyo = ({ pieza, index, piezasSet, setPiezasSet, ejecutivo 
                 min="0"
                 onChange={e => {
                   const newPiezasSet = [...piezasSet];
-                  newPiezasSet[index].precioAngeles = e.target.value;
+                  newPiezasSet[index].precioAngeles = Number(e.target.value);
                   setPiezasSet(newPiezasSet);
                 }}
                 emptyError={piezasSet[index].precioAngeles <= 0}
@@ -63,7 +63,7 @@ const PiezasMaterialApoyo = ({ pieza, index, piezasSet, setPiezasSet, ejecutivo 
                 min="0"
                 onChange={e => {
                   const newPiezasSet = [...piezasSet];
-                  newPiezasSet[index].precioEstandar = e.target.value;
+                  newPiezasSet[index].precioEstandar = Number(e.target.value);
                   setPiezasSet(newPiezasSet);
                 }}
                 emptyError={piezasSet[index].precioEstandar <= 0}
@@ -71,28 +71,28 @@ const PiezasMaterialApoyo = ({ pieza, index, piezasSet, setPiezasSet, ejecutivo 
             </div>
             <div className="col-span-1 text-right">
               <CurrencyInput
-                name={`rentaAngeles[${index}]`}
-                value={piezasSet[index].rentaAngeles || 0}
+                name={`precioRentaAngeles[${index}]`}
+                value={piezasSet[index].precioRentaAngeles || 0}
                 min="0"
                 onChange={e => {
                   const newPiezasSet = [...piezasSet];
-                  newPiezasSet[index].rentaAngeles = e.target.value;
+                  newPiezasSet[index].precioRentaAngeles = Number(e.target.value);
                   setPiezasSet(newPiezasSet);
                 }}
-                emptyError={piezasSet[index].rentaAngeles <= 0}
+                emptyError={piezasSet[index].precioRentaAngeles <= 0}
               />
             </div>
             <div className="col-span-1 text-right">
               <CurrencyInput
-                name={`rentaEstandar[${index}]`}
-                value={piezasSet[index].rentaEstandar || 0}
+                name={`precioRentaEstandar[${index}]`}
+                value={piezasSet[index].precioRentaEstandar || 0}
                 min="0"
                 onChange={e => {
                   const newPiezasSet = [...piezasSet];
-                  newPiezasSet[index].rentaEstandar = e.target.value;
+                  newPiezasSet[index].precioRentaEstandar = Number(e.target.value);
                   setPiezasSet(newPiezasSet);
                 }}
-                emptyError={piezasSet[index].rentaEstandar <= 0}
+                emptyError={piezasSet[index].precioRentaEstandar <= 0}
               />
             </div>
             <div className="col-span-1 text-center">

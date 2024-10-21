@@ -21,14 +21,15 @@ export const PiezasMaterialApoyoProvider = ({ children }) => {
     }
   }
 
-  const obtenerPiezasMaterialApoyo = async () => {
+  const obtenerPiezasMaterialApoyo = async (id) => {
     try {
       if(!token) return;
       
       const { data } = await clienteAxios.get('/piezas-material-apoyo', {
         ...config,
         params: {
-          locacion: locacion
+          locacion: locacion,
+          materialApoyo: id
         }});
       setPiezasMaterialApoyo(data);
       return data;
@@ -67,6 +68,7 @@ export const PiezasMaterialApoyoProvider = ({ children }) => {
   return (
     <PiezasMaterialApoyoContext.Provider value={{
       piezasMaterialApoyo,
+      obtenerPiezasMaterialApoyo,
       guardarPiezaMaterialApoyo,
       actualizarPiezaMaterialApoyo,
       eliminarPiezaMaterialApoyo

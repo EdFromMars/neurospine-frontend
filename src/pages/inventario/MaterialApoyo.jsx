@@ -3,18 +3,21 @@ import { useParams, Link } from "react-router-dom";
 
 import useMaterialApoyo from "../../hooks/useMaterialApoyo"
 import useAuth from "../../hooks/useAuth";
+import usePiezasMaterialApoyo from "../../hooks/usePiezasMaterialApoyo";
 
 import { formatearDinero } from "../../helpers";
 import AlertaPopup from "../../components/ui/AlertaPopup";
 
 const MaterialApoyo = () => {
   const [materialApoyo, setMaterialApoyo] = useState({});
+  const [piezas, setPiezas] = useState([]);
   const [open, setOpen] = useState(false);
   
   const { id } = useParams();
   const { ejecutivo } = useAuth();
-  
+
   const { mostrarMaterialApoyo, eliminarMaterialApoyo } = useMaterialApoyo();
+  const { obtenerPiezasMaterialApoyo } = usePiezasMaterialApoyo();
 
   useEffect(() => {
     const obtenerMaterialApoyo = async () => {
@@ -22,9 +25,15 @@ const MaterialApoyo = () => {
       setMaterialApoyo(data);
     }
 
+    const obtenerPiezas = async () => {
+      const data = await obtenerPiezasMaterialApoyo(id);
+      setPiezas(data);
+    }
+
     obtenerMaterialApoyo();
+    obtenerPiezas();
   }, []);
-  
+
   const {
     nombreMaterial,
     descripcionExtendida,
@@ -36,15 +45,7 @@ const MaterialApoyo = () => {
     precioEstandar,
     precioRentaAngeles,
     precioRentaEstandar,
-    piezasSet
   } = materialApoyo;
-
-  let contenidoSet = [];
-  
-  if(piezasSet){
-    contenidoSet = JSON.parse(piezasSet)
-  }
-
 
   return (
     <>
@@ -121,19 +122,11 @@ const MaterialApoyo = () => {
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Precio Renta Estándar</th>
                   </tr>
                 </thead>
-                  {/* <ListaProductos 
-                    productosProgramacion={productosProgramacion} 
-                    comboBoxElements={comboBoxElements}
-                    setProductosProgramacion={setProductosProgramacion}
-                    productosTipoMaterial={productosTipoMaterial}
-                    valoresProducto={valoresProducto}
-                    mostrarPrecio={mostrarPrecio}
-                  /> */}
                   <tbody className="divide-y divide-gray-200">
-                  {contenidoSet.length > 0 && (
-                    contenidoSet.map((item, index) => (
+                  {piezas.length > 0 && (
+                    piezas.map((item, index) => (
                       <tr key={index} className="group">
-                        <td className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{item.nombre}</td>
+                        <td className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{item.nombrePieza}</td>
                         <td className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-center">{item.cantidad}</td>
                         <td className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-center">{item.precioAngeles}</td>
                         <td className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-center">{item.rentaAngeles}</td>

@@ -19,6 +19,8 @@ const EditarProducto = () => {
     const obtenerProducto = async () => {
       const data = editMaterialApoyo ? await mostrarMaterialApoyo(id) : await mostrarProducto(id) || {};
 
+      console.log(data);
+      
       setProducto({
         alg: data.alg || '',
         cantidadMax: data.cantidadMax || '',

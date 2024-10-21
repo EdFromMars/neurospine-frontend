@@ -14,10 +14,15 @@ const ListadoProductos = () => {
   const actualizarListaProductos = async (loc) => {
     const productosObtenidos = await obtenerProductos(loc);
     const materialesApoyoObtenidos = await obtenerMaterialesApoyo(loc);
+
+    const materialesApoyoFiltrados = materialesApoyoObtenidos.map(material => {
+      material.materialApoyo = true;
+      return material;
+    });
     
     const nuevaListaProductos = [
       ...productosObtenidos,
-      ...materialesApoyoObtenidos
+      ...materialesApoyoFiltrados
     ];
     
     await setListaProductos(nuevaListaProductos);

@@ -46,6 +46,7 @@ export const MaterialApoyoProvider = ({ children }) => {
     try {
       const { data } = await clienteAxios.post('/material-apoyo', materialApoyo, config);
       setMaterialesApoyo([...materialesApoyo, data]);
+      return data;
     } catch (error) {
       console.log(error);
     }
